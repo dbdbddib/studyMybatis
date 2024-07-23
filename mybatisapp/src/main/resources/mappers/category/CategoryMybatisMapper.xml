@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.studymavenspringboot.mybatisapp.category.CategoryMybatisMapper">
+
+    <insert id="insert" parameterType="CategoryDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO category_tbl( name )
+        VALUES ( #{name} )
+    </insert>
+
+    <update id="update" parameterType="CategoryDto">
+        UPDATE category_tbl
+        SET NAME = #{name}
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM category_tbl
+        WHERE ID = #{id}
+    </delete>
+
+    <select id="findById" resultType="com.studymavenspringboot.mybatisapp.category.CategoryDto">
+        SELECT
+            ID, NAME
+        FROM category_tbl
+        WHERE ID = #{id}
+    </select>
+
+</mapper>
