@@ -18,7 +18,7 @@ public class CategoryController {
     private static Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
-    private CategoryMybatisServiceImpl categoryService;
+    private CategoryServiceImpl categoryService;
 
     @PostMapping
     public ResponseEntity<ICategory> insertC(@RequestBody CategoryRequest dto){

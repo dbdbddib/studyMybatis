@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Category 보기</title>
+</head>
+<body>
+<form id="form" name="form" method="post" action="/ctweb/oldhtml/category_old_update" th:object="${categoryDto}">
+    <input type="number" th:field="*{id}" readonly/>
+    <input type="text" th:field="*{name}"/>
+    <input type="submit" value="전송"/><input type="reset" value="취소"/>
+    <a th:href="@{/ctweb/oldhtml/category_old_delete(id=*{id})}">삭제</a>
+</form>
+</body>
+</html>

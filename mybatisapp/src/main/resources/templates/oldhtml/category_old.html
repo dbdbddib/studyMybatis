@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Old Html</title>
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+</head>
+<body>
+
+    <form id="form" name="form" method="post" action="/ctweb/oldhtml/category_old_act">
+        <label for="id"></label><input type="number" id="id" name="id"/>
+        <label for="name"></label><input type="text" id="name" name="name"/>
+        <input type="submit" value="전송"/>
+        <input type="reset" value="취소"/>
+    </form>
+
+    <section id="content-types">
+        <div class="row">
+            <div class="col-xl-4 cpl-md-6 col-sm-12" th:each="item : ${itemList}">
+                <div class="card">
+                    <a th:href="@{/ctweb/oldhtml/category_old_view(id=${item.id})}">
+                    <div class="card-content">
+                        <div class="card-body" th:text="${item.id}"></div>
+                        <div class="card-text" th:text="${item.name}"></div>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+        <ul id="categoryList">
+            <li>
+                <span>id</span>
+                <span> : </span>
+                <span>name</span>
+            </li>
+            <li  th:each="item : ${itemList}">
+                <a th:href="@{/ctweb/oldhtml/category_old_view(id=${item.id})}">
+                    <span th:text="${item.id}">id</span>
+                    <span> : </span>
+                    <span th:text="${item.name}">name</span>
+                </a>
+            </li>
+        </ul>
+</body>
+</html>
