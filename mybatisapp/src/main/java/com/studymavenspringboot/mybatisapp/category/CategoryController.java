@@ -14,11 +14,11 @@ import java.util.List;
 @RequestMapping("/ct")
 
 
-public class CategoryControllor {
-    private static Logger logger = LoggerFactory.getLogger(CategoryControllor.class);
+public class CategoryController {
+    private static Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private CategoryMybatisServiceImpl categoryService;
 
     @PostMapping
     public ResponseEntity<ICategory> insertC(@RequestBody CategoryRequest dto){
@@ -96,7 +96,7 @@ public class CategoryControllor {
         }
     }
 
-    @GetMapping("/name:{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<List<ICategory>> findAllByName(@PathVariable String name) {
         try {
             if (name == null || name.isEmpty()) {

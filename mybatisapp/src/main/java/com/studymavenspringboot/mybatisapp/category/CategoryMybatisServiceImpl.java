@@ -5,10 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class CategoryServiceImpl implements ICategoryService{
+public class CategoryMybatisServiceImpl implements ICategoryService{
     @Autowired
     private CategoryMybatisMapper categoryMybatisMapper;
 
@@ -101,11 +100,11 @@ public class CategoryServiceImpl implements ICategoryService{
         if (findName == null || findName.isEmpty()) {
             return new ArrayList<>();
         }
-//        List<CategoryEntity> list = this.categoryMybatisMapper.findAllByNameContains(findName);
-//        List<ICategory> result = new ArrayList<>();
-//        for(CategoryEntity item : list){
-//            result.add((ICategory) item);
-//        }
-        return null;
+        List<CategoryDto> list = this.categoryMybatisMapper.findAllByNameContains(findName);
+        List<ICategory> result = new ArrayList<>();
+        for(CategoryDto item : list){
+            result.add((ICategory) item);
+        }
+        return result;
     }
 }
