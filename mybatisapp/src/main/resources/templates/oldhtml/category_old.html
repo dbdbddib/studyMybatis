@@ -6,49 +6,70 @@
     <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
-    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <script>
+        //$(document).ready(function(){
+        //    // Jquery 는 html 문서가 로딩이 완료 되면 이 부분을 실행한다.
+        //});
+        $(function(){
+            // jQuery 3.0 버전부터 실행할 기능을 정의해주세요.
+            let totPage = ([[${searchCategoryDto.total}]] + 9) / 10;
+            let searchName = "[[${searchCategoryDto.name}]]";
+            for (let i = 1; i <= totPage; i++) {
+                $("#pageDiv").append(" <a class='btn btn-success rounded-pill' href='category_old?page=" + i +
+                    "&name=" + searchName + "'>[" + i + "]</a> ");
+            }
+        });
 
+        function categoryInsert() {
+            let name = $("#name").val();
+            let ret = confirm(name + " 추가 하시겠습니까 ?");
+            return ret;
+
+        }
+    </script>
 </head>
 <body>
-
-    <form id="form" name="form" method="post" action="/ctweb/oldhtml/category_old_act">
-        <label for="id"></label><input type="number" id="id" name="id"/>
-        <label for="name"></label><input type="text" id="name" name="name" />
-        <input type="submit" value="전송"/><input type="reset" value="취소"/>
-    </form>
-    <div>
-        Category List
-    </div>
-    <section id="content-types">
-        <div class="row">
-            <div class="col-xl-4 col-md-6 col-sm-12" th:each="node : ${allList}">
-                <div class="card">
-                    <a th:href="@{/ctweb/oldhtml/category_old_view(id=${node.id})}">
+<form id="form" name="form" method="post" action="/ctweb/oldhtml/category_old_act" onsubmit="return categoryInsert();">
+    <label for="id"></label><input type="number" id="id" name="id"/>
+    <label for="name"></label><input type="text" id="name" name="name" />
+    <input type="submit" value="전송"/>
+    <input type="reset" value="취소"/>
+</form>
+<div>
+    Category List
+</div>
+<section id="content-types">
+    <div class="row">
+        <div class="col-xl-4 col-md-6 col-sm-12" th:each="node : ${allList}">
+            <div class="card">
+                <a th:href="@{/ctweb/oldhtml/category_old_view(id=${node.id})}">
                     <div class="card-content">
                         <div class="card-body" th:text="${node.id}"></div>
                         <div class="card-text" th:text="${node.name}"></div>
                     </div>
-                    </a>
-                </div>
+                </a>
             </div>
         </div>
-    </section>
-    <div id="page"
-    <div>page : [[${searchCategoryDto.page}]], search name = [[${searchCategoryDto.name}]]</div>
-    <ul id="categoryList">
-        <li>
-            <span>id</span>
+    </div>
+</section>
+<div id="pageDiv">
+</div>
+[(${pageHtml})]
+<div>total : [[${searchCategoryDto.total}]], page : [[${searchCategoryDto.page}]], search name = [[${searchCategoryDto.name}]]</div>
+<ul id="categoryList">
+    <li>
+        <span>id</span>
+        <span> : </span>
+        <span>name</span>
+    </li>
+    <li th:each="item : ${allList}">
+        <a th:href="@{/ctweb/oldhtml/category_old_view(id=${item.id})}">
+            <span th:text="${item.id}"></span>
             <span> : </span>
-            <span>name</span>
-        </li>
-        <li th:each="item : ${allList}">
-            <a th:href="@{/ctweb/oldhtml/category_old_view(id=${item.id})}">
-                <span th:text="${item.id}"></span>
-                <span> : </span>
-                <span th:text="${item.name}"></span>
-            </a>
-        </li>
-    </ul>
-    <img id="tx_entry_54593_" class="txc-image" src="https://t1.daumcdn.net/cfile/tistory/233A2C42585B7CD02D" width="240" height="190" style="text-align: center;" data-phocus-index="0">
+            <span th:text="${item.name}"></span>
+        </a>
+    </li>
+</ul>
 </body>
 </html>
