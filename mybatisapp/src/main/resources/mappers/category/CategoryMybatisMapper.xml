@@ -5,47 +5,52 @@
 
 <!--  id는  CategoryMybatisMapper 클래스의 메소드 이름,  parameterType은 메소드의 매개변수,  useGeneratedKeys="true" keyProperty="id" 자동 으로 id의 값을 가져와 증가해주기 위해서 사용   -->
     <insert id="insert" parameterType="CategoryDto" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO category_tbl( name )
-        VALUES ( #{name} )
+        INSERT INTO category_tbl(name)
+        VALUES(#{name})
     </insert>
 
     <update id="update" parameterType="CategoryDto">
-        UPDATE category_tbl
-        SET NAME = #{name}
-        WHERE ID = #{id}
+        UPDATE category_tbl SET name = #{name}
+        WHERE id = #{id}
     </update>
 
-    <delete id="deleteById" >
+    <delete id="deleteById">
         DELETE FROM category_tbl
-        WHERE ID = #{id}
+        WHERE id = #{id}
     </delete>
 
     <select id="findById" resultType="CategoryDto">
-        SELECT
-            ID, NAME
+        SELECT id
+             , name
         FROM category_tbl
-        WHERE ID = #{id}
+        WHERE id = #{id}
     </select>
 
     <select id="findByName" resultType="CategoryDto">
-        SELECT
-            ID, NAME
+        SELECT id
+             , name
         FROM category_tbl
-        WHERE NAME = #{name}
+        WHERE name = #{name}
     </select>
 
     <select id="findAll" resultType="CategoryDto">
-        SELECT
-            ID, NAME
+        SELECT id
+             , name
         FROM category_tbl
     </select>
 
-    <select id="findAllByNameContains" resultType="CategoryDto">
-        SELECT
-            ID, NAME
+    <select id="countAllByNameContains" parameterType="SearchCategoryDto" resultType="int">
+        SELECT count(*)
         FROM category_tbl
-        WHERE name like '%${name}%'
+        WHERE name like CONCAT('%',#{name},'%')
     </select>
 
-
+    <select id="findAllByNameContains" parameterType="SearchCategoryDto" resultType="CategoryDto">
+        SELECT id
+             , name
+        FROM category_tbl
+        WHERE name like CONCAT('%',#{name},'%')
+        ORDER BY ${orderByWord}
+            LIMIT #{rowsOnePage} OFFSET #{firstIndex}
+    </select>
 </mapper>

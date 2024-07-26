@@ -102,8 +102,10 @@ public class CategoryController {
             if (name == null || name.isEmpty()) {
                 return ResponseEntity.badRequest().build();
             }
-            List<ICategory> result = this.categoryService.getListFromName(name);
-            if (result == null || result.size() <= 0) {
+            SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
+                    .name(name).page(1).build();
+            List<ICategory> result = this.categoryService.findAllByNameContains(searchCategoryDto);
+            if ( result == null || result.size() <= 0 ) {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(result);

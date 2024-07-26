@@ -18,5 +18,6 @@ public interface CategoryMybatisMapper {
 
     List<CategoryDto> findAll();
 
-    List<CategoryDto> findAllByNameContains(String name);
+    int countAllByNameContains(SearchCategoryDto searchCategoryDto);
+    List<CategoryDto> findAllByNameContains(SearchCategoryDto searchCategoryDto);
 }
