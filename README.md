@@ -1,5 +1,6 @@
 # studyMybatis
 
+# CRUD
 CRUD는 “Create, Read, Update, Delete”의 약어로 데이터베이스와 같은 시스템에서 기본적인 데이터 관리 기능을 의미
 CRUD는 거의 모든 시스템에 적용되는 가장 기본
 
@@ -10,7 +11,9 @@ UPDATE    UPDATE
 DELETE    DELETE
 
 
-# REST API 에서의 CRUD
+### REST API 에서의 CRUD
+
+클라이언트 <-> 서버간 HTTP 프로토콜을 이용해 REST API를 설계하고 작성할 때에도 CRUD 개념이 사용
 
  이름     HTTP METHOD
 CREATE    POST
@@ -46,3 +49,61 @@ HTTP 메서드: DELETE
 예시: 특정 사용자를 삭제하는 경우
 요청: DELETE /users/{id}
 응답: 적절한 상태 코드와 함께 성공 메시지 또는 삭제된 사용자의 정보
+
+
+
+## CONTROLLER 
+
+controller -> ServiceImpl -> mapper -> xml -> 자바 인터페이스를 통해 db에서 SQL 쿼리를 실행 -> 결과 객체로 반환
+
+애노테이션
+
+@Slf4j
+Lombok 라이브러리가 제공하는 애노테이션
+log 를 쉽게 사용
+
+
+@Controller
+해당 클래스가 컨트롤러임을 나타냄
+컨트롤러는 주로 웹 요청을 처리
+비즈니스 로직을 수행
+결과를 뷰(View)에 전달하는 역할
+
+
+@RequestMapping
+만약 @RequestMapping("/ctweb") 는 /ctweb 경로로 들어오는 요청을 처리
+
+@Autowired
+필요한 객체를 직접 생성
+
+@Mapper
+MyBatis 프레임워크에서 사용하는 애노테이션
+Java 인터페이스(DB연결)를 통해 SQL 쿼리를 실행하고 결과를 매핑하는 역할
+SQL 쿼리는 애노테이션이나 XML 파일을 통해 정의
+
+주요 기능
+SQL 쿼리 실행: 인터페이스 메서드에 매핑된 SQL 쿼리를 실행합니다.
+결과 매핑: SQL 쿼리의 결과를 Java 객체로 변환하여 반환합니다.
+매개변수 바인딩: 메서드의 매개변수를 SQL 쿼리에 바인딩합니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
