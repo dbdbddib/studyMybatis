@@ -21,7 +21,7 @@ READ      GET
 UPDATE    PUT, PATCH
 DELETE    DELETE
 
-Create (생성)
+###Create (생성)
 HTTP 메서드: POST
 예시: 새로운 사용자를 생성하는 경우
 요청: POST /users
@@ -29,14 +29,14 @@ HTTP 메서드: POST
 응답: 새로운 사용자의 ID와 함께 성공 메시지 또는 적절한 상태 코드 (예: 201 Created)
 
 
-Read (읽기):
+###Read (읽기):
 HTTP 메서드: GET
 예시: 모든 사용자 목록을 가져오는 경우
 요청: GET /users
 응답: 모든 사용자의 목록을 포함하는 JSON 또는 XML 데이터 또는 적절한 상태 코드와 함께 성공 메시지 (예: 200 OK)
 
 
-Update (갱신):
+###Update (갱신):
 HTTP 메서드: PUT 또는 PATCH
 예시: 특정 사용자의 정보를 업데이트하는 경우
 요청: PUT /users/{id} 또는 PATCH /users/{id}
@@ -44,7 +44,7 @@ HTTP 메서드: PUT 또는 PATCH
 응답: 적절한 상태 코드와 함께 성공 메시지 또는 업데이트된 사용자의 정보
 
 
-Delete (삭제):
+###Delete (삭제):
 HTTP 메서드: DELETE
 예시: 특정 사용자를 삭제하는 경우
 요청: DELETE /users/{id}
