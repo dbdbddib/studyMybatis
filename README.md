@@ -107,9 +107,11 @@ SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
 
 
 
+# 메소드
 
-
-
+build():
+Lombok의 @Builder나 @SuperBuilder 애노테이션을 사용하면 자동으로 빌더 클래스를 생성
+빌더 객체에 설정된 값들을 사용하여 최종 객체를 생성합니다.
 
 
 
