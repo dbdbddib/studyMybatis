@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @Slf4j
@@ -65,9 +67,9 @@ public class CatWebController {
     }
 
     @GetMapping("/category_search")
-    public String categorySearch(@RequestParam String name) {
-
-        return "redirect:category_list?page=1&name=" + name;  // 브라우저 주소를 redirect 한다.
+    public String categorySearch(@RequestParam String name) throws UnsupportedEncodingException {
+        String encodedName = URLEncoder.encode(name, "UTF-8");
+        return "redirect:category_list?page=1&name=" + encodedName;  // 브라우저 주소를 redirect 한다.
     }
 
     @GetMapping("/category_view")    // 브라우저의 URL 주소
