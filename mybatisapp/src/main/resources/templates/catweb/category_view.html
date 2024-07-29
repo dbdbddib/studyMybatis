@@ -22,6 +22,9 @@
         .btn:hover {
             background-color: #0056b3; /* 버튼에 마우스 호버 시 색상 변경 */
         }
+        #b1{
+            text-align: center;
+        }
         #b2{
             float: right;
         }
@@ -41,23 +44,23 @@
 
 <div class="horizontal-line"></div>
 
-<form name="form" method="post" action="/catweb/category_update" onsubmit="return categoryUpdate();">
+<form name="form" method="post" action="/catweb/category_update" th:object="${categoryDto}">
 
     <div>
         <span >ID</span>
-        <label for="name"></label><input type="text" id="id" name="id" />
+        <input type="number" th:field="*{id}" readonly/>
     </div>
 
     <div>
         <span >이름</span>
-        <label for="name"></label><input type="text" id="name" name="name" />
+        <input type="text" th:field="*{name}"/>
     </div>
 
     <div class="horizontal-line"></div>
 
-    <a href="/catweb/category_list" class="btn">뒤로</a>
-    <a href="/catweb/category_list" class="btn">삭제</a>
-    <a href="/catweb/category_add" class="btn" id="b2" type="submit">추가</a>
+    <input class="btn" type="submit" value="전송"/>
+    <a class="btn" id="b1" th:href="@{/catweb/category_delete(id=*{id})}">삭제</a>
+    <input class="btn" id="b2" type="reset" value="취소"/>
 </form>
 </body>
 </html>
