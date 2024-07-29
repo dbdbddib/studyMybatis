@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -54,8 +54,8 @@
 
     <div>
         <span class="box">이름</span>
-        <form id="form" name="form" method="post" action="/catweb/html/category_act" onsubmit="return categoryInsert();">
-            <input type="text" id="name" name="name" placeholder="검색할 이름 입력"/>
+        <form id="form" name="form" method="get" action="/catweb/category_search">
+            <input type="text" id="name" name="name" placeholder="검색할 이름 입력" th:value="${searchCategoryDto.name}"/>
             <input type="submit" value="검색"/>
         </form>
     </div>
@@ -70,7 +70,7 @@
 
         <div class="col-xl-4 col-md-6 col-sm-12" th:each="node : ${allList}">
             <div class="card">
-                <a th:href="@{/ctweb/oldhtml/category_old_view(id=${node.id})}">
+                <a th:href="@{/catweb/category_view(id=${node.id})}">
                     <div class="card-content">
                         <span class="card-body" th:text="${node.id}"></span>
                         <span> | </span>
@@ -81,7 +81,7 @@
         </div>
 
         <div class="button-container">
-            <a href="/catweb/html/category_insert" class="btn">추가</a>
+            <a href="/catweb/category_add" class="btn">추가</a>
         </div>
     </div>
 
@@ -89,6 +89,7 @@
 
     <div >
         <span id="pageDiv"></span>
+
         <span><input type="submit" value="Next"/></span>
     </div>
     [(${pageHtml})]
