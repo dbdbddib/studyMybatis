@@ -56,6 +56,11 @@ DELETE    DELETE
 
 controller -> ServiceImpl -> mapper -> xml -> 자바 인터페이스를 통해 db에서 SQL 쿼리를 실행 -> 결과 객체로 반환
 
+### @GetMapping("/html/category_list")
+###    public String categoryOld(Model model, @RequestParam String name, @RequestParam int page) {}
+    
+(http://localhost:8089/catweb/html/category_list?page=1&name=유병훈)
+이런식으로 매개변수 값까지 입력해야 메소드에 접근한다
 
 # 필요 애노테이션
 
