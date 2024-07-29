@@ -52,11 +52,12 @@ HTTP 메서드: DELETE
 
 
 
-## CONTROLLER 
+# CONTROLLER 
 
 controller -> ServiceImpl -> mapper -> xml -> 자바 인터페이스를 통해 db에서 SQL 쿼리를 실행 -> 결과 객체로 반환
 
-애노테이션
+
+# 필요 애노테이션
 
 @Slf4j
 Lombok 라이브러리가 제공하는 애노테이션
@@ -86,12 +87,23 @@ SQL 쿼리 실행: 인터페이스 메서드에 매핑된 SQL 쿼리를 실행�
 결과 매핑: SQL 쿼리의 결과를 Java 객체로 변환하여 반환합니다.
 매개변수 바인딩: 메서드의 매개변수를 SQL 쿼리에 바인딩합니다.
 
+@NoArgsConstructor
+인자가 없는 기본 생성자를 자동으로 생성합니다.
 
+@AllArgsConstructor
+클래스의 모든 필드를 인자로 받는 생성자를 자동으로 생성합니다.
 
+public class MyClass {
+    private int id;
+    private String name;
+}
 
+// new MyClass(1, "example") 와 같이 사용할 수 있음
 
-
-
+@SuperBuilder
+상속 관계가 있는 클래스에서 빌더 패턴을 사용할 수 있게 합니다.
+SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
+                    .name(name).page(page).build();
 
 
 
