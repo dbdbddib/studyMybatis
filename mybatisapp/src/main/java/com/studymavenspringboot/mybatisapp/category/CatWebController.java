@@ -35,6 +35,7 @@ public class CatWebController {
             int count = this.categoryService.countAllByNameContains(searchCategoryDto);
             searchCategoryDto.setTotal(count);
             List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);
+            // model 을 사용하는 이유 화면을 만들기 위해, allList, searchCategoryDto 를 준다 그러므로 category_list.html 에서 사용가능
             model.addAttribute("allList", allList);
             model.addAttribute("searchCategoryDto", searchCategoryDto);
         } catch (Exception ex) {

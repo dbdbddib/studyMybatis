@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.mustacheapp.category.CategoryMybatisMapper">
+
+
+<!--  id는  CategoryMybatisMapper 클래스의 메소드 이름,  parameterType은 메소드의 매개변수,  useGeneratedKeys="true" keyProperty="id" 자동 으로 id의 값을 가져와 증가해주기 위해서 사용   -->
+    <insert id="insert" parameterType="CategoryDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO category_tbl(name)
+        VALUES(#{name})
+    </insert>
+
+    <update id="update" parameterType="CategoryDto">
+        UPDATE category_tbl SET name = #{name}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM category_tbl
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findById" resultType="CategoryDto">
+        SELECT id
+             , name
+        FROM category_tbl
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByName" resultType="CategoryDto">
+        SELECT id
+             , name
+        FROM category_tbl
+        WHERE name = #{name}
+    </select>
+
+    <select id="findAll" resultType="CategoryDto">
+        SELECT id
+             , name
+        FROM category_tbl
+    </select>
+
+    <select id="countAllByNameContains" parameterType="SearchCategoryDto" resultType="int">
+        SELECT count(*)
+        FROM category_tbl
+        WHERE name like CONCAT('%',#{name},'%')
+    </select>
+
+    <select id="findAllByNameContains" parameterType="SearchCategoryDto" resultType="CategoryDto">
+        SELECT id
+             , name
+        FROM category_tbl
+        WHERE name like CONCAT('%',#{name},'%')
+        ORDER BY ${orderByWord}
+            LIMIT #{rowsOnePage} OFFSET #{firstIndex}
+    </select>
+</mapper>
