@@ -44,23 +44,23 @@
 
 <div class="horizontal-line"></div>
 
-<form name="form" method="post" action="/catweb/category_update" th:object="${categoryDto}">
+<form name="form" method="post" action="/catweb/category_update" object="{{categoryDto}}">
 
     <div>
         <span >ID</span>
-        <input type="number" th:field="*{id}" readonly/>
+        <input type="number" value="{{categoryDto.id}}" readonly/>
     </div>
 
     <div>
         <span >이름</span>
-        <input type="text" th:field="*{name}"/>
+        <input type="text" value="{{categoryDto.name}}"/>
     </div>
 
     <div class="horizontal-line"></div>
 
     <input class="btn" type="submit" value="전송"/>
-    <a class="btn" id="b1" th:href="@{/catweb/category_delete(id=*{id})}">삭제</a>
-    <input class="btn" id="b2" type="reset" value="취소"/>
+    <a class="btn" id="b1" href="category_delete?id={{categoryDto.id}}">삭제</a>
+    <a id="b2" class="btn" href="javascript:history.back();">취소</a>
 </form>
 </body>
 </html>

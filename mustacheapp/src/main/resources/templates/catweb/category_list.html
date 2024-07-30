@@ -3,19 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="/js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <script>
         //$(document).ready(function(){
         //    // Jquery 는 html 문서가 로딩이 완료 되면 이 부분을 실행한다.
         //});
-        $(function(){
+        $(function() {
             // jQuery 3.0 버전부터 실행할 기능을 정의해주세요.
-            let totPage = ([[${searchCategoryDto.total}]] + 9) / 10;
-            let searchName = "[[${searchCategoryDto.name}]]";
+            var totPage = Math.ceil({{searchCategoryDto.total}} / 10); // 전체 페이지 수 계산
+            var searchName = "{{searchCategoryDto.name}}";
+            var currentPage = parseInt({{searchCategoryDto.page}});
+            var maxPageButtons = 10;
+
+            // 페이지 번호를 생성하여 추가
             for (let i = 1; i <= totPage; i++) {
                 $("#pageDiv").append(" <a class='btn btn-success rounded-pill' href='category_list?page=" + i +
                     "&name=" + searchName + "'>" + i + "</a> ");    // 페이지 수
             }
+
+            // 이전 페이지 버튼 클릭 이벤트
+            $("#prevBtn").click(function() {
+                if (currentPage > 1) {
+                    var prevPage = currentPage - 1;
+                    var url = "category_list?page=" + prevPage + "&name=" + searchName;
+                    document.location.href = url;
+                }
+            });
+
+            // 다음 페이지 버튼 클릭 이벤트
+            $("#nextBtn").click(function() {
+                if (currentPage < totPage) {
+                    var nextPage = currentPage + 1;
+                    var url = "category_list?page=" + nextPage + "&name=" + searchName;
+                    document.location.href = url;
+                }
+            });
+
         });
     </script>
     <style>
@@ -53,10 +79,11 @@
 <section id="content-types">
 
     <div>
-        <span class="box">이름</span>
+
         <form id="form" name="form" method="get" action="/catweb/category_search">
-            <input type="text" id="name" name="name" placeholder="검색할 이름 입력" th:value="${searchCategoryDto.name}"/>
-            <input type="submit" value="검색"/>
+            <span class="box">이름</span>
+            <input type="text" id="name" name="name" placeholder="검색할 이름 입력" value="{{searchCategoryDto.name}}"/>
+            <input class="btn" type="submit" value="검색"/>
         </form>
     </div>
 
@@ -68,17 +95,19 @@
         <span>Name</span>
 
 
-        <div class="col-xl-4 col-md-6 col-sm-12" th:each="node : ${allList}">
+        {{#allList}}
+        <div class="col-xl-4 col-md-6 col-sm-12">
             <div class="card">
-                <a th:href="@{/catweb/category_view(id=${node.id})}">
+                <a href="category_view?id={{id}}">
                     <div class="card-content">
-                        <span class="card-body" th:text="${node.id}"></span>
+                        <span class="card-body">{{id}}</span>
                         <span> | </span>
-                        <span class="card-text" th:text="${node.name}"></span>
+                        <span class="card-text">{{name}}</span>
                     </div>
                 </a>
             </div>
         </div>
+        {{/allList}}
 
         <div class="button-container">
             <a href="/catweb/category_add" class="btn">추가</a>
@@ -88,12 +117,14 @@
     <div class="horizontal-line"></div>
 
     <div >
+        <span><button class="btn" id="prevBtn">Prev</button></span>
+
         <span id="pageDiv"></span>
 
-        <span><input type="submit" value="Next"/></span>
+        <span><button class="btn" id="nextBtn">Next</button></span>
     </div>
     [(${pageHtml})]
-    <div>total : [[${searchCategoryDto.total}]], page : [[${searchCategoryDto.page}]], search name = [[${searchCategoryDto.name}]]</div>
+    <div>total : {{searchCategoryDto.total}}, page : {{searchCategoryDto.page}}, search name = {{searchCategoryDto.name}}</div>
 
 </section>
 </body>
