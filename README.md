@@ -54,7 +54,8 @@ DELETE    DELETE
 
 # CONTROLLER 
 
-controller -> ServiceImpl -> mapper -> xml -> 자바 인터페이스를 통해 db에서 SQL 쿼리를 실행 -> 결과 객체로 반환
++ controller -> ServiceImpl -> mapper -> xml -> 자바 인터페이스를 통해 db에서 SQL 쿼리를 실행 -> 결과 객체로 반환
+
 
 ### @GetMapping("/html/category_list")
 ###    public String categoryOld(Model model, @RequestParam String name, @RequestParam int page) {}
@@ -117,6 +118,10 @@ controller -> ServiceImpl -> mapper -> xml -> 자바 인터페이스를 통해 d
 * build():
   + Lombok의 @Builder나 @SuperBuilder 애노테이션을 사용하면 자동으로 빌더 클래스를 생성
   + 빌더 객체에 설정된 값들을 사용하여 최종 객체를 생성합니다.
+
+* model.addAttribute("변수명", 객체)
+  + model 객체를 사용하는 이유는 html 화면을 만들기 위해 필요한 데이터를 전달하기 위함이다.
+  + 객체를 model 에 추가하여, html 에서 사용할 수 있도록 한다.
 
 
 # 클래스 구성
