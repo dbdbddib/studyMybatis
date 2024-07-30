@@ -118,9 +118,9 @@ controller -> ServiceImpl -> mapper -> xml -> 자바 인터페이스를 통해 d
   + Lombok의 @Builder나 @SuperBuilder 애노테이션을 사용하면 자동으로 빌더 클래스를 생성
   + 빌더 객체에 설정된 값들을 사용하여 최종 객체를 생성합니다.
 
-* model.addAttribute("searchCategoryDto", searchCategoryDto)
-  + model 객체를 사용하는 이유는 category_list.html 화면을 만들기 위해 필요한 데이터를 전달하기 위함이다.
-  + searchCategoryDto (객체) 를 model에 추가하여, category_list.html에서 사용할 수 있도록 한다.
+* model.addAttribute("변수명", 객체)
+  + model 객체를 사용하는 이유는 html 화면을 만들기 위해 필요한 데이터를 전달하기 위함이다.
+  + 객체를 model 에 추가하여, html 에서 사용할 수 있도록 한다.
 
 
 # 클래스 구성
