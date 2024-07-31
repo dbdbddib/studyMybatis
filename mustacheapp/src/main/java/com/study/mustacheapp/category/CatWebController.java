@@ -24,14 +24,14 @@ public class CatWebController {
     }
 
     @GetMapping("/category_list")    // 브라우저의 URL 주소
-    public String categoryOld(Model model, @RequestParam String name, @RequestParam int page) {
+    public String categoryOld(Model model, @RequestParam String searchName, @RequestParam int page) {
         try {
-            if (name == null) {
-                name = "";
+            if (searchName == null) {
+                searchName = "";
             }
 //            List<ICategory> allList = this.categoryService.getAllList();
             SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
-                    .name(name).page(page).build();
+                    .page(page).searchName(searchName).build();
             int count = this.categoryService.countAllByNameContains(searchCategoryDto);
             searchCategoryDto.setTotal(count);
             List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);
@@ -64,13 +64,13 @@ public class CatWebController {
             model.addAttribute("error_message", dto.getName() + " 중복입니다.");
             return "error/error_save";  // resources/templates 폴더안의 화면파일
         }
-        return "redirect:category_list?page=1&name=";  // 브라우저 주소를 redirect 한다.
+        return "redirect:category_list?page=1&searchName=";
     }
 
     @GetMapping("/category_search")
     public String categorySearch(@RequestParam String name) throws UnsupportedEncodingException {
         String encodedName = URLEncoder.encode(name, "UTF-8");  // get 방식 url 한글인코딩
-        return "redirect:category_list?page=1&name=" + encodedName;
+        return "redirect:category_list?page=1&searchName=" + encodedName;
     }
 
     @GetMapping("/category_view")    // 브라우저의 URL 주소
@@ -112,7 +112,7 @@ public class CatWebController {
             model.addAttribute("error_message", categoryDto.getName() + " 중복입니다.");
             return "error/error_save";  // resources/templates 폴더안의 화면파일
         }
-        return "redirect:category_list?page=1&name=";
+        return "redirect:category_list?page=1&searchName=";
     }
 
     @GetMapping("/category_delete")
@@ -133,6 +133,6 @@ public class CatWebController {
             model.addAttribute("error_message", "서버 에러입니다. 관리자에게 문의 하세요.");
             return "error/error_save";  // resources/templates 폴더안의 화면파일
         }
-        return "redirect:category_list?page=1&name=";
+        return "redirect:category_list?page=1&searchName=";
     }
 }

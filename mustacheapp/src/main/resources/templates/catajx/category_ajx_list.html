@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Category Ajax CRUD</title>
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    <script>
+        let page = 1;
+        //$(document).ready(function(){
+        //    // Jquery 는 html 문서가 로딩이 완료 되면 이 부분을 실행한다.
+        //});
+        $(function(){
+            // jQuery 3.0 버전부터 실행할 기능을 정의해주세요.
+            $.searchCategoryList();
+        });
+
+        $.searchCategoryList = function() {
+            let searchName = $("#searchName").val();
+            $.ajax({
+                url: "/ct/searchName",
+                type: "POST",
+                datatype: "JSON",
+                data: JSON.stringify({"page": page, "searchName":searchName}),
+                contentType: "application/json; charset=UTF-8",
+            }).done(function(data, status, xhr){
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                if (status === "success") {
+                    $.showCategoryList(data);
+                }
+            }).fail(function(jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("검색을 실패했습니다.");
+            })
+        }
+
+        $.showCategoryList = function(categoryList) {
+            if (categoryList == null) {
+                return;
+            }
+            const list = $("#categoryList");
+            list.children().remove();
+            list.append("<li><span>id</span><span> : </span><span>name</span></li>");
+            for( let i = 0; i < categoryList.length; i++ ) {
+                let id = categoryList[i].id;
+                let name = categoryList[i].name;
+                let strLi = "<li><div onClick='$.viewCategory(" + id + ");'><span>"
+                    + id + "</span><span> : </span><span>"
+                    + name + "</span></div></li>";
+                list.append(strLi);
+            }
+        }
+
+        $.viewCategory = function(id) {
+            if ( id <= 0 ) {
+                return;
+            }
+            $.ajax({
+                url: "/ct/" + id,
+                type: "GET",
+                datatype: "JSON",
+            }).done(function(data, status, xhr){
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                if (status === "success") {
+                    $.showCategoryInfo(data);
+                }
+            }).fail(function(jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("보기 실패했습니다.");
+            })
+        }
+
+        $.showCategoryInfo = function(item) {
+            if (item == null) {
+                return;
+            }
+            $("#id").val(item.id);
+            $("#name").val(item.name);
+        }
+
+        function getStartPage(page) {
+            // 1~10 => 1, 11~20 => 11, 21~30 => 21
+            // let startPage = ((page - 1) / 10) * 10 + 1;
+            let one = 1;
+            let ten = ~~((page - 1) / 10) * 10;
+            let startPage = ten + one;
+            return ~~(startPage);
+        }
+
+        function getEndPage(startPage, total) {
+            let totPage = ~~((total + 9) / 10);
+            let tPage = startPage + 9;
+            if ( tPage < totPage ) {
+                return ~~(tPage);
+            }
+            return ~~(totPage);
+        }
+    </script>
+</head>
+<body>
+<div>
+    <label for="searchName">검색이름</label><input type="text" id="searchName" name="searchName" value=""/>
+    <input type="hidden" id="page" name="page" value="" />
+    <button onclick="$.searchCategoryList();">검색</button>
+</div>
+<div>
+    Category Ajax List
+</div>
+<ul id="categoryList">
+    <li>
+        <span>id</span>
+        <span> : </span>
+        <span>name</span>
+    </li>
+    <li>
+        <div onclick="$.viewCategory(1);">
+            <span >id</span>
+            <span> : </span>
+            <span >name</span>
+        </div>
+    </li>
+</ul>
+<div>total : </div>
+<fieldset>
+    <label for="id">ID</label> <input type="text" id="id" name="id" value="" readonly />
+    <label for="name">Name</label> <input type="text" id="name" name="name" value=""/>
+</fieldset>
+<button id="addButton">추가</button>
+<button id="updateButton">수정</button>
+<button id="deleteButton">삭제</button>
+<div id="pageDiv">
+</div>
+</body>
+</html>

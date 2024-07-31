@@ -1,5 +1,6 @@
 package com.study.mustacheapp.category;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,14 +10,16 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class SearchCategoryDto extends CategoryDto {
+@AllArgsConstructor
+public class SearchCategoryDto {
     private String orderByWord;
-    private int rowsOnePage;
-    private int firstIndex;
-    public int getFirstIndex() {
+    private String searchName;
+    private Integer rowsOnePage;
+    private Integer firstIndex;
+    public Integer getFirstIndex() {
         return (this.page - 1) * this.rowsOnePage;
     }
 
-    private int page;
-    private int total;
+    private Integer page;
+    private Integer total;
 }

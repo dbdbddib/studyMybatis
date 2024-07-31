@@ -23,14 +23,14 @@ public class CategoryWebController {
     }
 
     @GetMapping("/oldhtml/category_old")    // 브라우저의 URL 주소
-    public String categoryOld(Model model, @RequestParam String name, @RequestParam int page) {
+    public String categoryOld(Model model, @RequestParam String searchName, @RequestParam int page) {
         try {
-            if (name == null) {
-                name = "";
+            if (searchName == null) {
+                searchName = "";
             }
 //            List<ICategory> allList = this.categoryService.getAllList();
             SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
-                    .name(name).page(page).build();
+                    .searchName(searchName).page(page).build();
             int count = this.categoryService.countAllByNameContains(searchCategoryDto);
             searchCategoryDto.setTotal(count);
             List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);

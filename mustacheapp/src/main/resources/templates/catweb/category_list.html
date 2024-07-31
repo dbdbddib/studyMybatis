@@ -14,21 +14,21 @@
         $(function() {
             // jQuery 3.0 버전부터 실행할 기능을 정의해주세요.
             var totPage = Math.ceil({{searchCategoryDto.total}} / 10); // 전체 페이지 수 계산
-            var searchName = "{{searchCategoryDto.name}}";
+            var searchsearchName = "{{searchCategoryDto.searchName}}";
             var currentPage = parseInt({{searchCategoryDto.page}});
             var maxPageButtons = 10;
 
             // 페이지 번호를 생성하여 추가
             for (let i = 1; i <= totPage; i++) {
-                $("#pageDiv").append(" <a class='btn btn-success rounded-pill' href='category_list?page=" + i +
-                    "&name=" + searchName + "'>" + i + "</a> ");    // 페이지 수
+                $("#pageDiv").append(" <a  class='btn btn-success rounded-pill' href='category_list?page=" + i +
+                    "&searchName=" + searchsearchName + "'>" + i + "</a> ");    // 페이지 수
             }
 
             // 이전 페이지 버튼 클릭 이벤트
             $("#prevBtn").click(function() {
                 if (currentPage > 1) {
                     var prevPage = currentPage - 1;
-                    var url = "category_list?page=" + prevPage + "&name=" + searchName;
+                    var url = "category_list?page=" + prevPage + "&searchName=" + searchsearchName;
                     document.location.href = url;
                 }
             });
@@ -37,7 +37,7 @@
             $("#nextBtn").click(function() {
                 if (currentPage < totPage) {
                     var nextPage = currentPage + 1;
-                    var url = "category_list?page=" + nextPage + "&name=" + searchName;
+                    var url = "category_list?page=" + nextPage + "&searchName=" + searchsearchName;
                     document.location.href = url;
                 }
             });
@@ -70,8 +70,14 @@
         .btn:hover {
             background-color: #0056b3; /* 버튼에 마우스 호버 시 색상 변경 */
         }
+        .btn-dark {
+            background-color: #1200b3;
+        }
         #pageDiv {
             text-align: center;
+        }
+        #nextBtn{
+            text-align: right;
         }
     </style>
 </head>
@@ -82,7 +88,7 @@
 
         <form id="form" name="form" method="get" action="/catweb/category_search">
             <span class="box">이름</span>
-            <input type="text" id="name" name="name" placeholder="검색할 이름 입력" value="{{searchCategoryDto.name}}"/>
+            <input type="text" id="searchName" name="searchName" placeholder="검색할 이름 입력" value="{{searchCategoryDto.searchName}}"/>
             <input class="btn" type="submit" value="검색"/>
         </form>
     </div>
@@ -92,7 +98,7 @@
     <div class="row">
         <span>ID</span>
         <span> | </span>
-        <span>Name</span>
+        <span>name</span>
 
 
         {{#allList}}
@@ -124,7 +130,7 @@
         <span><button class="btn" id="nextBtn">Next</button></span>
     </div>
     [(${pageHtml})]
-    <div>total : {{searchCategoryDto.total}}, page : {{searchCategoryDto.page}}, search name = {{searchCategoryDto.name}}</div>
+    <div>total : {{searchCategoryDto.total}}, page : {{searchCategoryDto.page}}, search searchName = {{searchCategoryDto.searchName}}</div>
 
 </section>
 </body>

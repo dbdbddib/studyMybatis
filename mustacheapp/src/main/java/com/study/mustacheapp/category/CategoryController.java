@@ -97,13 +97,13 @@ public class CategoryController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<List<ICategory>> findAllByName(@PathVariable String name) {
+    public ResponseEntity<List<ICategory>> findAllByName(@PathVariable String searchName) {
         try {
-            if (name == null || name.isEmpty()) {
+            if (searchName == null || searchName.isEmpty()) {
                 return ResponseEntity.badRequest().build();
             }
             SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
-                    .name(name).page(1).build();
+                    .searchName(searchName).page(1).build();
             List<ICategory> result = this.categoryService.findAllByNameContains(searchCategoryDto);
             if ( result == null || result.size() <= 0 ) {
                 return ResponseEntity.notFound().build();

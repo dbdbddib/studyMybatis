@@ -38,29 +38,50 @@
         }
 
     </style>
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    <script>
+        const goBack = () => {
+            history.back();
+        }
+
+        function categoryUpdate() {
+            let name = $("#name").val();
+            if (confirm(name + " 수정 하시겠습니까 ?")) {
+                document.form.method = "post";
+                document.form.action = "category_update";
+                document.form.submit();
+            }
+        }
+        function categoryDelete() {
+            let id = $("#id").val();
+            let name = $("#name").val();
+            if (confirm(name + " 삭제 하시겠습니까 ?")) {
+                $("#form").attr("method","get");
+                $("#form").attr("action","category_delete?id=" + id).submit();
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="box" id="box1">분류 정보</div>
 
 <div class="horizontal-line"></div>
 
-<form name="form" method="post" action="/catweb/category_update" object="{{categoryDto}}">
+<form name="form" id="form" method="post" action="/catweb/category_update">
 
     <div>
-        <span >ID</span>
-        <input type="number" value="{{categoryDto.id}}" readonly/>
+        <label for="id">ID</label><input type="number" id="id" name="id" value="{{categoryDto.id}}" readonly/>
     </div>
-
     <div>
-        <span >이름</span>
-        <input type="text" value="{{categoryDto.name}}"/>
+        <label for="name">이름</label><input type="text" id="name" name="name" value="{{categoryDto.name}}"/>
     </div>
 
     <div class="horizontal-line"></div>
-
-    <input class="btn" type="submit" value="전송"/>
-    <a class="btn" id="b1" href="category_delete?id={{categoryDto.id}}">삭제</a>
-    <a id="b2" class="btn" href="javascript:history.back();">취소</a>
 </form>
+
+    <button class="btn" onclick="goBack();">뒤로</button>
+    <button class="btn" onclick="categoryDelete();">삭제</button>
+    <button class="btn" onclick="categoryUpdate();">수정</button>
+
 </body>
 </html>
