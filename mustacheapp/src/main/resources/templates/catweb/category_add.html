@@ -38,8 +38,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function categoryInsert() {
-            let searchName = $("#searchName").val();
-            let ret = confirm(searchName + " 추가 하시겠습니까 ?");
+            let name = $("#name").val();
+            let ret = confirm(name + " 추가 하시겠습니까 ?");
             return ret;
 
         }
@@ -50,10 +50,10 @@
 
 <div class="horizontal-line"></div>
 
-<form searchName="form" method="post" action="/catweb/category_insert" onsubmit="return categoryInsert();">
+<form name="form" method="post" action="/catweb/category_insert" onsubmit="return categoryInsert();">
 
     <span class="box">이름</span>
-    <label for="searchName"></label><input type="text" id="searchName" searchName="searchName" />
+    <label for="name"></label><input type="text" id="name" name="name" />
 
 
     <div class="horizontal-line"></div>
@@ -61,5 +61,6 @@
     <a href="javascript:history.back();" class="btn">뒤로</a>
     <input id="b2" class="btn" type="submit" value="추가"/>
 </form>
+
 </body>
 </html>

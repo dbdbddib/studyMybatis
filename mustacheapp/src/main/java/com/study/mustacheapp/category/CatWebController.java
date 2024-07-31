@@ -68,8 +68,8 @@ public class CatWebController {
     }
 
     @GetMapping("/category_search")
-    public String categorySearch(@RequestParam String name) throws UnsupportedEncodingException {
-        String encodedName = URLEncoder.encode(name, "UTF-8");  // get 방식 url 한글인코딩
+    public String categorySearch(@RequestParam String searchName) throws UnsupportedEncodingException {
+        String encodedName = URLEncoder.encode(searchName, "UTF-8");  // get 방식 url 한글인코딩
         return "redirect:category_list?page=1&searchName=" + encodedName;
     }
 
