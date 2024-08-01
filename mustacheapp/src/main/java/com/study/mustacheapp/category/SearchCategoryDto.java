@@ -16,6 +16,8 @@ import java.util.List;
 public class SearchCategoryDto {
     private String orderByWord;
     private String searchName;
+    private String sortColumn;
+    private String sortAscDsc;
     private Integer rowsOnePage;
     private Integer firstIndex;
     public Integer getFirstIndex() {

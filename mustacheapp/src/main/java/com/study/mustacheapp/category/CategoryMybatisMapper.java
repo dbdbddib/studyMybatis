@@ -1,7 +1,5 @@
 package com.study.mustacheapp.category;
-
 import org.apache.ibatis.annotations.Mapper;
-
 import java.util.List;
 
 @Mapper
@@ -21,3 +19,9 @@ public interface CategoryMybatisMapper {
     int countAllByNameContains(SearchCategoryDto searchCategoryDto);
     List<CategoryDto> findAllByNameContains(SearchCategoryDto searchCategoryDto);
 }
+
+
+// jpa 에서는 jpaRepository  Mybatis는 Mapper  로 db 접근
+// 쿼리 선언한 xml 파일의 함수와 연결 -> 2가지 방법이 있다 
+// 1. MybatisConfig 처럼 클래스 선언
+// 2. application.properties 에 선언

@@ -1,21 +1,18 @@
 package com.study.mustacheapp.category;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
-@RestController
+@Slf4j      // log 만들어줌
+@RestController // RestFul API 용
 @RequestMapping("/ct")
 
 
 public class CategoryController {
-    private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
     private CategoryServiceImpl categoryService;
@@ -32,7 +29,7 @@ public class CategoryController {
             }
             return ResponseEntity.ok(result);
         } catch (Exception ex){
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -43,7 +40,7 @@ public class CategoryController {
             List<ICategory> result = this.categoryService.getAllList();
             return ResponseEntity.ok(result);
         } catch (Exception ex) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -57,7 +54,7 @@ public class CategoryController {
             Boolean result = this.categoryService.remove(id);
             return ResponseEntity.ok(result);
         } catch (Exception ex) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -74,7 +71,7 @@ public class CategoryController {
             }
             return ResponseEntity.ok(result);
         } catch (Exception ex) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -91,7 +88,7 @@ public class CategoryController {
             }
             return ResponseEntity.ok(result);
         } catch (Exception ex) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -110,7 +107,7 @@ public class CategoryController {
             }
             return ResponseEntity.ok(result);
         } catch (Exception ex) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -130,7 +127,7 @@ public class CategoryController {
             searchCategoryDto.setDataList(list);
             return ResponseEntity.ok(searchCategoryDto);
         } catch ( Exception ex ) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -144,7 +141,7 @@ public class CategoryController {
             int total = this.categoryService.countAllByNameContains(searchCategoryDto);
             return ResponseEntity.ok(total);
         } catch ( Exception ex ) {
-            logger.error(ex.toString());
+            log.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }
     }

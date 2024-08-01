@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.mustacheapp.category.CategoryMybatisMapper">
+<!-- mapper namespace="풀패키지명"  @Mapper 선언된 클래스의 풀 패키지 명  -->
 
-
-<!--  id는  CategoryMybatisMapper 클래스의 메소드 이름,  parameterType은 메소드의 매개변수,  useGeneratedKeys="true" keyProperty="id" 자동 으로 id의 값을 가져와 증가해주기 위해서 사용   -->
+<!--  id는  CategoryMybatisMapper 클래스의 메소드 이름,  parameterType은 메소드의 매개변수 ( 한개만 가능 )
+      , useGeneratedKeys="true" keyProperty="db 컬럼명" 자동 으로 db 컬럼명 의 값을 가져와 증가해주기 위해서 사용   -->
     <insert id="insert" parameterType="CategoryDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO category_tbl(name)
         VALUES(#{name})
@@ -19,6 +20,7 @@
         WHERE id = #{id}
     </delete>
 
+    <!-- resultType 은 리턴타입 -->
     <select id="findById" resultType="CategoryDto">
         SELECT id
              , name
@@ -39,6 +41,8 @@
         FROM category_tbl
     </select>
 
+<!--  ${searchName} 문자열 그대로
+      #{searchName} 필드값  -->
     <select id="countAllByNameContains" parameterType="SearchCategoryDto" resultType="int">
         SELECT count(*)
         FROM category_tbl

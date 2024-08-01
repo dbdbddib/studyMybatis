@@ -32,6 +32,6 @@ public class MyBatisConfig {
 
     @Bean
     public SqlSessionTemplate sqlSession (SqlSessionFactory sqlSessionFactory) {
-        return new SqlSessionTemplate(sqlSessionFactory);
+        return new SqlSessionTemplate(sqlSessionFactory);   // 이게 있어야지 db 연결 가능
     }
 }

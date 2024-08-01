@@ -7,9 +7,16 @@
     <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
     <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    <style>
+        .itemRow {
+            width: fit-content;
+        }
+    </style>
     <script>
         let page = 0;
         let total = 0;
+        let sortColumn = "id";
+        let sortAscDesc = "DESC";
         //$(document).ready(function(){
         //    // Jquery 는 html 문서가 로딩이 완료 되면 이 부분을 실행한다.
         //});
@@ -25,19 +32,48 @@
             $("#deleteButton").click(function() {
                 $.delete();
             })
+
+            $("#searchName").on("keyup",function(key) {
+                if( key.keyCode === 13 ) {
+                    $.searchCategoryList(1);
+                }
+            });
         });
 
-        // 독립적인 함수 정의  ( funtion 안에 선언할 필요가 없다  )
-        // 필요할 때 호출하여 사용
-        // searchCategoryList 함수명
+        $.idAsc = function() {
+            sortColumn = "id";
+            sortAscDesc = "ASC";
+            $.searchCategoryList(page);
+        }
+
+        $.idDesc = () => {
+            sortColumn = "id";
+            sortAscDesc = "DESC";
+            $.searchCategoryList(page);
+        }
+
+        $.nameAsc = function() {
+            sortColumn = "name";
+            sortAscDesc = "ASC";
+            $.searchCategoryList(page);
+        }
+
+        $.nameDesc = () => {
+            sortColumn = "name";
+            sortAscDesc = "DESC";
+            $.searchCategoryList(page);
+        }
+
         $.searchCategoryList = function(pPage) {
             page = pPage;
+            $("#id").val("");
+            $("#name").val("");
             let searchName = $("#searchName").val();
             $.ajax({
                 url: "/ct/searchName",
                 type: "POST",
                 datatype: "JSON",
-                data: JSON.stringify({"page": page, "searchName":searchName}),
+                data: JSON.stringify({"page": page, "searchName":searchName, "sortColumn": sortColumn, "sortAscDsc": sortAscDesc}),
                 contentType: "application/json; charset=UTF-8",
             }).done(function(data, status, xhr){
                 console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
@@ -58,11 +94,10 @@
             }
             const list = $("#categoryList");
             list.children().remove();
-            list.append("<li><span>id</span><span> : </span><span>name</span></li>");
             for( let i = 0; i < categoryList.length; i++ ) {
                 let id = categoryList[i].id;
                 let name = categoryList[i].name;
-                let strLi = "<li><div onClick='$.viewCategory(" + id + ");'><span>"
+                let strLi = "<li><div onClick='$.viewCategory(" + id + ");' class='itemRow'><span>"
                     + id + "</span><span> : </span><span>"
                     + name + "</span></div></li>";
                 list.append(strLi);
@@ -242,19 +277,20 @@
 <div>
     Category Ajax List
 </div>
-<ul id="categoryList">
+<ul>
     <li>
-        <span>id</span>
+        <span>id
+            <button onclick="$.idAsc();">△</button>
+            <button onclick="$.idDesc();">▽</button>
+        </span>
         <span> : </span>
-        <span>name</span>
+        <span>name
+            <button onclick="$.nameAsc();">△</button>
+            <button onclick="$.nameDesc();">▽</button>
+        </span>
     </li>
-    <li>
-        <div onclick="$.viewCategory(1);">
-            <span >id</span>
-            <span> : </span>
-            <span >name</span>
-        </div>
-    </li>
+</ul>
+<ul id="categoryList">
 </ul>
 <div>total : <span id="total"></span></div>
 <fieldset>
