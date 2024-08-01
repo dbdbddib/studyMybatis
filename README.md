@@ -170,4 +170,42 @@ Impl은 "Implementation"의 약어로, 인터페이스를 실제로 구현한 �
       + 오류 발생 시 템플릿 그대로 화면 출력
       + 단순 템플릿 렌더링, 다양한 언어와 환경에서 사용
 
++ jQuery 란
+  
+  - 복잡한 JavaScript 코드를 간단하고 직관적으로 작성할 수 있게 합
 
+    ```
+    // JavaScript로 요소 선택 및 이벤트 처리
+    document.getElementById("myButton").addEventListener("click", function() {
+        alert("Button clicked!");
+    });
+    
+    // jQuery로 요소 선택 및 이벤트 처리
+    $("#myButton").click(function() {
+        alert("Button clicked!");
+    });
+
+  - $.searchCategoryList = function() {}
+    * 독립적인 함수 정의를 통해 특정 기능을 캡슐화하고 재사용 가능
+  
+  - $("#prevBtn").click(function() {}
+      - 버튼 클릭 이벤트
+      - jQuery를 사용하여 특정 요소에 클릭 이벤트를 등록하는 코드
+      - id가 prevBtn 인 요소를 선택
+            
+        
++ ajax 란
+  - Asynchronous JavaScript and XML
+  - JavaScript와 XML을 이용한 비동기적 정보 교환 기법
+  - 요즘은 XML보다는 JSON을 주로 사용
+  - 브라우저의 XMLHttpRequest를 이용해 전체 페이지를 새로 가져오지 않고도 페이지 일부만을 변경할 수 있도록 javascript를 실행해 서버에 데이터만     을 별도로 요청하는 기법
+  - javascript를 통해 HTML,CSS를 이용해 골격을 먼저 형성하고 ajax 실행 부가 담긴 javascript 영역을 실행하여 데이터를 별도로 가져와 적절한 방법으로 데이터를 끼워 넣은 후 페이지를 로딩한다.
+    
+  - 자주 쓰이는 설정값
+    * url :	ajax 요청할 매핑된 url 입력
+    * type :	HTTP 통신의 종류를 설정
+    * dataType :	ajax를 통해 리턴받을 데이터의 타입을 설정
+    * contentType : application/x-www-form-urlencoded; charset=UTF-8
+    * data :	URL 파라미터를 통해 보낼 데이터. 종류 : Object or String or Array
+        - Object는 key:value set 객체여야 하며 value 영역이 array일 경우 jQuery가 serialize를 해줌. value 영역이 String이 아닌 경우 String으로 변환한 뒤 전송됨
+    
