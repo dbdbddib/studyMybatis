@@ -58,6 +58,9 @@ DELETE    DELETE
 
 + controller -> ServiceImpl -> mapper -> xml -> 자바 인터페이스를 통해 db에서 SQL 쿼리를 실행 -> 결과 객체로 반환
 
++ 요청 request ( 클라이언트 )과 응답 response ( 서버 ) 에서의 응답
++ 서버 역할
+
    ``` 
    @GetMapping("/html/category_list")
       public String categoryOld(Model model, @RequestParam String name, @RequestParam int page) {}
