@@ -52,7 +52,7 @@ DELETE    DELETE
   + 요청: DELETE /users/{id}
   + 응답: 적절한 상태 코드와 함께 성공 메시지 또는 삭제된 사용자의 정보
 
-# code
+# CODE
 
 + ICategory..
     + 화면출력 경우 ICategory 를 사용
