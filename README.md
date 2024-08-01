@@ -52,21 +52,33 @@ DELETE    DELETE
   + 요청: DELETE /users/{id}
   + 응답: 적절한 상태 코드와 함께 성공 메시지 또는 삭제된 사용자의 정보
 
+# code
 
++ ICategory..
+    + 화면출력 경우 ICategory 를 사용
+    + db값, 값을 가져올 때 CategoryDto 사용
+      
++ 인터페이스 사용경우
+    + 하나의 메소드의 리턴형이 인터페이스면 서로다른 클래스에서의 필드 추가가 가능하기 때문
+    + 추상형.. 어떤 리턴값이 올지 모른다?? 정해진 값이 아니다
+    + 코드의 재사용..
+    + if.. 서로다른 로그인 화면 두개가 있는데 인터페이스로 선언된 하나의 메소드로 구현 가능하다..
+      
 
-# CONTROLLER 
++ CONTROLLER 
 
-+ controller -> ServiceImpl -> mapper -> xml -> 자바 인터페이스를 통해 db에서 SQL 쿼리를 실행 -> 결과 객체로 반환
+    + controller -> ServiceImpl -> mapper -> xml -> 자바 인터페이스를 통해 db에서 SQL 쿼리를 실행 -> 결과 객체로 반환
 
-+ 요청 request ( 클라이언트 )과 응답 response ( 서버 ) 에서의 응답
-+ 서버 역할
+    + 요청 request ( 클라이언트 )과 응답 response ( 서버 ) 에서의 응답
+    + 서버 역할
 
    ``` 
    @GetMapping("/html/category_list")
       public String categoryOld(Model model, @RequestParam String name, @RequestParam int page) {}
-    
-(http://localhost:8089/catweb/html/category_list?page=1&name=유병훈)
-이런식으로 매개변수 값까지 입력해야 메소드에 접근한다
+
+   // 
+  (http://localhost:8089/catweb/html/category_list?page=1&name=유병훈)
+  이런식으로 매개변수 값까지 입력해야 메소드에 접근한다
 
 # 필요 애노테이션
 
@@ -129,6 +141,19 @@ DELETE    DELETE
 * model.addAttribute("변수명", 객체)
   + model 객체를 사용하는 이유는 html 화면을 만들기 위해 필요한 데이터를 전달하기 위함이다.
   + 객체를 model 에 추가하여, html 에서 사용할 수 있도록 한다.
+
++ stream().map()
+  ```
+  private List<ICategory> getICategoryList(List<CategoryDto> list) {
+        List<ICategory> result = list.stream()
+                .map(a -> (ICategory)a)
+                .toList();
+        return result;
+    }
+  ```
+  + map(a ) a에 List<CategoryDto> list 하나씩 요소가 ICategory 로 형변환 후 .toList(); 새로운 리스트 생성 -> result
+  
+  
 
 
 # 클래스 구성
