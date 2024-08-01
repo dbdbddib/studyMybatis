@@ -215,7 +215,28 @@ Impl은 "Implementation"의 약어로, 인터페이스를 실제로 구현한 �
     * contentType : application/x-www-form-urlencoded; charset=UTF-8
     * data :	URL 파라미터를 통해 보낼 데이터. 종류 : Object or String or Array
         - Object는 key:value set 객체여야 하며 value 영역이 array일 경우 jQuery가 serialize를 해줌. value 영역이 String이 아닌 경우 String으로 변환한 뒤 전송됨
+
+
++ Spring framework 또는 전자정부 프레임워크
+    - 0. WEB 화면, Mobile (HTML, CSS, JavaScript, Vue.js, React.js, Angular.js, TypeScript, BootStrap, Flutter, ...)
+    - 1. Controller : HTTP POST, GET, PATCH, DELETE 이러한 사용자가 행동하는 기능을 구현합니다.
+    - 2. Service : Service Implement 의 interface 를 구현합니다. (개발회사 마다 약간씩 다름)
+    - 3. Service Implement : 데이터 객체를 DAO 에서 저장하거나 읽을수 있도록 하는 기능을 구현합니다.
+    - 4. Data Access Object (DAO) : Database 에 접속하여서 데이터를 저장하거나 읽습니다. MyBatis 안에 SQL 언어
+    - 5. Model (데이터 객체, 자바빈)
+    - 6. ORACLE, MSSQL, DB2, MySQL, ... : DBMS 
+
+
++ Spring Boot 프레임워크 에서는 (Python Django 프레임워크)
+    - 0. WEB 화면, Mobile (HTML, CSS, JavaScript, Vue.js, React.js, Angular.js, TypeScript, BootStrap, Flutter, ...)
+    - 1. Controller : HTTP POST, GET, PATCH, DELETE 이러한 사용자가 행동하는 기능을 구현합니다.
+    - 2. Service : Service Implement 의 interface 를 구현합니다. (개발회사 마다 약간씩 다름)
+    - 3. Service Implement : 데이터 객체를 Repository 에서 저장하거나 읽을수 있도록 하는 기능을 구현합니다.
+    - 4. Repository : 실제 저장공간(Database, 파일, 액셀, NOSQL 등) 에 접속하여서 데이터를 저장하거나 읽습니다.
+    - 5. Model (데이터 객체, 자바빈)
+    - 6. ORACLE, MSSQL, DB2, MySQL, NoSQL, JSON, Excel, File, ...
     
+
 
 # 단축키
 
