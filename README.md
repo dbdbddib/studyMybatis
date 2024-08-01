@@ -216,3 +216,10 @@ Impl은 "Implementation"의 약어로, 인터페이스를 실제로 구현한 �
     * data :	URL 파라미터를 통해 보낼 데이터. 종류 : Object or String or Array
         - Object는 key:value set 객체여야 하며 value 영역이 array일 경우 jQuery가 serialize를 해줌. value 영역이 String이 아닌 경우 String으로 변환한 뒤 전송됨
     
+
+# 단축키
+
++ Find in Files
+  - Ctrl + Shift + f
++ Replace
+  - Ctrl + r
