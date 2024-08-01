@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Getter
 @Setter
 @SuperBuilder
@@ -22,4 +24,5 @@ public class SearchCategoryDto {
 
     private Integer page;
     private Integer total;
+    private List<?> dataList;
 }

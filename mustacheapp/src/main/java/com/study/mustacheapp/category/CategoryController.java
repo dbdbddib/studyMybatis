@@ -15,7 +15,7 @@ import java.util.List;
 
 
 public class CategoryController {
-    private static Logger logger = LoggerFactory.getLogger(CategoryController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
     private CategoryServiceImpl categoryService;
@@ -54,7 +54,7 @@ public class CategoryController {
             if (id == null) {
                 return ResponseEntity.badRequest().build();
             }
-            boolean result = this.categoryService.remove(id);
+            Boolean result = this.categoryService.remove(id);
             return ResponseEntity.ok(result);
         } catch (Exception ex) {
             logger.error(ex.toString());
@@ -97,7 +97,7 @@ public class CategoryController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<List<ICategory>> findAllByName(@PathVariable String searchName) {
+    public ResponseEntity<List<ICategory>> findAllByNameContains(@PathVariable String searchName) {
         try {
             if (searchName == null || searchName.isEmpty()) {
                 return ResponseEntity.badRequest().build();
@@ -110,6 +110,40 @@ public class CategoryController {
             }
             return ResponseEntity.ok(result);
         } catch (Exception ex) {
+            logger.error(ex.toString());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/searchName")
+    public ResponseEntity<SearchCategoryDto> findAllByNameContains(@RequestBody SearchCategoryDto searchCategoryDto) {
+        try {
+            if ( searchCategoryDto == null ) {
+                return ResponseEntity.badRequest().build();
+            }
+            int total = this.categoryService.countAllByNameContains(searchCategoryDto);
+            List<ICategory> list = this.categoryService.findAllByNameContains(searchCategoryDto);
+            if ( list == null ) {
+                return ResponseEntity.notFound().build();
+            }
+            searchCategoryDto.setTotal(total);
+            searchCategoryDto.setDataList(list);
+            return ResponseEntity.ok(searchCategoryDto);
+        } catch ( Exception ex ) {
+            logger.error(ex.toString());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/countName")
+    public ResponseEntity<Integer> countAllByNameContains(@RequestBody SearchCategoryDto searchCategoryDto) {
+        try {
+            if ( searchCategoryDto == null ) {
+                return ResponseEntity.badRequest().build();
+            }
+            int total = this.categoryService.countAllByNameContains(searchCategoryDto);
+            return ResponseEntity.ok(total);
+        } catch ( Exception ex ) {
             logger.error(ex.toString());
             return ResponseEntity.badRequest().build();
         }

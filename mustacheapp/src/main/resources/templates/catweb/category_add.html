@@ -1,66 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-        .horizontal-line {
-            border-top: 2px solid #ccc; /* 가로줄 색상과 두께 */
-            margin: 20px 0; /* 줄 위와 아래에 여백 추가 */
-        }
-        .btn {
-            padding: 10px 20px; /* 버튼 안쪽 여백 */
-            font-size: 16px; /* 글자 크기 */
-            color: #fff; /* 글자 색상 */
-            background-color: #007bff; /* 버튼 배경색 */
-            border: none; /* 버튼 테두리 제거 */
-            border-radius: 5px; /* 버튼 모서리 둥글게 */
-            cursor: pointer; /* 마우스 포인터 모양 변경 */
-            text-decoration: none; /* 링크 기본 밑줄 제거 */
-            display: inline-block; /* 버튼을 인라인 블록으로 설정 */
-        }
-        .btn:hover {
-            background-color: #0056b3; /* 버튼에 마우스 호버 시 색상 변경 */
-        }
-        #b2{
-            float: right;
-        }
-        #box1{
-            text-align: center;
-        }
-        .box {
-            border: 1px solid #00a4fd; /* 두께 2px, 검은색 실선 테두리 */
-            padding: 5px; /* 텍스트와 테두리 사이의 여백 */
-            border-radius: 50px; /* 각이 없는 둥근 모서리 */
-        }
-
-    </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <script>
+        const goBack = () => {
+            history.back();
+        }
         function categoryInsert() {
             let name = $("#name").val();
             let ret = confirm(name + " 추가 하시겠습니까 ?");
             return ret;
-
         }
     </script>
 </head>
 <body>
-<div class="box" id="box1">분류 추가</div>
-
-<div class="horizontal-line"></div>
-
-<form name="form" method="post" action="/catweb/category_insert" onsubmit="return categoryInsert();">
-
-    <span class="box">이름</span>
-    <label for="name"></label><input type="text" id="name" name="name" />
-
-
-    <div class="horizontal-line"></div>
-
-    <a href="javascript:history.back();" class="btn">뒤로</a>
-    <input id="b2" class="btn" type="submit" value="추가"/>
+<form id="form" name="form" method="post" action="category_insert" onsubmit="return categoryInsert();">
+    <label for="name">이름</label><input type="text" id="name" name="name" />
+    <br />
+    <a onclick="goBack();"><span>뒤로</span></a>
+    <input type="submit" value="추가"/>
 </form>
-
 </body>
 </html>

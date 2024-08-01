@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
+
     <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+
     <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <script>
         //$(document).ready(function(){
@@ -25,6 +26,8 @@
             }
 
             // 이전 페이지 버튼 클릭 이벤트
+            // jQuery를 사용하여 특정 요소에 클릭 이벤트를 등록하는 코드
+            // id가 prevBtn 인 요소를 선택
             $("#prevBtn").click(function() {
                 if (currentPage > 1) {
                     var prevPage = currentPage - 1;

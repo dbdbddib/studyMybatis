@@ -8,16 +8,30 @@
     <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
     <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <script>
-        let page = 1;
+        let page = 0;
+        let total = 0;
         //$(document).ready(function(){
         //    // Jquery 는 html 문서가 로딩이 완료 되면 이 부분을 실행한다.
         //});
         $(function(){
             // jQuery 3.0 버전부터 실행할 기능을 정의해주세요.
-            $.searchCategoryList();
+            // HTML 문서 로딩이 완료되면 자동적으로 실행되는 jQuery 부분
+            $.searchCategoryList(1);
+
+            $("#updateButton").click(function() {
+                $.update();
+            })
+
+            $("#deleteButton").click(function() {
+                $.delete();
+            })
         });
 
-        $.searchCategoryList = function() {
+        // 독립적인 함수 정의  ( funtion 안에 선언할 필요가 없다  )
+        // 필요할 때 호출하여 사용
+        // searchCategoryList 함수명
+        $.searchCategoryList = function(pPage) {
+            page = pPage;
             let searchName = $("#searchName").val();
             $.ajax({
                 url: "/ct/searchName",
@@ -28,7 +42,9 @@
             }).done(function(data, status, xhr){
                 console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
                 if (status === "success") {
-                    $.showCategoryList(data);
+                    $("#total").html(data.total);
+                    $.showCategoryList(data.dataList);
+                    $.makePageUI(data.total, page, searchName);
                 }
             }).fail(function(jqXHR, status, errorThrown) {
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
@@ -80,6 +96,30 @@
             $("#name").val(item.name);
         }
 
+        //jQuery 함수 만드는 법
+        $.makePageUI = function(paramTotal, paramPage, searchName) {
+            let totPage = ~~((paramTotal + 9) / 10);
+            let startPage = getStartPage(paramPage);
+            let endPage = getEndPage(startPage, paramTotal);
+            let prev = (paramPage-1) < 1 ? 1 : paramPage-1;
+            let next = (paramPage+1) >= totPage ? totPage : paramPage+1;
+            let sClass = "btn btn-success rounded-pill";
+
+            $("#pageDiv").children().remove();
+            $("#pageDiv").append(" <a class='" + sClass + "' onclick='$.searchCategoryList("
+                + prev + ");'>Prev</a> ");
+            for (let i = startPage; i <= endPage; i++) {
+                if (paramPage == i) {
+                    sClass = "btn btn-primary rounded-pill";
+                }
+                $("#pageDiv").append(" <a class='" + sClass + "' onclick='$.searchCategoryList("
+                    + i + ");'>" + i + "</a> ");
+                sClass = "btn btn-success rounded-pill";
+            }
+            $("#pageDiv").append(" <a class='" + sClass + "' onclick='$.searchCategoryList("
+                + next + ");'>Next</a> ");
+        }
+
         function getStartPage(page) {
             // 1~10 => 1, 11~20 => 11, 21~30 => 21
             // let startPage = ((page - 1) / 10) * 10 + 1;
@@ -89,13 +129,107 @@
             return ~~(startPage);
         }
 
-        function getEndPage(startPage, total) {
-            let totPage = ~~((total + 9) / 10);
+        function getEndPage(startPage, paramTotal) {
+            let totPage = ~~((paramTotal + 9) / 10);
             let tPage = startPage + 9;
             if ( tPage < totPage ) {
                 return ~~(tPage);
             }
             return ~~(totPage);
+        }
+
+        $.addInsert = function() {
+            let name = $("#name").val();
+            if ( !confirm(name + " 추가 하시겠습니까 ?") ) {
+                return;
+            }
+            $.ajax({
+                url: "/ct",
+                type: "POST",
+                datatype: "JSON",
+                data: JSON.stringify({"name": name}),
+                contentType: "application/json; charset=UTF-8",
+            }).done(function(data, status, xhr){
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                // insert 완료시
+                $("#searchName").val("");
+                $.searchCategoryList(1);
+                $("#id").val("");
+                $("#name").val("");
+            }).fail(function(jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("추가를 실패했습니다.");
+            })
+        }
+
+        $.update = function() {
+            let id = $("#id").val();
+            let name = $("#name").val();
+            if ( !confirm(name + " 수정 하시겠습니까 ?") ) {
+                return;
+            }
+            $.ajax({
+                url: "/ct/" + id,
+                type: "PATCH",
+                datatype: "JSON",
+                data: JSON.stringify({"id": id, "name": name}),
+                contentType: "application/json; charset=UTF-8",
+            }).done(function(data, status, xhr){
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                // update 성공 완료시
+                $.searchCategoryList(page);
+                $("#id").val("");
+                $("#name").val("");
+            }).fail(function(jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("수정를 실패했습니다.");
+            })
+        }
+
+        $.delete = function() {
+            let id = $("#id").val();
+            let name = $("#name").val();
+            if ( !confirm(name + " 삭제 하시겠습니까 ?") ) {
+                return;
+            }
+            $.ajax({
+                url: "/ct/" + id,
+                type: "DELETE",
+                datatype: "JSON",
+                contentType: "application/json; charset=UTF-8",
+            }).done(function(data, status, xhr){
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                // delete 성공 완료시
+                $.doneDelete();
+            }).fail(function(jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("삭제를 실패했습니다.");
+            })
+        }
+
+        $.doneDelete = function() {
+            let searchName = $("#searchName").val();
+            $.ajax({
+                url: "/ct/countName",
+                type: "POST",
+                datatype: "JSON",
+                data: JSON.stringify({"searchName": searchName}),
+                contentType: "application/json; charset=UTF-8",
+            }).done(function(data, status, xhr){
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                total = data;
+                let totPage = ~~((total + 9) / 10);
+                if ( totPage < page ) {
+                    page = totPage;
+                }
+                // alert("delete : total=" + total + ", page=" + page);
+                // 삭제 후에 검색식과 total 로 계산해서 page-1 결정해야 한다.
+                $.searchCategoryList(page);
+                $("#id").val("");
+                $("#name").val("");
+            }).fail(function(jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+            })
         }
     </script>
 </head>
@@ -103,7 +237,7 @@
 <div>
     <label for="searchName">검색이름</label><input type="text" id="searchName" name="searchName" value=""/>
     <input type="hidden" id="page" name="page" value="" />
-    <button onclick="$.searchCategoryList();">검색</button>
+    <button onclick="$.searchCategoryList(1);">검색</button>
 </div>
 <div>
     Category Ajax List
@@ -122,12 +256,12 @@
         </div>
     </li>
 </ul>
-<div>total : </div>
+<div>total : <span id="total"></span></div>
 <fieldset>
     <label for="id">ID</label> <input type="text" id="id" name="id" value="" readonly />
     <label for="name">Name</label> <input type="text" id="name" name="name" value=""/>
 </fieldset>
-<button id="addButton">추가</button>
+<button id="addButton" onclick="$.addInsert();">추가</button>
 <button id="updateButton">수정</button>
 <button id="deleteButton">삭제</button>
 <div id="pageDiv">
