@@ -101,16 +101,19 @@ DELETE    DELETE
 * @AllArgsConstructor
   + 클래스의 모든 필드를 인자로 받는 생성자를 자동으로 생성합니다.
 
-  + public class MyClass {
+  ```
+   public class MyClass {
     private int id;
     private String name;
-}
+  }
 
-// new MyClass(1, "example") 와 같이 사용할 수 있음
+  // new MyClass(1, "example") 와 같이 사용할 수 있음
 
 * @SuperBuilder
   + 상속 관계가 있는 클래스에서 빌더 패턴을 사용할 수 있게 합니다.
-  + SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
+    
+  ```
+  SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
                     .name(name).page(page).build();
 
 
