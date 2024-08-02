@@ -16,6 +16,7 @@ public class CategoryAjxController {
     public String category_ajx_list() {
 
         return "catajx/category_ajx_list";
-        // 기본값 resources/templates/ 아레에서 .html 찾는다.
+        // 화면 템플릿 엔진의 화면파일 경로/파일명
+        // => resources/templates/catajx/category_ajx_list.html
     }
 }

@@ -6,6 +6,9 @@
 <!--  id는  CategoryMybatisMapper 클래스의 메소드 이름,  parameterType은 메소드의 매개변수 ( 한개만 가능 )
       , useGeneratedKeys="true" keyProperty="db 컬럼명" 자동 으로 db 컬럼명 의 값을 가져와 증가해주기 위해서 사용   -->
     <insert id="insert" parameterType="CategoryDto" useGeneratedKeys="true" keyProperty="id">
+        <!-- <insert id="insert" CategoryMybatisMapper 클래스의 insert 메소드-->
+        <!-- parameterType="CategoryDto" insert 메소드 의 매개변수 데이터 타입, 매개변수 1개 -->
+        <!-- useGeneratedKeys="true" keyProperty="id컬럼명" id컬럼명의 번호를 증가해주고 리턴도 해준다 -->
         INSERT INTO category_tbl(name)
         VALUES(#{name})
     </insert>
@@ -16,12 +19,16 @@
     </update>
 
     <delete id="deleteById">
+        <!-- <delete id="deleteById" CategoryMybatisMapper 클래스의 deleteById 메소드-->
+        <!-- {id} 는 기본형 데이터 Long 변수명, 매개변수 ?개 -->
         DELETE FROM category_tbl
         WHERE id = #{id}
     </delete>
 
     <!-- resultType 은 리턴타입 -->
     <select id="findById" resultType="CategoryDto">
+        <!-- <select id="findById" CategoryMybatisMapper 클래스의 findById 메소드-->
+        <!-- resultType="CategoryDto" findById 메소드의 return 데이터형 -->
         SELECT id
              , name
         FROM category_tbl
@@ -57,4 +64,8 @@
         ORDER BY ${orderByWord}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>
+    <!-- #{searchName} : SearchCategoryDto 클래스의 멤버변수 searchName -->
+    <!-- ${orderByWord} : SearchCategoryDto 클래스의 멤버변수 orderByWord $ : 문자열 그대로 -->
+    <!-- #{rowsOnePage} : SearchCategoryDto 클래스의 멤버변수 rowsOnePage -->
+    <!-- #{firstIndex} : SearchCategoryDto 클래스의 멤버변수 firstIndex -->
 </mapper>

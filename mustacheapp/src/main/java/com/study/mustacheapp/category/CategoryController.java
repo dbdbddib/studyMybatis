@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j      // log 만들어줌
-@RestController // RestFul API 용
+@RestController // RestFul API 용 Controller 이다. JSON 문자형식으로 요청/응답 한다.
 @RequestMapping("/ct")
 
 
@@ -19,15 +19,20 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<ICategory> insertC(@RequestBody CategoryRequest dto){
+        // ResponseEntity<데이터형> : http 응답을 http 응답코드와 리턴데이터형으로 묶어서 응답한다.
+        // @RequestBody CategoryDto dto : JSON 문자열로 요청을 받는다.
+        //      다만 JSON 문자열의 데이터가 CategoryDto 데이터형이어야 한다.
         try{
             if (dto==null) {
                 return ResponseEntity.badRequest().build();
             }
             ICategory result = this.categoryService.insert(dto);
+            // 최종 목적지인 Mybatis 쿼리를 DB 에 실행하고 결과를 리턴 받는다.
             if(result == null){
                 return ResponseEntity.badRequest().build();
             }
             return ResponseEntity.ok(result);
+            // 200 OK 와 result 데이터를 응답한다.
         } catch (Exception ex){
             log.error(ex.toString());
             return ResponseEntity.badRequest().build();
@@ -36,6 +41,9 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<ICategory>> getAll() {
+        // ResponseEntity<데이터형> : http 응답을 http 응답코드와 리턴데이터형으로 묶어서 응답한다.
+        // List<ICategory> 데이터형 리턴은 배열 데이터를 JSON 문자열로 표현하여 리턴한다.
+        // [{"id":값, "name":"값"}, {"id":값, "name":"값"}, {"id":값, "name":"값"}, ...]
         try {
             List<ICategory> result = this.categoryService.getAllList();
             return ResponseEntity.ok(result);
@@ -47,6 +55,8 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id) {
+        // ResponseEntity<데이터형> : http 응답을 http 응답코드와 리턴데이터형으로 묶어서 응답한다.
+        // @PathVariable Long id : URL 주소의 /ct/번호 => {id} id 변수의 값으로 요청된다.
         try {
             if (id == null) {
                 return ResponseEntity.badRequest().build();
@@ -61,6 +71,10 @@ public class CategoryController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ICategory> update(@PathVariable Long id, @RequestBody CategoryRequest dto) {
+        // ResponseEntity<데이터형> : http 응답을 http 응답코드와 리턴데이터형으로 묶어서 응답한다.
+        // @PathVariable Long id : URL 주소의 /ct/번호 => {id} id 변수의 값으로 요청된다.
+        // @RequestBody CategoryDto dto : JSON 문자열로 요청을 받는다.
+        //      다만 JSON 문자열의 데이터가 CategoryDto 데이터형이어야 한다. {"id":값, "name":"값"}
         try {
             if (id == null || dto == null) {
                 return ResponseEntity.badRequest().build();

@@ -25,6 +25,11 @@ public class CatWebController {
 
     @GetMapping("/category_list")    // 브라우저의 URL 주소
     public String categoryOld(Model model, @RequestParam String searchName, @RequestParam int page) {
+        // String : "템플릿 화면파일 경로", "redirect:url 주소"
+        // Model model : MVC 프레임워크에서는 View 와 Controller 와 Model 을 분리해서 사용한다.
+        //  View 와 Model 의 데이터를 연결하는 역할을 한다. 구식의 ModelAndView
+        // @RequestParam int page, @RequestParam String searchName : HTTP Request Query String
+        //  : url 주소에서 ?searchName=&page=값 변수의 값을 받는다. Request Query String
         try {
             if (searchName == null) {
                 searchName = "";
@@ -32,8 +37,12 @@ public class CatWebController {
 //            List<ICategory> allList = this.categoryService.getAllList();
             SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
                     .page(page).searchName(searchName).build();
+            // SearchCategoryDto 는 select Sql 쿼리문장을 만들때 where, order by, 페이지 문장을 만들때 사용한다.
             int count = this.categoryService.countAllByNameContains(searchCategoryDto);
+            // 최종 목적지인 Mybatis 쿼리를 DB 에 countAllByNameContains 실행하고 결과를 리턴 받는다.
+            // 검색식의 searchName 으로 찾은 데이터 행수를 리턴받는다. 화면의 페이지 계산에 사용된다.
             searchCategoryDto.setTotal(count);
+            // searchCategoryDto.total 값을 저장한다.
             List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);
             // model 을 사용하는 이유 화면을 만들기 위해, allList, searchCategoryDto 를 준다 그러므로 category_list.html 에서 사용가능
             model.addAttribute("allList", allList);
@@ -44,6 +53,8 @@ public class CatWebController {
             return "error/error_save";  // resources/templates 폴더안의 화면파일
         }
         return "catweb/category_list";
+        // 화면 템플릿 엔진의 화면파일 경로/파일명
+        // => resources/templates/catweb/category_list.(html/mustache/jsp/..)
     }
 
     @GetMapping("/category_add")    // 브라우저의 URL 주소

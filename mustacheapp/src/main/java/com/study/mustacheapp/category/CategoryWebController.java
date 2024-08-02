@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
-@Controller
-@RequestMapping("/ctweb")
+@Slf4j          // log 를 만들어 준다.
+@Controller     // Web 용 Controller 이다. 화면을 그리거나 redirect 할때 유용하다.
+@RequestMapping("/ctweb")  // Controller 의 url 앞부분이다.
 
 public class CategoryWebController {
-    @Autowired
+    @Autowired  // SpringBoot 가 CategoryServiceImpl 데이터형으로 객체를 자동 생성한다.
     private CategoryServiceImpl categoryService;
 
     @GetMapping("")
