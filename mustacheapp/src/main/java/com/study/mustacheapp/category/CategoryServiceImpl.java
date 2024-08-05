@@ -1,5 +1,6 @@
 package com.study.mustacheapp.category;
 
+import com.study.mustacheapp.SearchAjaxDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -106,7 +107,7 @@ public class CategoryServiceImpl implements ICategoryService{
     }
 
     @Override
-    public List<ICategory> findAllByNameContains(SearchCategoryDto dto) {
+    public List<ICategory> findAllByNameContains(SearchAjaxDto dto) {
         if ( dto == null ) {
             //return List.of();
             return new ArrayList<>();
@@ -126,8 +127,8 @@ public class CategoryServiceImpl implements ICategoryService{
     }
 
     @Override
-    public int countAllByNameContains(SearchCategoryDto searchCategoryDto) {
-        return this.categoryMybatisMapper.countAllByNameContains(searchCategoryDto);
+    public int countAllByNameContains(SearchAjaxDto searchAjaxDto) {
+        return this.categoryMybatisMapper.countAllByNameContains(searchAjaxDto);
         // CategoryMybatisMapper 의 쿼리 XML 파일의 <select id="categoryMybatisMapper" 문장을 실행한 결과를 리턴한다.
     }
 }

@@ -50,13 +50,13 @@
 
 <!--  ${searchName} 문자열 그대로
       #{searchName} 필드값  -->
-    <select id="countAllByNameContains" parameterType="SearchCategoryDto" resultType="int">
+    <select id="countAllByNameContains" parameterType="SearchAjaxDto" resultType="int">
         SELECT count(*)
         FROM category_tbl
         WHERE name like CONCAT('%',#{searchName},'%')
     </select>
 
-    <select id="findAllByNameContains" parameterType="SearchCategoryDto" resultType="CategoryDto">
+    <select id="findAllByNameContains" parameterType="SearchAjaxDto" resultType="CategoryDto">
         SELECT id
              , name
         FROM category_tbl
@@ -64,8 +64,8 @@
         ORDER BY ${orderByWord}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>
-    <!-- #{searchName} : SearchCategoryDto 클래스의 멤버변수 searchName -->
-    <!-- ${orderByWord} : SearchCategoryDto 클래스의 멤버변수 orderByWord $ : 문자열 그대로 -->
-    <!-- #{rowsOnePage} : SearchCategoryDto 클래스의 멤버변수 rowsOnePage -->
-    <!-- #{firstIndex} : SearchCategoryDto 클래스의 멤버변수 firstIndex -->
+    <!-- #{searchName} : SearchAjaxDto 클래스의 멤버변수 searchName -->
+    <!-- ${orderByWord} : SearchAjaxDto 클래스의 멤버변수 orderByWord $ : 문자열 그대로 -->
+    <!-- #{rowsOnePage} : SearchAjaxDto 클래스의 멤버변수 rowsOnePage -->
+    <!-- #{firstIndex} : SearchAjaxDto 클래스의 멤버변수 firstIndex -->
 </mapper>

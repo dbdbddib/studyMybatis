@@ -1,6 +1,7 @@
 package com.study.mustacheapp.category;
 
 
+import com.study.mustacheapp.SearchAjaxDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,13 +30,13 @@ public class CategoryWebController {
                 searchName = "";
             }
 //            List<ICategory> allList = this.categoryService.getAllList();
-            SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
+            SearchAjaxDto searchAjaxDto = SearchAjaxDto.builder()
                     .searchName(searchName).page(page).build();
-            int count = this.categoryService.countAllByNameContains(searchCategoryDto);
-            searchCategoryDto.setTotal(count);
-            List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);
+            int count = this.categoryService.countAllByNameContains(searchAjaxDto);
+            searchAjaxDto.setTotal(count);
+            List<ICategory> allList = this.categoryService.findAllByNameContains(searchAjaxDto);
             model.addAttribute("allList", allList);
-            model.addAttribute("searchCategoryDto", searchCategoryDto);
+            model.addAttribute("searchCategoryDto", searchAjaxDto);
         } catch (Exception ex) {
             log.error(ex.toString());
             model.addAttribute("error_message", "오류가 발생했습니다. 관리자에게 문의하세요.");

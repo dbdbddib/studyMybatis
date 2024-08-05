@@ -14,9 +14,9 @@
         //});
         $(function() {
             // jQuery 3.0 버전부터 실행할 기능을 정의해주세요.
-            var totPage = Math.ceil({{searchCategoryDto.total}} / 10); // 전체 페이지 수 계산
-            var searchsearchName = "{{searchCategoryDto.searchName}}";
-            var currentPage = parseInt({{searchCategoryDto.page}});
+            var totPage = Math.ceil({{searchAjaxDto.total}} / 10); // 전체 페이지 수 계산
+            var searchsearchName = "{{searchAjaxDto.searchName}}";
+            var currentPage = parseInt({{searchAjaxDto.page}});
             var maxPageButtons = 10;
 
             // 페이지 번호를 생성하여 추가
@@ -91,7 +91,7 @@
 
         <form id="form" name="form" method="get" action="/catweb/category_search">
             <span class="box">이름</span>
-            <input type="text" id="searchName" name="searchName" placeholder="검색할 이름 입력" value="{{searchCategoryDto.searchName}}"/>
+            <input type="text" id="searchName" name="searchName" placeholder="검색할 이름 입력" value="{{searchAjaxDto.searchName}}"/>
             <input class="btn" type="submit" value="검색"/>
         </form>
     </div>
@@ -133,7 +133,7 @@
         <span><button class="btn" id="nextBtn">Next</button></span>
     </div>
     [(${pageHtml})]
-    <div>total : {{searchCategoryDto.total}}, page : {{searchCategoryDto.page}}, search searchName = {{searchCategoryDto.searchName}}</div>
+    <div>total : {{searchAjaxDto.total}}, page : {{searchAjaxDto.page}}, search searchName = {{searchAjaxDto.searchName}}</div>
 
 </section>
 </body>

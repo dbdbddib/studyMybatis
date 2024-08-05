@@ -1,4 +1,6 @@
 package com.study.mustacheapp.category;
+import com.study.mustacheapp.SearchAjaxDto;
+
 import java.util.List;
 
 public interface ICategoryService {
@@ -8,6 +10,6 @@ public interface ICategoryService {
     ICategory insert(ICategory category) throws Exception;
     boolean remove(Long id) throws Exception;
     ICategory update(Long id, ICategory category) throws Exception;
-    List<ICategory> findAllByNameContains(SearchCategoryDto dto);
-    int countAllByNameContains(SearchCategoryDto searchCategoryDto);
+    List<ICategory> findAllByNameContains(SearchAjaxDto dto);
+    int countAllByNameContains(SearchAjaxDto searchAjaxDto);
 }

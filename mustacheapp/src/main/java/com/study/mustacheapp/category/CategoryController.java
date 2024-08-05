@@ -1,5 +1,6 @@
 package com.study.mustacheapp.category;
 
+import com.study.mustacheapp.SearchAjaxDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -113,9 +114,9 @@ public class CategoryController {
             if (searchName == null || searchName.isEmpty()) {
                 return ResponseEntity.badRequest().build();
             }
-            SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
+            SearchAjaxDto searchAjaxDto = SearchAjaxDto.builder()
                     .searchName(searchName).page(1).build();
-            List<ICategory> result = this.categoryService.findAllByNameContains(searchCategoryDto);
+            List<ICategory> result = this.categoryService.findAllByNameContains(searchAjaxDto);
             if ( result == null || result.size() <= 0 ) {
                 return ResponseEntity.notFound().build();
             }
@@ -127,19 +128,19 @@ public class CategoryController {
     }
 
     @PostMapping("/searchName")
-    public ResponseEntity<SearchCategoryDto> findAllByNameContains(@RequestBody SearchCategoryDto searchCategoryDto) {
+    public ResponseEntity<SearchAjaxDto> findAllByNameContains(@RequestBody SearchAjaxDto searchAjaxDto) {
         try {
-            if ( searchCategoryDto == null ) {
+            if ( searchAjaxDto == null ) {
                 return ResponseEntity.badRequest().build();
             }
-            int total = this.categoryService.countAllByNameContains(searchCategoryDto);
-            List<ICategory> list = this.categoryService.findAllByNameContains(searchCategoryDto);
+            int total = this.categoryService.countAllByNameContains(searchAjaxDto);
+            List<ICategory> list = this.categoryService.findAllByNameContains(searchAjaxDto);
             if ( list == null ) {
                 return ResponseEntity.notFound().build();
             }
-            searchCategoryDto.setTotal(total);
-            searchCategoryDto.setDataList(list);
-            return ResponseEntity.ok(searchCategoryDto);
+            searchAjaxDto.setTotal(total);
+            searchAjaxDto.setDataList(list);
+            return ResponseEntity.ok(searchAjaxDto);
         } catch ( Exception ex ) {
             log.error(ex.toString());
             return ResponseEntity.badRequest().build();
@@ -147,12 +148,12 @@ public class CategoryController {
     }
 
     @PostMapping("/countName")
-    public ResponseEntity<Integer> countAllByNameContains(@RequestBody SearchCategoryDto searchCategoryDto) {
+    public ResponseEntity<Integer> countAllByNameContains(@RequestBody SearchAjaxDto searchAjaxDto) {
         try {
-            if ( searchCategoryDto == null ) {
+            if ( searchAjaxDto == null ) {
                 return ResponseEntity.badRequest().build();
             }
-            int total = this.categoryService.countAllByNameContains(searchCategoryDto);
+            int total = this.categoryService.countAllByNameContains(searchAjaxDto);
             return ResponseEntity.ok(total);
         } catch ( Exception ex ) {
             log.error(ex.toString());

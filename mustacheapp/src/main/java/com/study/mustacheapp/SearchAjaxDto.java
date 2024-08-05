@@ -1,4 +1,4 @@
-package com.study.mustacheapp.category;
+package com.study.mustacheapp;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchCategoryDto {
+public class SearchAjaxDto {
     private String orderByWord;
     private String searchName;
     private String sortColumn;

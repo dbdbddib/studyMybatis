@@ -1,6 +1,7 @@
 package com.study.mustacheapp.category;
 
 
+import com.study.mustacheapp.SearchAjaxDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,18 +36,18 @@ public class CatWebController {
                 searchName = "";
             }
 //            List<ICategory> allList = this.categoryService.getAllList();
-            SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
+            SearchAjaxDto searchAjaxDto = SearchAjaxDto.builder()
                     .page(page).searchName(searchName).build();
             // SearchCategoryDto 는 select Sql 쿼리문장을 만들때 where, order by, 페이지 문장을 만들때 사용한다.
-            int count = this.categoryService.countAllByNameContains(searchCategoryDto);
+            int count = this.categoryService.countAllByNameContains(searchAjaxDto);
             // 최종 목적지인 Mybatis 쿼리를 DB 에 countAllByNameContains 실행하고 결과를 리턴 받는다.
             // 검색식의 searchName 으로 찾은 데이터 행수를 리턴받는다. 화면의 페이지 계산에 사용된다.
-            searchCategoryDto.setTotal(count);
+            searchAjaxDto.setTotal(count);
             // searchCategoryDto.total 값을 저장한다.
-            List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);
+            List<ICategory> allList = this.categoryService.findAllByNameContains(searchAjaxDto);
             // model 을 사용하는 이유 화면을 만들기 위해, allList, searchCategoryDto 를 준다 그러므로 category_list.html 에서 사용가능
             model.addAttribute("allList", allList);
-            model.addAttribute("searchCategoryDto", searchCategoryDto);
+            model.addAttribute("searchCategoryDto", searchAjaxDto);
         } catch (Exception ex) {
             log.error(ex.toString());
             model.addAttribute("error_message", "오류가 발생했습니다. 관리자에게 문의하세요.");
