@@ -265,7 +265,9 @@ Impl은 "Implementation"의 약어로, 인터페이스를 실제로 구현한 �
 
 # 단축키
 
-+ Find in Files
-  - Ctrl + Shift + f
 + Replace
   - Ctrl + r
++ Replace in Files
+  - Ctrl + Shift + r
++ Find in Files
+  - Ctrl + Shift + f
