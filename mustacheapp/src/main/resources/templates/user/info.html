@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 한 사용자</title>
+</head>
+<body>
+    {{#loginUser}}
+    <div>이름 : {{name}}</div>
+    <div>이메일 : {{email}}</div>
+    <div>role : {{role}}</div>
+    {{/loginUser}}
+    <button onclick="history.back();">뒤로가기</button>
+</body>
+</html>

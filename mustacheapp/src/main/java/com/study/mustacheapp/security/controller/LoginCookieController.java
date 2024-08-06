@@ -1,7 +1,9 @@
 package com.study.mustacheapp.security.controller;
 
+import com.study.mustacheapp.member.IMember;
 import com.study.mustacheapp.member.IMemberService;
 import com.study.mustacheapp.member.MemberDto;
+import com.study.mustacheapp.security.dto.LoginRequest;
 import com.study.mustacheapp.security.dto.SignUpRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +44,21 @@ public class LoginCookieController {
             log.error(ex.toString());
         }
         return "redirect:/cologin";
+    }
+
+    @PostMapping
+    private String signin(@ModelAttribute LoginRequest dto){
+        try{
+            if (dto == null) {
+                return "redirect:/cologin";
+            }
+            IMember loginUser = this.memberService.login(dto);
+            if(loginUser != null) {
+                return "user/info";
+            }
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return "login/fail";
     }
 }

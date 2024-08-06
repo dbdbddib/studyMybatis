@@ -1,6 +1,7 @@
 package com.study.mustacheapp.member;
 
 import com.study.mustacheapp.SearchAjaxDto;
+import com.study.mustacheapp.security.dto.LoginRequest;
 import com.study.mustacheapp.security.dto.SignUpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,16 @@ public class MemberServiceImpl implements IMemberService {
 
     @Override
     public MemberDto insert(MemberDto dto) throws Exception {
+        return null;
+    }
+
+    @Override
+    public IMember login(LoginRequest dto) {
+        String encPasswd = encoder.encode(dto.getPassword());
+
+        if(dto.getPassword().equals(encPasswd)){
+
+        }
         return null;
     }
 
