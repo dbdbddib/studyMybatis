@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CategoryServiceImpl implements ICategoryService{
-    @Autowired
+public class CategoryServiceImpl implements ICategoryService<ICategory> {
+    @Autowired  // SpringBoot 가 CategoryMybatisMapper 데이터형으로 객체를 자동 생성한다.
     private CategoryMybatisMapper categoryMybatisMapper;
 
     @Override
     public ICategory findById(Long id) {
-        if( id == null || id <= 0){
+        if ( id == null || id <= 0 ) {
             return null;
         }
         CategoryDto find = this.categoryMybatisMapper.findById(id);
@@ -84,9 +84,9 @@ public class CategoryServiceImpl implements ICategoryService{
     }
 
     @Override
-    public boolean remove(Long id) throws Exception {
+    public Boolean delete(Long id) throws Exception {
         ICategory find = this.findById(id);
-        if (find == null) {
+        if ( find == null ) {
             return false;
         }
         this.categoryMybatisMapper.deleteById(id);
@@ -97,7 +97,7 @@ public class CategoryServiceImpl implements ICategoryService{
     @Override
     public ICategory update(Long id, ICategory category) throws Exception {
         ICategory find = this.findById(id);
-        if (find == null) {
+        if ( find == null ) {
             return null;
         }
         find.copyFields(category);

@@ -1,6 +1,6 @@
 package com.study.mustacheapp.security.dto;
 
-import com.softagape.mustacheajax.member.IMember;
+import com.study.mustacheapp.member.IMember;
 import lombok.*;
 
 @Getter

@@ -104,10 +104,10 @@
         <span>name</span>
 
 
-        {{#allList}}
+        {{#categoryList}}
         <div class="col-xl-4 col-md-6 col-sm-12">
             <div class="card">
-                <a href="category_view?id={{id}}">
+                <a href="/catweb/category_view?id={{id}}">
                     <div class="card-content">
                         <span class="card-body">{{id}}</span>
                         <span> | </span>
@@ -116,7 +116,7 @@
                 </a>
             </div>
         </div>
-        {{/allList}}
+        {{/categoryList}}
 
         <div class="button-container">
             <a href="/catweb/category_add" class="btn">추가</a>

@@ -18,8 +18,8 @@ public class CategoryController {
     @Autowired
     private CategoryServiceImpl categoryService;
 
-    @PostMapping
-    public ResponseEntity<ICategory> insertC(@RequestBody CategoryRequest dto){
+    @PostMapping    // POST method : /ct
+    public ResponseEntity<ICategory> insert(@RequestBody CategoryDto dto) {
         // ResponseEntity<데이터형> : http 응답을 http 응답코드와 리턴데이터형으로 묶어서 응답한다.
         // @RequestBody CategoryDto dto : JSON 문자열로 요청을 받는다.
         //      다만 JSON 문자열의 데이터가 CategoryDto 데이터형이어야 한다.
@@ -62,7 +62,8 @@ public class CategoryController {
             if (id == null) {
                 return ResponseEntity.badRequest().build();
             }
-            Boolean result = this.categoryService.remove(id);
+            Boolean result = this.categoryService.delete(id);
+            // 최종 목적지인 Mybatis 쿼리를 DB 에 실행하고 결과를 리턴 받는다.
             return ResponseEntity.ok(result);
         } catch (Exception ex) {
             log.error(ex.toString());
@@ -70,8 +71,8 @@ public class CategoryController {
         }
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<ICategory> update(@PathVariable Long id, @RequestBody CategoryRequest dto) {
+    @PatchMapping("/{id}")     // PATCH method : /ct/번호
+    public ResponseEntity<ICategory> update(@PathVariable Long id, @RequestBody CategoryDto dto) {
         // ResponseEntity<데이터형> : http 응답을 http 응답코드와 리턴데이터형으로 묶어서 응답한다.
         // @PathVariable Long id : URL 주소의 /ct/번호 => {id} id 변수의 값으로 요청된다.
         // @RequestBody CategoryDto dto : JSON 문자열로 요청을 받는다.
@@ -108,7 +109,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/nm/{searchName}") // POST method : /ct/nm/문자열{searchName}
     public ResponseEntity<List<ICategory>> findAllByNameContains(@PathVariable String searchName) {
         try {
             if (searchName == null || searchName.isEmpty()) {

@@ -1,7 +1,9 @@
 package com.study.mustacheapp.member;
 
 import com.study.mustacheapp.SearchAjaxDto;
+import com.study.mustacheapp.security.dto.SignUpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
