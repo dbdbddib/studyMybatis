@@ -25,16 +25,11 @@ public class SecurityConfig {
                         header.frameOptions(
                                 HeadersConfigurer.FrameOptionsConfig::sameOrigin
                         ))
-//                .authorizeHttpRequests(auth ->
-//                        auth
-//                                .anyRequest().permitAll()
-//                )
+                .authorizeHttpRequests(auth ->
+                        auth
+                                .anyRequest().permitAll()
+                )
                 ;
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
     }
 }

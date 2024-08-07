@@ -3,6 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#loginForm').on('submit', function(event) {
+                var loginId = $('#loginId').val().trim();
+                var password = $('#password').val().trim();
+
+                if (loginId === "" || password === "") {
+                    alert('모든 필드를 입력해주세요.');
+                    event.preventDefault(); // 폼 제출 방지
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <div>

@@ -3,12 +3,14 @@ package com.study.mustacheapp.member;
 import com.study.mustacheapp.SearchAjaxDto;
 import com.study.mustacheapp.security.dto.LoginRequest;
 import com.study.mustacheapp.security.dto.SignUpRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class MemberServiceImpl implements IMemberService {
     @Autowired
@@ -35,10 +37,9 @@ public class MemberServiceImpl implements IMemberService {
 
     @Override
     public IMember login(LoginRequest dto) {
-        String encPasswd = encoder.encode(dto.getPassword());
-
-        if(dto.getPassword().equals(encPasswd)){
-
+        IMember find = this.memberMybatisMapper.findByLoginId(dto.getLoginId());
+        if ( encoder.matches(dto.getPassword(), find.getPassword()) ) {
+            return find;
         }
         return null;
     }
