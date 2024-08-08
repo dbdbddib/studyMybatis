@@ -1,26 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#loginForm').on('submit', function(event) {
-                var loginId = $('#loginId').val().trim();
-                var password = $('#password').val().trim();
-
-                if (loginId === "" || password === "") {
-                    alert('모든 필드를 입력해주세요.');
-                    event.preventDefault(); // 폼 제출 방지
+        $.ready(function(){
+            $("#signForm").on("submit", function() {
+                if ( $("#loginId").val() === "" || $("#password").val() === "" ) {
+                    alert("로그인 ID, 암호 를 입력하세요");
+                    return false;
                 }
+                return true;
             });
         });
     </script>
 </head>
 <body>
 <div>
-    <form method="post" action="signin">
+    <form id="signForm" method="post" action="signin">
         <label for="loginId">로그인아이디</label> <input type="text" id="loginId" name="loginId" />
         <label for="password">암호</label> <input type="password" id="password" name="password" />
         <input type="submit" value="로그인" />

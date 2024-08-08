@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>Logout</title>
@@ -12,5 +12,5 @@
         document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     }
     deleteCookie("loginId");
-    document.href = "/";
+    document.location.href = "/";
 </script>
