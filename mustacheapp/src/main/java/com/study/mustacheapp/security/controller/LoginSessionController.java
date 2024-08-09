@@ -2,6 +2,7 @@ package com.study.mustacheapp.security.controller;
 
 import com.study.mustacheapp.member.IMember;
 import com.study.mustacheapp.member.IMemberService;
+import com.study.mustacheapp.member.MemberServiceImpl;
 import com.study.mustacheapp.security.dto.LoginRequest;
 import com.study.mustacheapp.security.dto.SignUpRequest;
 import jakarta.servlet.http.Cookie;
@@ -22,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/selogin")
 public class LoginSessionController {
-    @Qualifier("IMemberService")
+
     @Autowired
-    private IMemberService memberService;
+    private MemberServiceImpl memberService;
 
     @GetMapping("/signup")
     private String viewSignUp() {
