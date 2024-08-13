@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    @Qualifier("IMemberService")
+    @Qualifier("memberServiceImpl")
     @Autowired
     private IMemberService memberService;
 

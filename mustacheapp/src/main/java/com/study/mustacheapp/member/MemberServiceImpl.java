@@ -1,6 +1,6 @@
 package com.study.mustacheapp.member;
 
-import com.study.mustacheapp.SearchAjaxDto;
+import com.study.mustacheapp.commons.dto.SearchAjaxDto;
 import com.study.mustacheapp.security.dto.LoginRequest;
 import com.study.mustacheapp.security.dto.SignUpRequest;
 import lombok.extern.slf4j.Slf4j;

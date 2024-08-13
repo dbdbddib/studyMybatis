@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 @ControllerAdvice   // 모든 URL 요청을 가로채서 처리한다.
 public class AllControllerAdvice {
-    @Qualifier("IMemberService")
+    @Qualifier("memberServiceImpl")
     @Autowired
     private IMemberService memberService;
 
@@ -24,6 +24,7 @@ public class AllControllerAdvice {
             , "/catweb"
             , "/admin"
             , "/user"
+            , "/board"
     };
 
 

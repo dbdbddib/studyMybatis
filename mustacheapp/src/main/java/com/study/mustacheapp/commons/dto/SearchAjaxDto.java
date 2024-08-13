@@ -1,4 +1,4 @@
-package com.study.mustacheapp;
+package com.study.mustacheapp.commons.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

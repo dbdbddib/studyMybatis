@@ -1,7 +1,7 @@
 package com.study.mustacheapp.category;
 
 import com.study.mustacheapp.ICommonService;
-import com.study.mustacheapp.SearchAjaxDto;
+import com.study.mustacheapp.commons.dto.SearchAjaxDto;
 
 import java.util.List;
 

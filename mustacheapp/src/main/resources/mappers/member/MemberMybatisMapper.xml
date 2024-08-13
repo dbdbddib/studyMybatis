@@ -4,8 +4,8 @@
     <!-- mapper namespace="@Mapper 로 선언된 클래스의 풀패키지.클래스 이름"-->
 
     <insert id="insert" parameterType="MemberDto" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO member_tbl ( name, login_id, password, email, role )
-        VALUES ( #{name}, #{loginId}, #{password}, #{email}, #{role} )
+        INSERT INTO member_tbl ( name, login_id, password, email, role, organization )
+        VALUES ( #{name}, #{loginId}, #{password}, #{email}, #{role}, #{organization} )
     </insert>
 
     <update id="update" parameterType="MemberDto">

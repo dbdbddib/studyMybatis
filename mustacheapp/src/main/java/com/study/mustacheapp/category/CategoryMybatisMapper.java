@@ -1,5 +1,5 @@
 package com.study.mustacheapp.category;
-import com.study.mustacheapp.SearchAjaxDto;
+import com.study.mustacheapp.commons.dto.SearchAjaxDto;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 

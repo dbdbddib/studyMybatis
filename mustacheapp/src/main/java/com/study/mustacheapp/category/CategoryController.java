@@ -1,9 +1,12 @@
 package com.study.mustacheapp.category;
 
-import com.study.mustacheapp.SearchAjaxDto;
+import com.study.mustacheapp.commons.dto.SearchAjaxDto;
+import com.study.mustacheapp.member.IMember;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -128,9 +131,19 @@ public class CategoryController {
         }
     }
 
-    @PostMapping("/searchName")
-    public ResponseEntity<SearchAjaxDto> findAllByNameContains(@RequestBody SearchAjaxDto searchAjaxDto) {
+    @PostMapping("/searchName") // POST method : /ct/searchName
+    public ResponseEntity<SearchAjaxDto> findAllByNameContains(Model model, @RequestBody SearchAjaxDto searchAjaxDto) {
+        // ResponseEntity<데이터형> : http 응답을 http 응답코드와 리턴데이터형으로 묶어서 응답한다.
+        // SearchAjaxDto 데이터형를 JSON 문자열로 표현하여 리턴한다.
+        // @RequestBody SearchAjaxDto searchAjaxDto : JSON 문자열로 요청을 받는다.
+        //      다만 JSON 문자열의 데이터가 SearchAjaxDto 데이터형이어야 한다.
+        //      {"searchName":"값", "sortColumn":"값", "sortAscDsc":"값", "page":값}
         try {
+            IMember loginUser = (IMember)model.getAttribute("loginUser");
+            // POSTMAN 으로 테스트 안되지만, WEB 화면에서는 로그인한 사용자만 가능하다.
+            if ( loginUser == null ) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
             if ( searchAjaxDto == null ) {
                 return ResponseEntity.badRequest().build();
             }
@@ -148,9 +161,18 @@ public class CategoryController {
         }
     }
 
-    @PostMapping("/countName")
-    public ResponseEntity<Integer> countAllByNameContains(@RequestBody SearchAjaxDto searchAjaxDto) {
+    @PostMapping("/countName")  // POST method : /ct/countName
+    public ResponseEntity<Integer> countAllByNameContains(Model model, @RequestBody SearchAjaxDto searchAjaxDto) {
+        // ResponseEntity<데이터형> : http 응답을 http 응답코드와 리턴데이터형으로 묶어서 응답한다.
+        // @RequestBody SearchAjaxDto searchAjaxDto : JSON 문자열로 요청을 받는다.
+        //      다만 JSON 문자열의 데이터가 SearchAjaxDto 데이터형이어야 한다.
+        //      {"searchName":"값"}
         try {
+            IMember loginUser = (IMember)model.getAttribute("loginUser");
+            // POSTMAN 으로 테스트 안되지만, WEB 화면에서는 로그인한 사용자만 가능하다.
+            if ( loginUser == null ) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
             if ( searchAjaxDto == null ) {
                 return ResponseEntity.badRequest().build();
             }

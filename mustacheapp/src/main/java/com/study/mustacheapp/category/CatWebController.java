@@ -1,6 +1,8 @@
 package com.study.mustacheapp.category;
 
-import com.study.mustacheapp.SearchAjaxDto;
+import com.study.mustacheapp.commons.dto.SearchAjaxDto;
+import com.study.mustacheapp.member.IMember;
+import com.study.mustacheapp.member.MemberRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,15 @@ public class CatWebController {
         // @RequestParam int page, @RequestParam String searchName : HTTP Request Query String
         //  : url 주소에서 ?searchName=&page=값 변수의 값을 받는다. Request Query String
         try {
+            IMember loginUser = (IMember)model.getAttribute("loginUser");
+            if ( loginUser == null ) {
+                // 로그인 사용자가 아니면 리턴
+                return "redirect:/";
+            }
+            if ( !loginUser.getRole().equals(MemberRole.ADMIN.toString()) ) {
+                // 로그인 사용자의 role 이 ADMIN 이 아니면 리턴
+                return "redirect:/";
+            }
             SearchAjaxDto searchAjaxDto = SearchAjaxDto.builder()
                     .page(page).searchName(searchName).build();
             // searchAjaxDto 는 select Sql 쿼리문장을 만들때 where, order by, 페이지 문장을 만들때 사용한다.

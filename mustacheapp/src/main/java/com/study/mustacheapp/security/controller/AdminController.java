@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    @Qualifier("IMemberService")
+    @Qualifier("memberServiceImpl")
     @Autowired
     private IMemberService memberService;
 
