@@ -113,6 +113,7 @@ public class BoardApiController {
                 return ResponseEntity.badRequest().build();
             }
             IBoard result = this.boardService.findById(id);
+            this.boardService.addViewQty(id);
             if ( result == null ) {
                 return ResponseEntity.notFound().build();
             }
@@ -159,6 +160,20 @@ public class BoardApiController {
             }
             int total = this.boardService.countAllByNameContains(searchAjaxDto);
             return ResponseEntity.ok(total);
+        } catch ( Exception ex ) {
+            log.error(ex.toString());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/like/{id}")
+    public ResponseEntity<String> addLikeQty(@PathVariable Long id) {
+        try {
+            if ( id == null || id <= 0 ) {
+                return ResponseEntity.badRequest().build();
+            }
+            this.boardService.addLikeQty(id);
+            return ResponseEntity.ok("OK");
         } catch ( Exception ex ) {
             log.error(ex.toString());
             return ResponseEntity.badRequest().build();
