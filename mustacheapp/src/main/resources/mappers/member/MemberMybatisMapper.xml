@@ -30,7 +30,6 @@
         FROM member_tbl
         WHERE id = #{id}
     </select>
-
     <select id="findByLoginId" resultType="MemberDto">
         SELECT id
              , name
