@@ -29,7 +29,7 @@
         #modal_box_add {
             /* 모달 화면 안의 스타일, z-index: 값이 가장 크므로 화면의 상위에 표현된다.*/
             width: 70%;
-            height: 150px;
+            height: 850px;
             margin: 0 auto;
             padding: 20px;
             text-align: center;
@@ -46,7 +46,7 @@
         #modal_box_view {
             /* 모달 화면 안의 스타일, z-index: 값이 가장 크므로 화면의 상위에 표현된다.*/
             width: 70%;
-            height: 150px;
+            height: 850px;
             margin: 0 auto;
             padding: 20px;
             text-align: center;
@@ -166,25 +166,25 @@
             $.searchBoardList(page);
         }
 
-        $.createDtAsc = function () {  // jQuery 함수 선언
+        $.createDtAsc = function () {
             sortColumn = "create_dt";
             sortAscDesc = "ASC";
             $.searchBoardList(page);
         }
 
-        $.createDtDesc = () => {  // jQuery 함수 선언
+        $.createDtDesc = () => {
             sortColumn = "create_dt";
             sortAscDesc = "DESC";
             $.searchBoardList(page);
         }
 
-        $.createIdAsc = function () {  // jQuery 함수 선언
+        $.createIdAsc = function () {
             sortColumn = "create_id";
             sortAscDesc = "ASC";
             $.searchBoardList(page);
         }
 
-        $.createIdDesc = () => {  // jQuery 함수 선언
+        $.createIdDesc = () => {
             sortColumn = "create_id";
             sortAscDesc = "DESC";
             $.searchBoardList(page);
@@ -289,6 +289,14 @@
             // id="id" 요소의 value 속성의 값을 item.id 로 설정한다.
             $("#name2").val(item.name);
             $("#content2").val(item.content);
+            $("#viewQty2").val(item.viewQty);
+            $("#likeQty2").text(item.likeQty);
+            let count = item.delFlag;
+            if ( count === "0" ) {
+                $("#heartIcon").attr("src", "/svg/heartOff.svg");
+            } else {
+                $("#heartIcon").attr("src", "/svg/heartOn.svg");
+            }
             $("#showViewModalButton").trigger("click");
         }
 
@@ -452,25 +460,47 @@
         }
 
         $.likeBoard = function () {
+            let heartIcon = $("#heartIcon");
+            let src = heartIcon.attr("src");
+            let bOff = src.includes("Off");
             let id = $("#id2").val();
             if (id <= 0) {
                 return;
             }
-            $.ajax({
-                url: "/api/v1/board/like/" + id,
-                type: "GET",
-                datatype: "JSON",
-                contentType: "application/json; charset=UTF-8", // 응답받는 데이터 형식
-            }).done(function (data, status, xhr) {
-                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
-                if (status === "success") {
-                }
-            }).fail(function (jqXHR, status, errorThrown) {
-                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-                alert("Like 실패했습니다.");
-            });
+            if (bOff) {
+                $.ajax({
+                    url: "/api/v1/board/like/" + id,
+                    type: "GET",
+                    datatype: "JSON",
+                    contentType: "application/json; charset=UTF-8",
+                }).done(function (data, status, xhr) {
+                    console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                    if (status === "success") {
+                        //heartIcon.attr("src", "/svg/heartOn.svg");
+                        $.showBoardInfo(data);
+                    }
+                }).fail(function (jqXHR, status, errorThrown) {
+                    console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                    alert("Like 실패 했습니다.");
+                });
+            } else {
+                $.ajax({
+                    url: "/api/v1/board/unlike/" + id,
+                    type: "GET",
+                    datatype: "JSON",
+                    contentType: "application/json; charset=UTF-8",
+                }).done(function (data, status, xhr) {
+                    console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                    if (status === "success") {
+                        //heartIcon.attr("src", "/svg/heartOff.svg");
+                        $.showBoardInfo(data);
+                    }
+                }).fail(function (jqXHR, status, errorThrown) {
+                    console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                    alert("UnLike 실패 했습니다.");
+                });
+            }
         }
-
     </script>
 </head>
 <body>
@@ -522,39 +552,57 @@
         </div>
         <div id="modal_box_add" style="display: none">
             <h2>Board Add</h2>
-            <fieldset>
-                <label for="id">ID</label> <input id="id" name="id" readonly type="text" value=""/>
-                <label for="name">Name</label> <input id="name" name="name" type="text" value=""/>
-                <label for="content">content</label> <textarea id="content" name="content"></textarea>
-            </fieldset>
-            <div class="row">
-                <div class="col-6">
-                    <button id="addButton" onclick="$.addInsert();">추가</button>
-                </div>
-                <div class="col-6">
-                    <button class="modalCloseButton">Close</button>
-                </div>
-            </div>
+                <fieldset>
+                    <div>
+                        <label for="id">ID</label> <input id="id" name="id" readonly type="text" value=""/>
+                    </div>
+                    <div>
+                        <label for="name">Name</label> <input id="name" name="name" type="text" value=""/>
+                    </div>
+                    <div>
+                        <label for="content">content</label> <textarea id="content" name="content"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <button id="addButton" onclick="$.addInsert();">추가</button>
+                        </div>
+                        <div class="col-6">
+                            <button class="modalCloseButton">Close</button>
+                        </div>
+                    </div>
+                </fieldset>
         </div>
         <!-- 모델박스 디자인 -->
         <div id="modal_box_view" style="display: none">
             <h2>Board Info</h2>
             <fieldset>
-                <label for="id2">ID</label> <input id="id2" name="id2" readonly type="text" value=""/>
-                <label for="name2">Name</label> <input id="name2" name="name2" type="text" value=""/>
-                <label for="content2">Name</label> <textarea id="content2" name="content2"></textarea>
+                <div>
+                    <label for="id2">ID</label> <input id="id2" name="id2" readonly type="text" value=""/>
+                </div>
+                <div>
+                    <label for="name2">Name</label> <input id="name2" name="name2" type="text" value=""/>
+                </div>
+                <div>
+                    <label for="content2">Name</label> <textarea id="content2" name="content2"></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="viewQty2">보기</label> <input id="viewQty2" readonly/>
+                    </div>
+                    <div class="col-6">
+                        <img id="heartIcon" src="/svg/heartOff.svg" width="40px" alt="Like" onclick="$.likeBoard();" />
+                        <span id="likeQty2"></span>
+                    </div>
+                </div>
             </fieldset>
             <div class="row">
-                <div class="col-3">
+                <div class="col-4">
                     <button id="updateButton">수정</button>
                 </div>
-                <div class="col-3">
+                <div class="col-4">
                     <button id="deleteButton">삭제</button>
                 </div>
-                <div class="col-3">
-                    <button id="likeButton">좋아요</button>
-                </div>
-                <div class="col-3">
+                <div class="col-4">
                     <button class="modalCloseButton">Close</button>
                 </div>
             </div>

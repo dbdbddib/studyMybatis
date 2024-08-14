@@ -74,6 +74,13 @@
           AND del_flag = 'N'
     </update>
 
+    <update id="subLikeQty">
+        UPDATE board_tbl
+        SET like_qty = like_qty - 1
+        WHERE id = #{id}
+          AND del_flag = 'N'
+    </update>
+
     <select id="countAllByNameContains" parameterType="SearchAjaxDto" resultType="int">
         SELECT count(*)
         FROM board_tbl
