@@ -19,6 +19,9 @@ public interface IBase {
     String getDeleteId();
     void setDeleteId(String deleteId);
 
+    Boolean getDeleteFlag();
+    void setDeleteFlag(Boolean deleteFlag);
+
     default void copyFields(IBase from) {
         if (from == null) {
             return;
@@ -40,6 +43,9 @@ public interface IBase {
         }
         if (from.getDeleteId() != null && !from.getDeleteId().isEmpty()) {
             this.setDeleteId(from.getDeleteId());
+        }
+        if (from.getDeleteFlag() != null) {
+            this.setDeleteFlag(from.getDeleteFlag());
         }
     }
 }

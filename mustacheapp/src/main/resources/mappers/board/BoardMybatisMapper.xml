@@ -6,34 +6,34 @@
     <insert id="insert" parameterType="BoardDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO board_tbl ( name
                               , content
-                              , view_qty
-                              , like_qty
-                              , create_dt
-                              , create_id
-                              , del_flag)
+                              , viewQty
+                              , likeQty
+                              , createDt
+                              , createId
+                              , deleteFlag)
         VALUES ( #{name}
                , #{content}
                , 0
                , 0
                , #{createDt}
                , #{createId}
-               , 'N')
+               , false)
     </insert>
 
     <update id="update" parameterType="BoardDto">
         UPDATE board_tbl
         SET name = #{name}
           , content = #{content}
-          , update_dt = #{updateDt}
-          , update_id = #{updateId}
+          , updateDt = #{updateDt}
+          , updateId = #{updateId}
         WHERE id = #{id}
     </update>
 
-    <update id="deleteFlag" parameterType="BoardDto">
+    <update id="updateDeleteFlag" parameterType="BoardDto">
         UPDATE board_tbl
-        SET del_flag = 'Y'
-          , delete_dt = #{deleteDt}
-          , delete_id = #{deleteId}
+        SET deleteFlag = #{deleteFlag}
+          , deleteDt = #{deleteDt}
+          , deleteId = #{deleteId}
         WHERE id = #{id}
     </update>
 
@@ -46,64 +46,64 @@
         SELECT id
              , name
              , content
-             , view_qty
-             , like_qty
-             , create_dt
-             , create_id
-             , update_dt
-             , update_id
-             , delete_dt
-             , delete_id
-             , del_flag
+             , viewQty
+             , likeQty
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
         FROM board_tbl
         WHERE id = #{id}
-          AND del_flag = 'N'
+            AND deleteFlag = false
     </select>
 
     <update id="addViewQty">
         UPDATE board_tbl
-        SET view_qty = view_qty + 1
+        SET viewQty = viewQty + 1
         WHERE id = #{id}
-          AND del_flag = 'N'
+          AND deleteFlag = false
     </update>
 
     <update id="addLikeQty">
         UPDATE board_tbl
-        SET like_qty = like_qty + 1
+        SET likeQty = likeQty + 1
         WHERE id = #{id}
-          AND del_flag = 'N'
+          AND deleteFlag = false
     </update>
 
     <update id="subLikeQty">
         UPDATE board_tbl
-        SET like_qty = like_qty - 1
+        SET likeQty = likeQty - 1
         WHERE id = #{id}
-          AND del_flag = 'N'
+          AND deleteFlag = false
     </update>
 
     <select id="countAllByNameContains" parameterType="SearchAjaxDto" resultType="int">
         SELECT count(*)
         FROM board_tbl
         WHERE name like CONCAT('%',#{searchName},'%')
-          AND del_flag = 'N'
+          AND deleteFlag = false
     </select>
 
     <select id="findAllByNameContains" parameterType="SearchAjaxDto" resultType="BoardDto">
         SELECT id
              , name
              , content
-             , view_qty
-             , like_qty
-             , create_dt
-             , create_id
-             , update_dt
-             , update_id
-             , delete_dt
-             , delete_id
-             , del_flag
+             , viewQty
+             , likeQty
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
         FROM board_tbl
         WHERE name like CONCAT('%',#{searchName},'%')
-        AND del_flag = 'N'
+          AND deleteFlag = false
         ORDER BY ${orderByWord}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>

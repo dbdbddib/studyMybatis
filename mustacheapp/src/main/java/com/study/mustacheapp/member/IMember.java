@@ -1,12 +1,17 @@
 package com.study.mustacheapp.member;
 
 
-public interface IMember {
+import com.study.mustacheapp.commons.dto.IBase;
+
+public interface IMember extends IBase {
     Long getId();
     void setId(Long id);
 
     String getName();
     void setName(String name);
+
+    String getNickname();
+    void setNickname(String nickname);
 
     String getLoginId();
     void setLoginId(String loginId);
@@ -20,6 +25,9 @@ public interface IMember {
     String getRole();
     void setRole(String role);
 
+    Boolean getActive();
+    void setActive(Boolean active);
+
     default void copyFields(IMember from) {
         if (from == null) {
             return;
@@ -29,6 +37,9 @@ public interface IMember {
         }
         if (from.getName() != null && !from.getName().isEmpty()) {
             this.setName(from.getName());
+        }
+        if (from.getNickname() != null && !from.getNickname().isEmpty()) {
+            this.setNickname(from.getNickname());
         }
         if (from.getLoginId() != null && !from.getLoginId().isEmpty()) {
             this.setLoginId(from.getLoginId());
@@ -42,5 +53,9 @@ public interface IMember {
         if (from.getRole() != null && !from.getRole().isEmpty()) {
             this.setRole(from.getRole());
         }
+        if (from.getActive() != null) {
+            this.setActive(from.getActive());
+        }
+        IBase.super.copyFields(from);
     }
 }

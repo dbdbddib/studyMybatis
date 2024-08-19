@@ -18,5 +18,4 @@ public class BoardDto extends BaseDto implements IBoard {
     private String content;
     private Integer viewQty;
     private Integer likeQty;
-    private String delFlag;
 }

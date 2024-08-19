@@ -25,7 +25,7 @@ public class CUDInfoDto {
             return;
         }
         iBase.setCreateDt(this.getSystemDt());
-        iBase.setCreateId(loginUser.getLoginId());
+        iBase.setCreateId(loginUser.getNickname());
     }
 
     public void setUpdateInfo(IBase iBase) {
@@ -33,7 +33,7 @@ public class CUDInfoDto {
             return;
         }
         iBase.setUpdateDt(this.getSystemDt());
-        iBase.setUpdateId(loginUser.getLoginId());
+        iBase.setUpdateId(loginUser.getNickname());
     }
 
     public void setDeleteInfo(IBase iBase) {
@@ -41,6 +41,6 @@ public class CUDInfoDto {
             return;
         }
         iBase.setDeleteDt(this.getSystemDt());
-        iBase.setDeleteId(loginUser.getLoginId());
+        iBase.setDeleteId(loginUser.getNickname());
     }
 }

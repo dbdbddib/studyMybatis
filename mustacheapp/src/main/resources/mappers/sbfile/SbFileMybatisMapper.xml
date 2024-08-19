@@ -6,12 +6,12 @@
     <insert id="insert" parameterType="SbFileDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sbfile_tbl ( name
                               , ord
-                              , file_type
-                              , uniq_name
+                              , fileType
+                              , uniqName
                               , length
                               , description
                               , tbl
-                              , board_id)
+                              , boardId)
         VALUES ( #{name}
                , #{ord}
                , #{fileType}
@@ -27,19 +27,34 @@
         WHERE id = #{id}
     </delete>
 
+    <select id="findById" resultType="SbFileDto">
+        SELECT id
+             , name
+             , ord
+             , fileType
+             , uniqName
+             , length
+             , description
+             , tbl
+             , boardId
+        FROM sbfile_tbl
+        WHERE id = #{id}
+        ORDER BY ord
+    </select>
+
     <select id="findAllByTblBoardId" parameterType="SbFileDto" resultType="SbFileDto">
         SELECT id
              , name
              , ord
-             , file_type
-             , uniq_name
+             , fileType
+             , uniqName
              , length
              , description
              , tbl
-             , board_id
+             , boardId
         FROM sbfile_tbl
         WHERE tbl = #{tbl}
-          AND board_id = #{boardId}
+          AND boardId = #{boardId}
         ORDER BY ord
     </select>
 </mapper>

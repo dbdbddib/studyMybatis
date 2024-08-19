@@ -38,7 +38,7 @@ public class SbFileServiceImpl implements ISbFileService {
     }
 
     @Override
-    public Boolean deleteFlag(CUDInfoDto info, ISbFile dto) {
+    public Boolean updateDeleteFlag(CUDInfoDto info, ISbFile dto) {
         return null;
     }
 
@@ -53,7 +53,11 @@ public class SbFileServiceImpl implements ISbFileService {
 
     @Override
     public ISbFile findById(Long id) {
-        return null;
+        if ( id == null || id <= 0 ) {
+            return null;
+        }
+        SbFileDto find = this.sbFileMybatisMapper.findById(id);
+        return find;
     }
 
     @Override

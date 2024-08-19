@@ -4,15 +4,43 @@
     <!-- mapper namespace="@Mapper 로 선언된 클래스의 풀패키지.클래스 이름"-->
 
     <insert id="insert" parameterType="MemberDto" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO member_tbl ( name, login_id, password, email, role, organization )
-        VALUES ( #{name}, #{loginId}, #{password}, #{email}, #{role}, #{organization} )
+        INSERT INTO member_tbl ( name
+                               , nickname
+                               , loginId
+                               , password
+                               , email
+                               , role
+                               , active
+                               , createDt
+                               , createId )
+        VALUES ( #{name}
+               , #{nickname}
+               , #{loginId}
+               , #{password}
+               , #{email}
+               , #{role}
+               , #{active}
+               , #{createDt}
+               , #{createId} )
     </insert>
 
     <update id="update" parameterType="MemberDto">
         UPDATE member_tbl
-            SET name = #{name},
-            email = #{email},
-            role = #{role}
+            SET name = #{name}
+            , nickname = #{nickname}
+            , email = #{email}
+            , role = #{role}
+            , active = #{active}
+            , updateDt = #{updateDt}
+            , updateId = #{updateId}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateDeleteFlag" parameterType="MemberDto">
+        UPDATE member_tbl
+        SET deleteFlag = #{deleteFlag}
+          , deleteDt = #{deleteDt}
+          , deleteId = #{deleteId}
         WHERE id = #{id}
     </update>
 
@@ -24,37 +52,90 @@
     <select id="findById" resultType="MemberDto">
         SELECT id
              , name
-             , login_id
+             , nickname
+             , loginId
              , email
              , role
+             , active
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
         FROM member_tbl
         WHERE id = #{id}
+          AND deleteFlag = false
     </select>
+
     <select id="findByLoginId" resultType="MemberDto">
         SELECT id
              , name
-             , login_id
+             , nickname
+             , loginId
              , password
              , email
              , role
+             , active
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
         FROM member_tbl
-        WHERE login_id = #{loginId}
+        WHERE loginId = #{loginId}
+          AND deleteFlag = false
+    </select>
+
+    <select id="findByNickname" resultType="MemberDto">
+        SELECT id
+             , name
+             , nickname
+             , loginId
+             , password
+             , email
+             , role
+             , active
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
+        FROM member_tbl
+        WHERE nickname = #{nickname}
+          AND deleteFlag = false
     </select>
 
     <select id="countAllByLoginIdContains" parameterType="SearchAjaxDto" resultType="int">
         SELECT count(*)
         FROM member_tbl
-        WHERE login_id like CONCAT('%',#{searchName},'%')
+        WHERE loginId like CONCAT('%',#{searchName},'%')
+          AND deleteFlag = false
     </select>
 
     <select id="findAllByLoginIdContains" parameterType="SearchAjaxDto" resultType="MemberDto">
         SELECT id
              , name
-             , login_id
+             , nickname
+             , loginId
              , email
              , role
+             , active
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
         FROM member_tbl
-        WHERE login_id like CONCAT('%',#{searchName},'%')
+        WHERE loginId like CONCAT('%',#{searchName},'%')
+          AND deleteFlag = false
         ORDER BY ${orderByWord}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>

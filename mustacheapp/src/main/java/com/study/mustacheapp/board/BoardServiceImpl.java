@@ -122,14 +122,14 @@ public class BoardServiceImpl implements IBoardService {
     }
 
     @Override
-    public Boolean deleteFlag(CUDInfoDto info, BoardDto dto) {
+    public Boolean updateDeleteFlag(CUDInfoDto info, BoardDto dto) {
         if ( info == null || dto == null ) {
             return false;
         }
         BoardDto delete = BoardDto.builder().build();
         delete.copyFields(dto);
         info.setDeleteInfo(delete);
-        this.boardMybatisMapper.deleteFlag(delete);
+        this.boardMybatisMapper.updateDeleteFlag(delete);
         return true;
     }
 

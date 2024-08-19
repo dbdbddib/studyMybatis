@@ -18,9 +18,6 @@ public interface IBoard extends IBase {
     Integer getLikeQty();
     void setLikeQty(Integer likeQty);
 
-    String getDelFlag();
-    void setDelFlag(String delFlag);
-
     default void copyFields(IBoard from) {
         if (from == null) {
             return;
@@ -39,9 +36,6 @@ public interface IBoard extends IBase {
         }
         if (from.getLikeQty() != null) {
             this.setLikeQty(from.getLikeQty());
-        }
-        if (from.getDelFlag() != null && !from.getDelFlag().isEmpty()) {
-            this.setDelFlag(from.getDelFlag());
         }
         IBase.super.copyFields(from);
     }

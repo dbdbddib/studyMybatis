@@ -292,7 +292,7 @@
             $("#content2").val(item.content);
             $("#viewQty2").val(item.viewQty);
             $("#likeQty2").text(item.likeQty);
-            let count = item.delFlag;
+            let count = item.deleteDt;
             if ( count === "0" ) {
                 $("#heartIcon").attr("src", "/svg/heartOff.svg");
             } else {
@@ -328,6 +328,7 @@
             let html = "";
             $("#fileList").children().remove();
             for ( const file of list ) {
+                let id = file.id;
                 let tbl = file.tbl;
                 let name = file.name;
                 let uniqName = file.uniqName;
@@ -335,6 +336,7 @@
                 let size = file.length;
                 html += "<div onclick=\"$.downloadFile('" + tbl + "', '" + name + "'" +
                     ", '" + uniqName + "', '" + fileType + "')\">" + name + ", " + size + "</div>";
+                html += "<div onclick='$.downloadFileId(" + id + ")'>※</div>";
             }
             $("#fileList").append(html);
         }
@@ -345,6 +347,14 @@
                 return;
             }
             document.location.href = "/api/v1/board/file/" + tbl + "/" + name + "/" + uniqName + "/" + fileTpye;
+        }
+
+        $.downloadFileId = function (id) {
+            if (id === undefined || id <= 0) {
+                return;
+            }
+            document.location.href = "/api/v1/board/fileId/" + id;
+            // ISbFileService findById 필요하다.
         }
 
         $.makePageUI = function (paramTotal, paramPage) {
@@ -468,7 +478,7 @@
                 url: "/api/v1/board/delflag",
                 type: "DELETE",
                 datatype: "JSON",
-                data: JSON.stringify({"id": id, "name": name}),
+                data: JSON.stringify({"id": id, "deleteFlag": true}),
                 contentType: "application/json; charset=UTF-8",
             }).done(function (data, status, xhr) {
                 console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);

@@ -11,7 +11,7 @@ public interface IMemberService extends ICommonService<MemberDto> {
     IMember login(LoginRequest dto);
     IMember addMember(SignUpRequest dto);
     IMember findByLoginId(String loginId);
-
+    IMember findByNickname(String nickname);
     List<IMember> findAllByLoginIdContains(SearchAjaxDto dto);
     int countAllByLoginIdContains(SearchAjaxDto dto);
 }
