@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.mustacheapp.sbfile.ISbFileMybatisMapper">
+
+    <insert id="insert" parameterType="SbFileDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sbfile_tbl ( name
+                              , ord
+                              , file_type
+                              , uniq_name
+                              , length
+                              , description
+                              , tbl
+                              , board_id)
+        VALUES ( #{name}
+               , #{ord}
+               , #{fileType}
+               , #{uniqName}
+               , #{length}
+               , #{description}
+               , #{tbl}
+               , #{boardId})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM sbfile_tbl
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findAllByTblBoardId" parameterType="SbFileDto" resultType="SbFileDto">
+        SELECT id
+             , name
+             , ord
+             , file_type
+             , uniq_name
+             , length
+             , description
+             , tbl
+             , board_id
+        FROM sbfile_tbl
+        WHERE tbl = #{tbl}
+          AND board_id = #{boardId}
+        ORDER BY ord
+    </select>
+</mapper>

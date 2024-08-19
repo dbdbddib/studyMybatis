@@ -273,6 +273,7 @@
             }).done(function (data, status, xhr) {
                 console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
                 if (status === "success") {
+                    $.getBoardFiles(id);
                     $.showBoardInfo(data);
                 }
             }).fail(function (jqXHR, status, errorThrown) {
@@ -298,6 +299,52 @@
                 $("#heartIcon").attr("src", "/svg/heartOn.svg");
             }
             $("#showViewModalButton").trigger("click");
+        }
+
+        $.getBoardFiles = function (id) {
+            if (id <= 0) {
+                return;
+            }
+            $.ajax({
+                url: "/api/v1/board/files/board/" + id,
+                type: "GET",
+                datatype: "JSON",
+                contentType: "application/json; charset=UTF-8", // 응답받는 데이터 형식
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                if (status === "success") {
+                    $.showBoardFiles(data);
+                }
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("첨부파일 보기 실패했습니다.");
+            });
+        }
+
+        $.showBoardFiles = function (list) {
+            if (list == null) {
+                return;
+            }
+            let html = "";
+            $("#fileList").children().remove();
+            for ( const file of list ) {
+                let tbl = file.tbl;
+                let name = file.name;
+                let uniqName = file.uniqName;
+                let fileType = file.fileType;
+                let size = file.length;
+                html += "<div onclick=\"$.downloadFile('" + tbl + "', '" + name + "'" +
+                    ", '" + uniqName + "', '" + fileType + "')\">" + name + ", " + size + "</div>";
+            }
+            $("#fileList").append(html);
+        }
+
+        $.downloadFile = function (tbl, name, uniqName, fileTpye) {
+            if (tbl === undefined || tbl === '' || name === undefined || name === ''
+                || uniqName === undefined || uniqName === '' || fileTpye === undefined || fileTpye === '') {
+                return;
+            }
+            document.location.href = "/api/v1/board/file/" + tbl + "/" + name + "/" + uniqName + "/" + fileTpye;
         }
 
         $.makePageUI = function (paramTotal, paramPage) {
@@ -353,12 +400,20 @@
             if (!confirm(name + " 추가 하시겠습니까 ?")) {
                 return;
             }
+
+            let formData = new FormData();
+            for ( const file of fileArray ) {
+                formData.append("files", file);
+            }
+            formData.append("boardDto", new Blob([JSON.stringify({"name": name, "content": content})], {type:"application/json"}));
+
             $.ajax({
                 url: "/api/v1/board",
                 type: "POST",
                 datatype: "JSON",
-                data: JSON.stringify({"name": name, "content": content}),
-                contentType: "application/json; charset=UTF-8",
+                data: formData,
+                contentType: false,
+                processData: false,
             }).done(function (data, status, xhr) {
                 console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
                 // insert 완료시
@@ -501,6 +556,21 @@
                 });
             }
         }
+
+        let fileArray = new Array();
+
+        $.addFile = function(inputFile) {
+            let num = 0;
+            for ( const file of inputFile.files ) {
+                let html = "";
+                html += "<div id='file" + num + "' class='filebox'>";
+                html += "<div class='filename'>" + file.name + "</div>";
+                html += "</div>";
+                $(".file-list").append(html);
+                fileArray.push(file);
+                num++;
+            }
+        }
     </script>
 </head>
 <body>
@@ -562,6 +632,11 @@
                     <div>
                         <label for="content">content</label> <textarea id="content" name="content"></textarea>
                     </div>
+                    <div>
+                        <label for="file">첨부파일</label>
+                        <input type="file" id="file" name="file" onchange="$.addFile(this);" multiple />
+                        <div class="file-list"></div>
+                    </div>
                     <div class="row">
                         <div class="col-6">
                             <button id="addButton" onclick="$.addInsert();">추가</button>
@@ -584,6 +659,9 @@
                 </div>
                 <div>
                     <label for="content2">Name</label> <textarea id="content2" name="content2"></textarea>
+                </div>
+                <div>
+                    <div id="fileList" class="file-list"></div>
                 </div>
                 <div class="row">
                     <div class="col-6">
