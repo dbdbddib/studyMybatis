@@ -1,3 +1,9 @@
+## 좋은 프래그래머는 입력 데이터형과 출력 데이터형이 맞는 개발자!
+public String {
+  return String
+}
+
+# 경로
 + studyMybatis
   + mybatisapp  ( Thymeleaf )
   + mustacheapp ( mustache )
@@ -5,23 +11,31 @@
 # CRUD
 CRUD는 “Create, Read, Update, Delete”의 약어로 데이터베이스와 같은 시스템에서 기본적인 데이터 관리 기능을 의미
 CRUD는 거의 모든 시스템에 적용되는 가장 기본
-
+```
  이름     SQL문
+
 CREATE    INSERT
 READ      SELECT
 UPDATE    UPDATE
 DELETE    DELETE
-
+```
 
 ### REST API 에서의 CRUD
 
-클라이언트 <-> 서버간 HTTP 프로토콜을 이용해 REST API를 설계하고 작성할 때에도 CRUD 개념이 사용
+* REST API (Representational State Transfer)
+    + 웹 서비스를 개발하고 서로 다른 시스템 간에 데이터를 주고받을 수 있도록 하는 아키텍처 스타일 (아키텍쳐 스타일: 시스템을 설계하는 다양한 방법)
+    + 다른 프로그램들이 서로 통신하고 데이터를 교환할 수 있도록 해주는 일종의 규약
 
+* 클라이언트 <-> 서버간 HTTP 프로토콜을 이용해 REST API를 설계하고 작성할 때에도 CRUD 개념이 사용
+
+```
  이름     HTTP METHOD
+
 CREATE    POST
 READ      GET
 UPDATE    PUT, PATCH
 DELETE    DELETE
+```
 
 * Create (생성)
   - HTTP 메서드: POST
@@ -115,7 +129,7 @@ DELETE    DELETE
   + 만약 @RequestMapping("/ctweb") 는 /ctweb 경로로 들어오는 요청을 처리
 
 * @Autowired
-  + 필요한 객체를 직접 생성
+  + 필요한 객체 스프링부트가 생성
 
 * @Mapper
   + MyBatis 프레임워크에서 사용하는 애노테이션
@@ -143,11 +157,14 @@ DELETE    DELETE
 
 * @SuperBuilder
   + 상속 관계가 있는 클래스에서 빌더 패턴을 사용할 수 있게 합니다.
+  + 상속이 되는 순간 @SuperBuilder 사용 해야됨
     
   ```
   SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
                     .name(name).page(page).build();
 
+* @Null
+    + 없어도 되는 필드값
 
 # 메소드
 
