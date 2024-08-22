@@ -222,6 +222,54 @@ Impl은 "Implementation"의 약어로, 인터페이스를 실제로 구현한 �
     + url
     + 매개변수
 
+# 환경설정
++ resource -> application.properties
+    + db 연결 설정
+      ```
+      spring.datasource.driver-class-name=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      DriverSpy는 log4jdbc 라이브러리의 드라이버 클래스
+      log4jdbc는 JDBC 쿼리를 로깅해 주는 라이브러리로, SQL 실행 쿼리와 SQL 실행 시간을 로그에 기록할 수 있습니다. 디버깅이나 성능 모니터링에 유용
+      
+      spring.datasource.url=jdbc:log4jdbc:mysql://192.168.0.2:3306/phonebook_db?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      데이터베이스 연결 URL
+      
+      spring.datasource.username=phonebook_user
+      phonebook_user는 데이터베이스에 접근
+      
+      spring.datasource.password=sangbong3!
+      데이터베이스에 연결할 때 사용할 비밀번호
+      ``` 
+    + MyBatis 설정
+      ```
+      1. mybatis.mapper-locations=classpath:mapper/**/*.xml
+      MyBatis 매퍼 XML 파일의 위치를 지정합니다.
+      
+      2. mybatis.configuration.map-underscore-to-camel-case=true
+      데이터베이스 컬럼명이 언더스코어 '_' 로 작성된 경우, 이를 자동으로 자바 객체의 카멜 케이스(camelCase) 프로퍼티로 매핑합니다.
+      ex) 'user_name' -> 'userName'
+      
+      3. mybatis.type-aliases-package=com.sb3.sun.sunprj
+      MyBatis에서 사용할 타입 별칭(type alias)이 정의된 패키지를 지정합니다.
+      com.sb3.sun.sunprj 패키지 아래의 모든 클래스가 별칭으로 사용할 수 있게 됩니다.
+      이 설정을 통해 XML에서 전체 클래스 이름을 입력하지 않고 간단한 별칭을 사용할 수 있습니다.
+      ```
+    + Mustache 설정
+      ```
+      1. spring.mustache.check-template-location=true
+      Mustache 템플릿 파일이 설정된 위치에 존재하는지 확인합니다.
+      
+      2. spring.mustache.enabled=true
+      Mustache 템플릿 엔진을 활성화합니다.
+      
+      3.spring.mustache.charset=UTF-8
+      Mustache 템플릿 파일을 읽을 때 사용할 문자 인코딩을 설정
+      
+      4. spring.mustache.suffix=.html
+      Mustache 템플릿 파일의 확장자를 설정
+      예를 들어, example.html 템플릿 파일을 example로 호출
+      ```
+  
+
 # 그 외
 + 템플릿 엔진
   * 템플린 엔진이란?
