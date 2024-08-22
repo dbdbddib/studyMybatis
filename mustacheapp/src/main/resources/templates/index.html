@@ -13,21 +13,35 @@
 
         <div><a href="/user/infoCookie">user/ 회원 정보보기</a></div>
         <div><a href="/admin/infoCookie">admin/ 관리자 정보보기</a></div>
-
-        <hr />
-        <div>세션형 로그인</div>
-        <div><a href="/selogin/signup">회원가입</a></div>
-        <div><a href="/selogin/login">로그인</a></div>
-        <br />
-        <div><a href="/admin/infoSession">admin/ 관리자 정보보기</a></div>
-        <div><a href="/catweb/category_list?page=1&searchName=">관리자, CRUD 각각 화면이 있는 category html(화면 주소가 다 다름)</a></div>
-        <br />
-        <div><a href="/user/infoSession">user/ 회원 정보보기</a></div>
-        <div><a href="/catajx/category_ajx_list">(모든사람은 화면은 보이나 데이터 조회는 회원만 가능), CRUD 화면이 한 개인 category html(화면 주소가 하나임)</a></div>
-        <hr />
         <div><a href="/signout">로그아웃</a></div>
         <hr />
-        <div><a href="/board/board_ajx_list">게시판 목록</a></div>
+        <div>세션형 로그인</div>
+        {{#sb3}}
+        <div>
+            <h2>{{nickname}}님 환영합니다 !</h2>
+            <h4>권한은 {{role}} 입니다.</h4>
+            <div><a href="/user/infoSession">user/ 회원 정보보기</a></div>
+            <button onclick="location.href='/user/infoSession'">유저 정보</button> <br/><br/>
+            <div><a href="/admin/infoSession">admin/ 관리자 정보보기</a></div>
+            <button onclick="location.href='/admin/infoSession'">관리자 페이지</button> <br/><br/>
+			
+	        <div><a href="/catweb/category_list?page=1&searchName=">category : CRUD 화면이 각각 있는 방식</a></div>
+	        <div><a href="/catajx/category_ajx_list">category : CRUD 화면이 한개 만 있는 Ajax 통신방식</a></div>
+            <div><a href="/member/member_ajx_list">member : (관리자만 추가/수정/삭제 가능, 본인만 수정 가능)</a></div> <br/><br/>
+	        <div><a href="/board/board_ajx_list">게시판 목록</a></div> <br/>
+            <div><a href="/signout">로그아웃</a></div>
+            <button onclick="location.href='/signout'">로그아웃</button>
+        </div>
+        {{/sb3}}
+        {{^sb3}}
+        <div>
+            <h3>로그인 되어있지 않습니다!</h3>
+            <div><a href="/selogin/signup">회원가입</a></div>
+            <button onclick="location.href='/selogin/signup'">회원 가입</button>
+            <div><a href="/selogin/login">로그인</a></div>
+            <button onclick="location.href='/selogin/login'">로그인</button>
+        </div>
+        {{/sb3}}
     </div>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.study.mustacheapp.security.controller;
 import com.study.mustacheapp.member.IMember;
 import com.study.mustacheapp.member.IMemberService;
 import com.study.mustacheapp.member.MemberRole;
+import com.study.mustacheapp.security.config.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,21 +23,24 @@ public class AdminController {
     private IMemberService memberService;
 
     @GetMapping("/infoCookie")
-    private String showInfoCookie(Model model, @CookieValue(name =" loginId", required = false) String loginId) {
-        if ( loginId == null ) {
+    private String showInfoCookie(Model model, @CookieValue(value = SecurityConfig.LOGINUSER, required = false) String loginKeyName) {
+        if ( loginKeyName == null ) {
             return "redirect:/";
         }
-        IMember loginUser = memberService.findByLoginId(loginId);
+        IMember loginUser = this.memberService.findByNickname(loginKeyName);
+        if ( loginUser == null ) {
+            return "redirect:/";
+        }
         if ( !loginUser.getRole().equals(MemberRole.ADMIN.toString()) ) {
             return "redirect:/";
         }
-        model.addAttribute("loginUser", loginUser);
+        model.addAttribute(SecurityConfig.LOGINUSER, loginUser);
         return "admin/info";
     }
 
     @GetMapping("/infoSession")
     private String showInfoSession(Model model) {
-        IMember loginUser = (IMember)model.getAttribute("loginUser");
+        IMember loginUser = (IMember)model.getAttribute(SecurityConfig.LOGINUSER);
         if ( loginUser == null ) {
             return "redirect:/";
         }

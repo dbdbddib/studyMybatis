@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.mustacheapp.sblike.ISbLikeMybatisMapper">
+
+    <insert id="insert" parameterType="SbLikeDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sblike_tbl ( tbl
+                              , nickname
+                              , boardId)
+        VALUES ( #{tbl}
+               , #{nickname}
+               , #{boardId})
+    </insert>
+
+    <delete id="deleteByTableUserBoard" parameterType="SbLikeDto">
+        DELETE FROM sblike_tbl
+        WHERE tbl = #{tbl}
+          AND nickname = #{nickname}
+          AND boardId = #{boardId}
+    </delete>
+
+    <select id="countByTableUserBoard" resultType="Integer" parameterType="SbLikeDto">
+        SELECT count(*)
+        FROM sblike_tbl
+        WHERE tbl = #{tbl}
+          AND nickname = #{nickname}
+          AND boardId = #{boardId}
+    </select>
+</mapper>

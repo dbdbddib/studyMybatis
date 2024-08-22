@@ -1,8 +1,11 @@
 package com.study.mustacheapp.board;
 
-import com.study.mustacheapp.boardlike.BoardLikeDto;
-import com.study.mustacheapp.boardlike.BoardLikeServiceImpl;
-import com.study.mustacheapp.boardlike.IBoardLikeMybatisMapper;
+import com.study.mustacheapp.filecntl.FileCtrlService;
+import com.study.mustacheapp.sbfile.ISbFileMybatisMapper;
+import com.study.mustacheapp.sbfile.ISbFileService;
+import com.study.mustacheapp.sbfile.SbFileDto;
+import com.study.mustacheapp.sblike.SbLikeDto;
+import com.study.mustacheapp.sblike.ISbLikeMybatisMapper;
 import com.study.mustacheapp.commons.dto.CUDInfoDto;
 import com.study.mustacheapp.commons.dto.SearchAjaxDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +19,13 @@ public class BoardServiceImpl implements IBoardService {
     private IBoardMybatisMapper boardMybatisMapper;
 
     @Autowired
-    private IBoardLikeMybatisMapper boardLikeMybatisMapper;
+    private ISbLikeMybatisMapper sbLikeMybatisMapper;
+
+    @Autowired
+    private ISbFileMybatisMapper sbFileMybatisMapper;
+
+    @Autowired
+    private FileCtrlService fileCtrlService;
 
     @Override
     public void addViewQty(Long id) {
@@ -31,17 +40,17 @@ public class BoardServiceImpl implements IBoardService {
         if ( cudInfoDto == null || cudInfoDto.getLoginUser() == null || id == null || id <= 0 ) {
             return;
         }
-        BoardLikeDto boardLikeDto = BoardLikeDto.builder()
-                .tbl("board")
-                .likeUserId(cudInfoDto.getLoginUser().getLoginId())
+        SbLikeDto boardLikeDto = SbLikeDto.builder()
+                .tbl(new BoardDto().getTbl())
+                .nickname(cudInfoDto.getLoginUser().getNickname())
                 .boardId(id)
                 .build();
 
-        Integer count = this.boardLikeMybatisMapper.countByTableUserBoard(boardLikeDto);
+        Integer count = this.sbLikeMybatisMapper.countByTableUserBoard(boardLikeDto);
         if ( count > 0 ) {
             return;
         }
-        this.boardLikeMybatisMapper.insert(boardLikeDto);
+        this.sbLikeMybatisMapper.insert(boardLikeDto);
         this.boardMybatisMapper.addLikeQty(id);
     }
 
@@ -50,17 +59,17 @@ public class BoardServiceImpl implements IBoardService {
         if ( cudInfoDto == null || cudInfoDto.getLoginUser() == null || id == null || id <= 0 ) {
             return;
         }
-        BoardLikeDto boardLikeDto = BoardLikeDto.builder()
-                .tbl("board")
-                .likeUserId(cudInfoDto.getLoginUser().getLoginId())
+        SbLikeDto boardLikeDto = SbLikeDto.builder()
+                .tbl(new BoardDto().getTbl())
+                .nickname(cudInfoDto.getLoginUser().getNickname())
                 .boardId(id)
                 .build();
 
-        Integer count = this.boardLikeMybatisMapper.countByTableUserBoard(boardLikeDto);
+        Integer count = this.sbLikeMybatisMapper.countByTableUserBoard(boardLikeDto);
         if ( count < 1 ) {
             return;
         }
-        this.boardLikeMybatisMapper.deleteByTableUserBoard(boardLikeDto);
+        this.sbLikeMybatisMapper.deleteByTableUserBoard(boardLikeDto);
         this.boardMybatisMapper.subLikeQty(id);
     }
 
@@ -84,6 +93,9 @@ public class BoardServiceImpl implements IBoardService {
         if ( searchAjaxDto.getRowsOnePage() == null ) {
             // 한 페이지당 보여주는 행의 갯수
             searchAjaxDto.setRowsOnePage(10);
+        }
+        if ( searchAjaxDto.getPage() <= 0 ) {
+            searchAjaxDto.setPage(1);
         }
         List<BoardDto> list = this.boardMybatisMapper.findAllByNameContains(searchAjaxDto);
         return list;
@@ -130,6 +142,13 @@ public class BoardServiceImpl implements IBoardService {
         delete.copyFields(dto);
         info.setDeleteInfo(delete);
         this.boardMybatisMapper.updateDeleteFlag(delete);
+        SbFileDto search = SbFileDto.builder().tbl(dto.getTbl()).boardId(delete.getId()).build();
+        List<SbFileDto> list = this.sbFileMybatisMapper.findAllByTblBoardId(search);
+        for ( SbFileDto sbFileDto : list ) {
+            sbFileDto.setDeleteFlag(true);
+            this.sbFileMybatisMapper.updateDeleteFlag(sbFileDto);
+            // this.fileCtrlService.deleteFile(sbFileDto.getTbl(), sbFileDto.getUniqName(), sbFileDto.getFileType());
+        }
         return true;
     }
 

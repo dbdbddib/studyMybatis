@@ -5,11 +5,15 @@
     <title>로그인 한 관리자 ADMIN</title>
 </head>
 <body>
-    {{#loginUser}}
-    <div>이름 : {{name}}</div>
-    <div>이메일 : {{email}}</div>
-    <div>role : {{role}}</div>
-    {{/loginUser}}
+    <div>관리자만 볼 수 있습니다.</div>
+    {{#sb3}}
+    <div>
+        <div>이름 : {{name}}</div>
+        <div>닉네임 : {{nickname}}</div>
+        <div>이메일 : {{email}}</div>
+        <div>Role : {{role}}</div>
+    </div>
+    {{/sb3}}
     <button onclick="history.back();">뒤로가기</button>
 </body>
 </html>

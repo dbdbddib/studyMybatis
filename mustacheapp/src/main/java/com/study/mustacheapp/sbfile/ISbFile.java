@@ -16,8 +16,8 @@ public interface ISbFile {
     String getUniqName();
     void setUniqName(String uniqName);
 
-    Integer getLength();
-    void setLength(Integer length);
+    Long getLength();
+    void setLength(Long length);
 
     String getDescription();
     void setDescription(String description);
@@ -27,6 +27,9 @@ public interface ISbFile {
 
     Long getBoardId();
     void setBoardId(Long boardId);
+
+    Boolean getDeleteFlag();
+    void setDeleteFlag(Boolean deleteFlag);
 
     default void copyFields(ISbFile from) {
         if (from == null) {
@@ -58,6 +61,9 @@ public interface ISbFile {
         }
         if (from.getBoardId() != null) {
             this.setBoardId(from.getBoardId());
+        }
+        if (from.getDeleteFlag() != null) {
+            this.setDeleteFlag(from.getDeleteFlag());
         }
     }
 }

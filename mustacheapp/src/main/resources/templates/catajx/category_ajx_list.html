@@ -169,7 +169,7 @@
             let searchName = $("#searchName").val();
             // id="searchName" 요소의 value 속성의 값을 가져온다.
             $.ajax({    // jQuery Ajax 비동기 서버와 통신
-                url: "/ct/searchName",  // 서버 주소
+                url: "/api/vi/cat/searchName",  // 서버 주소
                 type: "POST",   // method 방식
                 datatype: "JSON",   // 전송하는 데이터 방식
                 data: JSON.stringify({
@@ -189,9 +189,9 @@
                 console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
                 // javascript 기본 객체 console 에 프린트한다.
                 if (status === "success") {
-                    $("#total").html(data.total);   // id="total" 요소의 <요소>문자</요소> html 의 문자를 설정한다.
-                    $.showCategoryList(data.dataList);
-                    $.makePageUI(data.total, page);
+                    $("#total").html(data.responseData.total);   // id="total" 요소의 <요소>문자</요소> html 의 문자를 설정한다.
+                    $.showCategoryList(data.responseData.dataList);
+                    $.makePageUI(data.responseData.total, page);
                 }
             }).fail(function (jqXHR, status, errorThrown) {
                 // ajax 의 요청이 실패하면 실행한다.
@@ -199,7 +199,7 @@
                 // status : http 응답, 4XX, 5XX
                 // errorThrown : error 를 던진 곳의 정보
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-                alert("검색을 실패했습니다.");
+                alert("검색을 실패했습니다. " + jqXHR.responseJSON.message);
             });
         }
 
@@ -230,18 +230,18 @@
                 return;
             }
             $.ajax({
-                url: "/ct/" + id,
+                url: "/api/vi/cat/" + id,
                 type: "GET",
                 datatype: "JSON",
                 contentType: "application/json; charset=UTF-8", // 응답받는 데이터 형식
             }).done(function (data, status, xhr) {
                 console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
                 if (status === "success") {
-                    $.showCategoryInfo(data);
+                    $.showCategoryInfo(data.responseData);
                 }
             }).fail(function (jqXHR, status, errorThrown) {
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-                alert("보기 실패했습니다.");
+                alert("보기 실패했습니다. " + jqXHR.responseJSON.message);
             });
         }
 
@@ -307,7 +307,7 @@
                 return;
             }
             $.ajax({
-                url: "/ct",
+                url: "/api/vi/cat",
                 type: "POST",
                 datatype: "JSON",
                 data: JSON.stringify({"name": name}),
@@ -323,7 +323,7 @@
                 // class="modalCloseButton" 요소를 클릭하는 이벤트를 발생한다.
             }).fail(function (jqXHR, status, errorThrown) {
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-                alert("추가를 실패했습니다.");
+                alert("추가를 실패했습니다. " + jqXHR.responseJSON.message);
             });
         }
 
@@ -334,7 +334,7 @@
                 return;
             }
             $.ajax({
-                url: "/ct/" + id,
+                url: "/api/vi/cat/" + id,
                 type: "PATCH",
                 datatype: "JSON",
                 data: JSON.stringify({"id": id, "name": name}),
@@ -349,7 +349,7 @@
                 // class="modalCloseButton" 요소를 클릭하는 이벤트를 발생한다.
             }).fail(function (jqXHR, status, errorThrown) {
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-                alert("수정를 실패했습니다.");
+                alert("수정를 실패했습니다. " + jqXHR.responseJSON.message);
             });
         }
 
@@ -360,7 +360,7 @@
                 return;
             }
             $.ajax({
-                url: "/ct/" + id,
+                url: "/api/vi/cat/" + id,
                 type: "DELETE",
                 datatype: "JSON",
                 contentType: "application/json; charset=UTF-8",
@@ -376,7 +376,7 @@
                 // }
             }).fail(function (jqXHR, status, errorThrown) {
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-                alert("삭제를 실패했습니다.");
+                alert("삭제를 실패했습니다. " + jqXHR.responseJSON.message);
             });
         }
 
@@ -384,7 +384,7 @@
             // searchName 으로 검색한 데이터 전체 행 수를 가져온다.
             let searchName = $("#searchName").val();
             $.ajax({
-                url: "/ct/countName",
+                url: "/api/vi/cat/countName",
                 type: "POST",
                 datatype: "JSON",
                 data: JSON.stringify({"searchName": searchName}),
@@ -404,6 +404,7 @@
                 $(".modalCloseButton").trigger("click");
             }).fail(function (jqXHR, status, errorThrown) {
                 console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("삭제 후 새로고침을 실패했습니다. " + jqXHR.responseJSON.message);
             });
         }
     </script>
@@ -454,7 +455,7 @@
         <div id="modal_box_add" style="display: none">
             <h2>Category Add</h2>
             <fieldset>
-                <label for="id">ID</label> <input id="id" name="id" readonly type="text" value=""/>
+                <label for="id">ID</label> <input id="id" name="id" type="text" value="" disabled readonly/>
                 <label for="name">Name</label> <input id="name" name="name" type="text" value=""/>
             </fieldset>
             <div class="row">
@@ -469,7 +470,7 @@
         <div id="modal_box_view" style="display: none">
             <h2>Category Info</h2>
             <fieldset>
-                <label for="id2">ID</label> <input id="id2" name="id2" readonly type="text" value=""/>
+                <label for="id2">ID</label> <input id="id2" name="id2" type="text" value="" disabled readonly/>
                 <label for="name2">Name</label> <input id="name2" name="name2" type="text" value=""/>
             </fieldset>
             <div class="row">

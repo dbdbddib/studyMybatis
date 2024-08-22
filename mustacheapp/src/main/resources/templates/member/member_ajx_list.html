@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Member Ajax CRUD</title>
+    <!--    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">-->
+    <!--    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">-->
+    <!--    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">-->
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    <style>
+        .itemRow {
+            width: fit-content;
+        }
+    </style>
+    <script>
+        let page = 0;
+        let total = 0;
+        let sortColumn = "id";
+        let sortAscDesc = "DESC";
+        let rowsOnePage = 10;
+        $(function () {
+            // jQuery 3.0 버전부터 실행할 기능을 정의해주세요.
+            // HTML 문서 로딩이 완료되면 자동적으로 최초 한번 실행되는 jQuery 부분
+            $.searchItemList(1);
+
+            $("#updateButton").click(function () {
+                // id="updateButton" 요소의 마우스 클릭 이벤트발생 시 실행한다.
+                $.update();
+            });
+
+            $("#deleteButton").click(function () {
+                // id="deleteButton" 요소의 마우스 클릭 이벤트발생 시 실행한다.
+                $.deleteFlag();
+            });
+
+            $("#searchName").on("keyup", function (key) {
+                // id="searchName" 요소의 키보드 업 이벤트발생 시 실행한다.
+                if (key.keyCode === 13) {
+                    // key 매개변수 keyCode 에서 업 이벤트 발생한 키보드 키
+                    $.searchItemList(1);
+                }
+            });
+
+            $("#rowsOnePage").change(function () {
+                rowsOnePage = $("#rowsOnePage").val();
+                $.searchItemList(1);
+            });
+        });
+
+        $.idAsc = function () {  // jQuery 함수 선언
+            sortColumn = "id";
+            sortAscDesc = "ASC";
+            $.searchItemList(page);
+        }
+
+        $.idDesc = () => {  // jQuery 함수 선언
+            sortColumn = "id";
+            sortAscDesc = "DESC";
+            $.searchItemList(page);
+        }
+
+        $.nameAsc = function () {
+            sortColumn = "name";
+            sortAscDesc = "ASC";
+            $.searchItemList(page);
+        }
+
+        $.nameDesc = () => {
+            sortColumn = "name";
+            sortAscDesc = "DESC";
+            $.searchItemList(page);
+        }
+
+        $.searchItemList = function (pPage) {
+            page = pPage;
+            $("#id").val("");   // id="id" 요소의 value 속성의 값을 "" 설정한다.
+            $("#name").val(""); // id="name" 요소의 value 속성의 값을 "" 설정한다.
+            let searchName = $("#searchName").val();
+            // id="searchName" 요소의 value 속성의 값을 가져온다.
+            $.ajax({    // jQuery Ajax 비동기 서버와 통신
+                url: "/api/v1/member/searchName",  // 서버 주소
+                type: "POST",   // method 방식
+                datatype: "JSON",   // 전송하는 데이터 방식
+                data: JSON.stringify({
+                    "page": page,
+                    "searchName": searchName,
+                    "sortColumn": sortColumn,
+                    "sortAscDsc": sortAscDesc,
+                    "rowsOnePage": rowsOnePage,
+                }),
+                // 전송하는 실제 데이터 JSON 을 사용했다.
+                contentType: "application/json; charset=UTF-8", // 응답받는 데이터 형식
+            }).done(function (data, status, xhr) {
+                // ajax 의 요청이 완료되서 응답이 오면 실행한다.
+                // data : 실제 응답 데이터
+                // status : http 응답 성공 일 경우 "success"
+                // xhr : 부가 정보
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                // javascript 기본 객체 console 에 프린트한다.
+                if (status === "success") {
+                    $("#total").html(data.responseData.total);   // id="total" 요소의 <요소>문자</요소> html 의 문자를 설정한다.
+                    $.showItemList(data.responseData.dataList);
+                    $.makePageUI(data.responseData.total, page);
+                }
+            }).fail(function (jqXHR, status, errorThrown) {
+                // ajax 의 요청이 실패하면 실행한다.
+                // jqXHR : 부가 정보
+                // status : http 응답, 4XX, 5XX
+                // errorThrown : error 를 던진 곳의 정보
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("검색을 실패했습니다. " + jqXHR.responseJSON.message);
+            });
+        }
+
+        $.showItemList = function (itemList) {
+            // itemList 매개변수는 배열이다.
+            if (itemList == null) {
+                return;
+            }
+            const list = $("#itemList");
+            // id="itemList" 요소 객체를 가져온다.
+            list.children().remove();
+            // list 요소의 자식을 모두 삭제한다.
+            for (let i = 0; i < itemList.length; i++) {
+                let id = itemList[i].id;
+                let name = itemList[i].name;
+                let nickname = itemList[i].nickname;
+                let email = itemList[i].email;
+                let loginId = itemList[i].loginId;
+                let active = itemList[i].active;
+                let strLi = "<li><div onClick='$.viewItem(" + id + ");' class='itemRow'>"
+                    + "<span>" + id + "</span>"
+                    + "<span> : </span><span>" + name + "</span>"
+                    + "<span> : </span><span>" + nickname + "</span>"
+                    + "<span> : </span><span>" + email + "</span>"
+                    {{#adminUser}}
+                    + "<span> : </span><span>" + loginId + "</span>"
+                    + "<span> : </span><span>" + active + "</span>"
+                    {{/adminUser}}
+                    + "</div></li>";
+                list.append(strLi);
+                // itemList 배열의 요소들의 id 와 name 값을 이용하여
+                // <li><div><span>...</span>..</div></li> html 요소를 만드는
+                // list 요소의 자식으로 append 한다.
+            }
+        }
+
+        $.viewItem = function (id) {
+            if (id <= 0) {
+                return;
+            }
+            $.ajax({
+                url: "/api/v1/member/" + id,
+                type: "GET",
+                datatype: "JSON",
+                contentType: "application/json; charset=UTF-8", // 응답받는 데이터 형식
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                if (status === "success") {
+                    $.showItemInfo(data.responseData);
+                }
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("보기 실패했습니다. " + jqXHR.responseJSON.message);
+            });
+        }
+
+        $.showItemInfo = function (item) {
+            if (item == null) {
+                return;
+            }
+            $("#id").val(item.id);
+            // id="id" 요소의 value 속성의 값을 item.id 로 설정한다.
+            $("#name").val(item.name);
+            $("#nickname").val(item.nickname);
+            $("#email").val(item.email);
+            {{#adminUser}}
+            $("#loginId").val(item.loginId);
+            $("#active").prop("checked", item.active);
+            {{/adminUser}}
+        }
+
+        $.makePageUI = function (paramTotal, paramPage) {
+            // paramTotal : 전체 데이터 수
+            // paramPage : 현재 페이지 번호
+            let totPage = ~~((paramTotal + rowsOnePage - 1) / rowsOnePage);    // 전체 페이지 수
+            let startPage = getStartPage(paramPage);
+            let endPage = getEndPage(startPage, paramTotal);
+            let prev = (paramPage - 1) < 1 ? 1 : paramPage - 1;
+            let next = (paramPage + 1) >= totPage ? totPage : paramPage + 1;
+            let sClass = "btn btn-success rounded-pill";
+
+            $("#pageDiv").children().remove();
+            $("#pageDiv").append(" <a class='" + sClass + "' onclick='$.searchItemList("
+                + prev + ");'>Prev</a> ");
+            for (let i = startPage; i <= endPage; i++) {
+                if (paramPage == i) {
+                    sClass = "btn btn-primary rounded-pill";
+                }
+                $("#pageDiv").append(" <a class='" + sClass + "' onclick='$.searchItemList("
+                    + i + ");'>" + i + "</a> ");
+                sClass = "btn btn-success rounded-pill";
+            }
+            $("#pageDiv").append(" <a class='" + sClass + "' onclick='$.searchItemList("
+                + next + ");'>Next</a> ");
+        }
+
+        function getStartPage(page) {
+            // 1~10 => 1, 11~20 => 11, 21~30 => 21
+            // let startPage = ((page - 1) / 10) * 10 + 1;
+            let one = 1;
+            let ten = ~~((page - 1) / 10) * 10;
+            let startPage = ten + one;
+            return ~~(startPage);
+        }
+
+        function getEndPage(startPage, paramTotal) {
+            // 시작페이지와 마지막페이지와 최종페이지 번호를 각각 비교해서
+            // 1~56, 시작페이지 : 1,2,3,4,5,6,7,8,9,10 => end = 10
+            // 1~56, 시작페이지 : 21,22,23,24,25,26,27,28,29,30 => end = 30
+            // 1~56, 시작페이지 : 51,52,53,54,55,56 => end = 56
+            let totPage = ~~((paramTotal + rowsOnePage - 1) / rowsOnePage);
+            let tPage = startPage + 9;
+            if (tPage < totPage) {
+                return ~~(tPage);
+            }
+            return ~~(totPage);
+        }
+
+        $.addInsert = function () {
+            let name = $("#name").val();
+            let nickname = $("#nickname").val();
+            let email = $("#email").val();
+            if (!confirm(name + " 추가 하시겠습니까 ?")) {
+                return;
+            }
+            {{#adminUser}}
+            let loginId = $("#loginId").val();
+            let password = $("#password").val();
+            let requestData = JSON.stringify({"name": name, "nickname": nickname, "email": email, "loginId": loginId, "password": password});
+            {{/adminUser}}
+            {{^adminUser}}
+            let requestData = JSON.stringify({"name": name, "nickname": nickname, "email": email});
+            {{/adminUser}}
+            $.ajax({
+                url: "/api/v1/member",
+                type: "POST",
+                datatype: "JSON",
+                data: requestData,
+                contentType: "application/json; charset=UTF-8",
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                // insert 완료시
+                $("#searchName").val("");
+                $.searchItemList(1);
+                $("#id").val("");
+                $("#name").val("");
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("추가를 실패했습니다. " + jqXHR.responseJSON.message);
+            });
+        }
+
+        $.update = function () {
+            let id = $("#id").val();
+            let name = $("#name").val();
+            let nickname = $("#nickname").val();
+            let email = $("#email").val();
+            if (!confirm(name + " 수정 하시겠습니까 ?")) {
+                return;
+            }
+            {{#adminUser}}
+            let loginId = $("#loginId").val();
+            let password = $("#password").val();
+            let active = $("#active").is(":checked");
+            let requestData = JSON.stringify({"id": id, "name": name, "nickname": nickname, "email": email, "loginId": loginId, "password": password, "active": active});
+            {{/adminUser}}
+            {{^adminUser}}
+            let requestData = JSON.stringify({"id": id, "name": name, "nickname": nickname, "email": email});
+            {{/adminUser}}
+            $.ajax({
+                url: "/api/v1/member/" + id,
+                type: "PATCH",
+                datatype: "JSON",
+                data: requestData,
+                contentType: "application/json; charset=UTF-8",
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                // update 성공 완료시
+                $.searchItemList(page);
+                $("#id").val("");
+                $("#name").val("");
+                $("#nickname").val("");
+                $("#email").val("");
+                $("#loginId").val("");
+                $("#password").val("");
+                $("#active").prop("checked", false);
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("수정를 실패했습니다. " + jqXHR.responseJSON.message);
+            });
+        }
+
+        $.deleteFlag = function () {
+            let id = $("#id").val();
+            let name = $("#name").val();
+            let nickname = $("#nickname").val();
+            let email = $("#email").val();
+            if (!confirm(name + " 삭제 하시겠습니까 ?")) {
+                return;
+            }
+            $.ajax({
+                url: "/api/v1/member/deleteFlag/" + id,
+                type: "DELETE",
+                datatype: "JSON",
+                data: JSON.stringify({"id": id, "deleteFlag": true}),
+                contentType: "application/json; charset=UTF-8",
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                // delete 성공 완료시
+                if (status === "success") {
+                    $.doneDelete();
+                }
+                // 앞의 문장이 비동기 통신처리 하므로 앞의 문장이 끝날때까지 기다리지 않고 바로 실행하므로 아래의 로직이 제대로 동작하지 않는다.
+                // total = $.doneDelete();
+                // let totPage = ~~((total + rowsOnePage - 1) / rowsOnePage);
+                // if ( totPage < page ) {
+                //     page = totPage;
+                // }
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("삭제를 실패했습니다. " + jqXHR.responseJSON.message);
+            });
+        }
+
+        $.doneDelete = function () {
+            // searchName 으로 검색한 데이터 전체 행 수를 가져온다.
+            let searchName = $("#searchName").val();
+            $.ajax({
+                url: "/api/v1/member/countName",
+                type: "POST",
+                datatype: "JSON",
+                data: JSON.stringify({"searchName": searchName}),
+                contentType: "application/json; charset=UTF-8",
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                // 삭제 후에 검색식과 total 로 계산해서 현재 페이지를 page-1 해야 할지 결정 한다.
+                if (status === "success") {
+                    total = data.responseData;
+                    let totPage = ~~((total + rowsOnePage - 1) / rowsOnePage);
+                    if (totPage < page) {
+                        page = totPage;
+                    }
+                    // alert("delete : total=" + total + ", page=" + page);
+                    $.searchItemList(page);
+                    $("#id").val("");
+                    $("#name").val("");
+                }
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("삭제 후 새로고침을 실패했습니다. " + jqXHR.responseJSON.message);
+            });
+        }
+    </script>
+</head>
+<body>
+<div>
+    <label for="searchName">검색이름</label><input type="text" id="searchName" name="searchName" value=""/>
+    <input type="hidden" id="page" name="page" value=""/>
+    <button onclick="$.searchItemList(1);">검색</button>
+</div>
+<div>
+    Member Ajax List
+</div>
+<ul>
+    <li>
+        <span>id
+            <button onclick="$.idAsc();">△</button>
+            <button onclick="$.idDesc();">▽</button>
+        </span>
+        <span> : </span>
+        <span>name
+            <button onclick="$.nameAsc();">△</button>
+            <button onclick="$.nameDesc();">▽</button>
+        </span>
+        <span> : </span>
+        <span>
+            <label for="rowsOnePage">Row</label>
+            <select id="rowsOnePage">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+        </span>
+    </li>
+</ul>
+<div>
+    <span>id</span>
+    <span>name</span>
+    <span>nickname</span>
+    <span>email</span>
+    {{#adminUser}}
+    <span>loginId</span>
+    <span>active</span>
+    {{/adminUser}}
+</div>
+<ul id="itemList">
+</ul>
+<div>total : <span id="total"></span></div>
+<fieldset>
+    <label for="id">ID</label> <input type="text" id="id" name="id" value="" readonly disabled/> <br/>
+    <label for="name">Name</label> <input type="text" id="name" name="name" value=""/> <br/>
+    <label for="nickname">Nickname</label> <input type="text" id="nickname" name="nickname" value=""/> <br/>
+    <label for="email">Email</label> <input type="text" id="email" name="email" value=""/> <br/>
+    {{#adminUser}}
+    <div>관리자만 수정 가능합니다.</div>
+    <label for="loginId">loginId</label> <input type="text" id="loginId" name="loginId" value=""/> <br/>
+    <label for="password">Password</label> <input type="text" id="password" name="password" value=""/> <br/>
+    <label for="active">Active</label> <input type="checkbox" id="active" name="active" /> <br/>
+    {{/adminUser}}
+</fieldset>
+<button id="addButton" onclick="$.addInsert();">추가</button>
+<button id="updateButton">수정</button>
+<button id="deleteButton">삭제</button>
+<div id="pageDiv">
+</div>
+</body>
+</html>

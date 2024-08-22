@@ -1,32 +1,32 @@
-package com.study.mustacheapp.boardlike;
+package com.study.mustacheapp.sblike;
 
 import com.study.mustacheapp.commons.dto.CUDInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BoardLikeServiceImpl implements IBoardLikeService {
+public class SbLikeServiceImpl implements ISbLikeService {
     @Autowired
-    private IBoardLikeMybatisMapper boardLikeMybatisMapper;
+    private ISbLikeMybatisMapper sbLikeMybatisMapper;
 
     @Override
-    public IBoardLike insert(CUDInfoDto info, IBoardLike dto) {
+    public ISbLike insert(CUDInfoDto info, ISbLike dto) {
         if ( dto == null ) {
             return null;
         }
-        BoardLikeDto insert = BoardLikeDto.builder().id(0L).build();
+        SbLikeDto insert = SbLikeDto.builder().id(0L).build();
         insert.copyFields(dto);
-        boardLikeMybatisMapper.insert(insert);
+        sbLikeMybatisMapper.insert(insert);
         return insert;
     }
 
     @Override
-    public IBoardLike update(CUDInfoDto info, IBoardLike dto) {
+    public ISbLike update(CUDInfoDto info, ISbLike dto) {
         return null;
     }
 
     @Override
-    public Boolean updateDeleteFlag(CUDInfoDto info, IBoardLike dto) {
+    public Boolean updateDeleteFlag(CUDInfoDto info, ISbLike dto) {
         return false;
     }
 
@@ -36,31 +36,31 @@ public class BoardLikeServiceImpl implements IBoardLikeService {
     }
 
     @Override
-    public IBoardLike findById(Long id) {
+    public ISbLike findById(Long id) {
         return null;
     }
 
     @Override
-    public Boolean deleteByTableUserBoard(BoardLikeDto dto) {
+    public Boolean deleteByTableUserBoard(SbLikeDto dto) {
         if ( dto == null || dto.getTbl() == null || dto.getTbl().isEmpty()
-                || dto.getLikeUserId() == null || dto.getLikeUserId().isEmpty()
+                || dto.getNickname() == null || dto.getNickname().isEmpty()
                 || dto.getBoardId() == null || dto.getBoardId() <= 0 ) {
             return false;
         }
-        this.boardLikeMybatisMapper.deleteByTableUserBoard(dto);
+        this.sbLikeMybatisMapper.deleteByTableUserBoard(dto);
         return true;
     }
 
     @Override
-    public Integer countByTableUserBoard(IBoardLike searchDto) {
+    public Integer countByTableUserBoard(ISbLike searchDto) {
         if ( searchDto == null || searchDto.getTbl() == null || searchDto.getTbl().isEmpty()
-                || searchDto.getLikeUserId() == null || searchDto.getLikeUserId().isEmpty()
+                || searchDto.getNickname() == null || searchDto.getNickname().isEmpty()
                 || searchDto.getBoardId() == null || searchDto.getBoardId() <= 0 ) {
             return 0;
         }
-        BoardLikeDto search = BoardLikeDto.builder().build();
+        SbLikeDto search = SbLikeDto.builder().build();
         search.copyFields(searchDto);
-        Integer count = this.boardLikeMybatisMapper.countByTableUserBoard(search);
+        Integer count = this.sbLikeMybatisMapper.countByTableUserBoard(search);
         return count;
     }
 }

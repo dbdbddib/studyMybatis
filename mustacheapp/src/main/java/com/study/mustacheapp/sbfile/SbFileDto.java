@@ -1,9 +1,6 @@
 package com.study.mustacheapp.sbfile;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Getter
@@ -17,8 +14,9 @@ public class SbFileDto implements ISbFile {
     private Integer ord;
     private String fileType;
     private String uniqName;
-    private Integer length;
+    private Long length;
     private String description;
     private String tbl;
     private Long boardId;
+    private Boolean deleteFlag;
 }

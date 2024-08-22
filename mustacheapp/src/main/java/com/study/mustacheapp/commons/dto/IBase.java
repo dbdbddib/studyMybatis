@@ -1,5 +1,8 @@
 package com.study.mustacheapp.commons.dto;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public interface IBase {
     String getCreateDt();
     void setCreateDt(String createDt);
@@ -47,5 +50,26 @@ public interface IBase {
         if (from.getDeleteFlag() != null) {
             this.setDeleteFlag(from.getDeleteFlag());
         }
+    }
+
+    default String getSystemDt() {
+        Date today = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(today);
+    }
+
+    default void setCreateInfo(String nickname) {
+        this.setCreateDt(this.getSystemDt());
+        this.setCreateId(nickname);
+    }
+
+    default void setUpdateInfo(String nickname) {
+        this.setUpdateDt(this.getSystemDt());
+        this.setUpdateId(nickname);
+    }
+
+    default void setDeleteInfo(String nickname) {
+        this.setDeleteDt(this.getSystemDt());
+        this.setDeleteId(nickname);
     }
 }

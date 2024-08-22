@@ -1,4 +1,4 @@
-package com.study.mustacheapp.boardlike;
+package com.study.mustacheapp.commons.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +11,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoardLikeDto implements IBoardLike {
-    private Long id;
-    private String tbl;
-    private String likeUserId;
-    private Long boardId;
+public class ResponseDto {
+    private ResponseCode responseCode;
+    private String message;
+    private Object responseData;
 }

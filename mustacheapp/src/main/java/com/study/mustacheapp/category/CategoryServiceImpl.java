@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements ICategoryService<ICategory> {
     @Autowired  // SpringBoot 가 CategoryMybatisMapper 데이터형으로 객체를 자동 생성한다.
-    private CategoryMybatisMapper categoryMybatisMapper;
+    private ICategoryMybatisMapper categoryMybatisMapper;
 
     @Override
     public ICategory findById(Long id) {
@@ -61,7 +61,7 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
     }
 
     @Override
-    public ICategory insert(ICategory category) throws Exception {
+    public ICategory insert(ICategory category) {
         if ( !isValidInsert(category) ) {
             return null;
         }
@@ -84,7 +84,7 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
     }
 
     @Override
-    public Boolean delete(Long id) throws Exception {
+    public Boolean deleteById(Long id) {
         ICategory find = this.findById(id);
         if ( find == null ) {
             return false;
@@ -95,12 +95,15 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
     }
 
     @Override
-    public ICategory update(Long id, ICategory category) throws Exception {
-        ICategory find = this.findById(id);
+    public ICategory update(ICategory dto) {
+        if ( dto == null || dto.getId() == null || dto.getId() <= 0 ) {
+            return null;
+        }
+        ICategory find = this.findById(dto.getId());
         if ( find == null ) {
             return null;
         }
-        find.copyFields(category);
+        find.copyFields(dto);
         this.categoryMybatisMapper.update((CategoryDto) find);
         // CategoryMybatisMapper 의 쿼리 XML 파일의 <update id="update" 문장을 실행한다.
         return find;
@@ -118,6 +121,9 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
         if ( dto.getRowsOnePage() == null ) {
             // 한 페이지당 보여주는 행의 갯수
             dto.setRowsOnePage(10);
+        }
+        if ( dto.getPage() == null || dto.getPage() <= 0 ) {
+            dto.setPage(1);
         }
         List<ICategory> list = this.getICategoryList(
                 this.categoryMybatisMapper.findAllByNameContains(dto)

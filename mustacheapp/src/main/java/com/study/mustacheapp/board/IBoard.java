@@ -18,6 +18,8 @@ public interface IBoard extends IBase {
     Integer getLikeQty();
     void setLikeQty(Integer likeQty);
 
+    String getTbl();
+
     default void copyFields(IBoard from) {
         if (from == null) {
             return;

@@ -11,7 +11,8 @@
                               , length
                               , description
                               , tbl
-                              , boardId)
+                              , boardId
+                              , deleteFlag)
         VALUES ( #{name}
                , #{ord}
                , #{fileType}
@@ -19,8 +20,14 @@
                , #{length}
                , #{description}
                , #{tbl}
-               , #{boardId})
+               , #{boardId}
+               , 0)
     </insert>
+
+    <update id="updateDeleteFlag" parameterType="SbFileDto">
+        UPDATE sbfile_tbl set deleteFlag = #{deleteFlag}
+        WHERE id = #{id}
+    </update>
 
     <delete id="deleteById">
         DELETE FROM sbfile_tbl
@@ -37,8 +44,10 @@
              , description
              , tbl
              , boardId
+             , deleteFlag
         FROM sbfile_tbl
         WHERE id = #{id}
+            AND deleteFlag = false
         ORDER BY ord
     </select>
 
@@ -52,9 +61,11 @@
              , description
              , tbl
              , boardId
+             , deleteFlag
         FROM sbfile_tbl
         WHERE tbl = #{tbl}
           AND boardId = #{boardId}
+          AND deleteFlag = false
         ORDER BY ord
     </select>
 </mapper>

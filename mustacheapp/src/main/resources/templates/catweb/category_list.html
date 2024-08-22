@@ -2,139 +2,94 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-
+    <title>Category Old Web style CRUD</title>
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
     <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
-
     <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
     <script>
         //$(document).ready(function(){
         //    // Jquery 는 html 문서가 로딩이 완료 되면 이 부분을 실행한다.
         //});
-        $(function() {
+        $(function(){
             // jQuery 3.0 버전부터 실행할 기능을 정의해주세요.
-            var totPage = Math.ceil({{searchAjaxDto.total}} / 10); // 전체 페이지 수 계산
-            var searchsearchName = "{{searchAjaxDto.searchName}}";
-            var currentPage = parseInt({{searchAjaxDto.page}});
-            var maxPageButtons = 10;
+            let totPage = ~~(({{searchAjaxDto.total}} + 9) / 10);
+            let page = {{searchAjaxDto.page}};
+            let startPage = getStartPage(page);
+            let endPage = getEndPage(startPage);
+            let searchName = "{{searchAjaxDto.searchName}}";
+            let sClass = "btn btn-success rounded-pill";
+            let prev = (page-1) < 1 ? 1 : page-1;
+            let next = (page+1) >= totPage ? totPage : page+1;
 
-            // 페이지 번호를 생성하여 추가
-            for (let i = 1; i <= totPage; i++) {
-                $("#pageDiv").append(" <a  class='btn btn-success rounded-pill' href='category_list?page=" + i +
-                    "&searchName=" + searchsearchName + "'>" + i + "</a> ");    // 페이지 수
+            $("#pageDiv").append(" <a class='" + sClass + "' href='category_list?page=" + prev +
+                "&searchName=" + searchName + "'>Prev</a> ");
+            for (let i = startPage; i <= endPage; i++) {
+                if (page == i) {
+                    sClass = "btn btn-primary rounded-pill";
+                }
+                $("#pageDiv").append(" <a class='" + sClass + "' href='category_list?page=" + i +
+                    "&searchName=" + searchName + "'>" + i + "</a> ");
+                sClass = "btn btn-success rounded-pill";
             }
-
-            // 이전 페이지 버튼 클릭 이벤트
-            // jQuery를 사용하여 특정 요소에 클릭 이벤트를 등록하는 코드
-            // id가 prevBtn 인 요소를 선택
-            $("#prevBtn").click(function() {
-                if (currentPage > 1) {
-                    var prevPage = currentPage - 1;
-                    var url = "category_list?page=" + prevPage + "&searchName=" + searchsearchName;
-                    document.location.href = url;
-                }
-            });
-
-            // 다음 페이지 버튼 클릭 이벤트
-            $("#nextBtn").click(function() {
-                if (currentPage < totPage) {
-                    var nextPage = currentPage + 1;
-                    var url = "category_list?page=" + nextPage + "&searchName=" + searchsearchName;
-                    document.location.href = url;
-                }
-            });
-
+            $("#pageDiv").append(" <a class='" + sClass + "' href='category_list?page=" + next +
+                "&searchName=" + searchName + "'>Next</a> ");
         });
+
+        function getStartPage(page) {
+            // 1~10 => 1, 11~20 => 11, 21~30 => 21
+            // let startPage = ((page - 1) / 10) * 10 + 1;
+            let one = 1;
+            let ten = ~~((page - 1) / 10) * 10;
+            let startPage = ten + one;
+            return ~~(startPage);
+        }
+
+        function getEndPage(startPage) {
+            // page 1~10 : total 35 : (1, 2, 3, 4)
+            // page 1~10 : total 90 : (1, 2, 3, 4, 5, 6, 7, 8, 9)
+            // page 1~10 : total 159 : (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+            // page 11~20 : total 159 : (11, 12, 13, 14, 15)
+            // page 11~20 : total 222 : (11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+            // page 21~30 : total 222 : (21, 22, 23)
+            let totPage = ~~(({{searchAjaxDto.total}} + 9) / 10);
+            let tPage = startPage + 9;
+            if ( tPage < totPage ) {
+                return ~~(tPage);
+            }
+            return ~~(totPage);
+        }
     </script>
-    <style>
-        ::placeholder {
-            color: rgba(0, 0, 0, 0.5); /* 투명도 50% */
-        }
-        .horizontal-line {
-            border-top: 2px solid #ccc; /* 가로줄 색상과 두께 */
-            margin: 20px 0; /* 줄 위와 아래에 여백 추가 */
-        }
-        .button-container {
-            text-align: right; /* 버튼을 가운데 정렬 */
-            margin: 20px 0; /* 버튼 위와 아래에 여백 추가 */
-        }
-        .btn {
-            padding: 10px 20px; /* 버튼 안쪽 여백 */
-            font-size: 16px; /* 글자 크기 */
-            color: #fff; /* 글자 색상 */
-            background-color: #007bff; /* 버튼 배경색 */
-            border: none; /* 버튼 테두리 제거 */
-            border-radius: 5px; /* 버튼 모서리 둥글게 */
-            cursor: pointer; /* 마우스 포인터 모양 변경 */
-            text-decoration: none; /* 링크 기본 밑줄 제거 */
-            display: inline-block; /* 버튼을 인라인 블록으로 설정 */
-        }
-        .btn:hover {
-            background-color: #0056b3; /* 버튼에 마우스 호버 시 색상 변경 */
-        }
-        .btn-dark {
-            background-color: #1200b3;
-        }
-        #pageDiv {
-            text-align: center;
-        }
-        #nextBtn{
-            text-align: right;
-        }
-    </style>
 </head>
 <body>
-<section id="content-types">
-
-    <div>
-
-        <form id="form" name="form" method="get" action="/catweb/category_search">
-            <span class="box">이름</span>
-            <input type="text" id="searchName" name="searchName" placeholder="검색할 이름 입력" value="{{searchAjaxDto.searchName}}"/>
-            <input class="btn" type="submit" value="검색"/>
-        </form>
-    </div>
-
-    <div class="horizontal-line"></div>
-
-    <div class="row">
-        <span>ID</span>
-        <span> | </span>
+<form action="category_list" method="get">
+    <span>검색이름</span>
+    <input type="text" id="searchName" name="searchName" value="{{searchAjaxDto.searchName}}"/>
+    <input type="hidden" id="page" name="page" value="{{searchAjaxDto.page}}" />
+    <input type="submit" value="검색"/>
+</form>
+<div>
+    Category List
+</div>
+<ul id="categoryList">
+    <li>
+        <span>id</span>
+        <span> : </span>
         <span>name</span>
-
-
-        {{#categoryList}}
-        <div class="col-xl-4 col-md-6 col-sm-12">
-            <div class="card">
-                <a href="/catweb/category_view?id={{id}}">
-                    <div class="card-content">
-                        <span class="card-body">{{id}}</span>
-                        <span> | </span>
-                        <span class="card-text">{{name}}</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-        {{/categoryList}}
-
-        <div class="button-container">
-            <a href="/catweb/category_add" class="btn">추가</a>
-        </div>
-    </div>
-
-    <div class="horizontal-line"></div>
-
-    <div >
-        <span><button class="btn" id="prevBtn">Prev</button></span>
-
-        <span id="pageDiv"></span>
-
-        <span><button class="btn" id="nextBtn">Next</button></span>
-    </div>
-    [(${pageHtml})]
-    <div>total : {{searchAjaxDto.total}}, page : {{searchAjaxDto.page}}, search searchName = {{searchAjaxDto.searchName}}</div>
-
-</section>
+    </li>
+    {{#categoryList}}
+    <li>
+        <a href="category_view?id={{id}}">
+            <span >{{id}}</span>
+            <span> : </span>
+            <span >{{name}}</span>
+        </a>
+    </li>
+    {{/categoryList}}
+</ul>
+<div>total : {{searchAjaxDto.total}}</div>
+<div><a href="category_add"><button>추가</button></a></div>
+<div id="pageDiv">
+</div>
 </body>
 </html>

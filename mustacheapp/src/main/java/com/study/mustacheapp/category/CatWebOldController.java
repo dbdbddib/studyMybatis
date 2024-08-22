@@ -2,21 +2,19 @@ package com.study.mustacheapp.category;
 
 import com.study.mustacheapp.commons.dto.SearchAjaxDto;
 import com.study.mustacheapp.member.IMember;
-import com.study.mustacheapp.member.MemberRole;
+import com.study.mustacheapp.security.config.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 
 @Slf4j  // log 를 만들어 준다.
 @Controller // Web 용 Controller 이다. 화면을 그리거나 redirect 할때 유용하다.
 @RequestMapping("/catweb")  // Controller 의 url 앞부분이다.
-public class CatWebController {
+public class CatWebOldController {
     @Autowired  // SpringBoot 가 CategoryServiceImpl 데이터형으로 객체를 자동 생성한다.
     private CategoryServiceImpl categoryService;
 
@@ -29,18 +27,14 @@ public class CatWebController {
         // @RequestParam int page, @RequestParam String searchName : HTTP Request Query String
         //  : url 주소에서 ?searchName=&page=값 변수의 값을 받는다. Request Query String
         try {
-            IMember loginUser = (IMember)model.getAttribute("loginUser");
+            IMember loginUser = (IMember)model.getAttribute(SecurityConfig.LOGINUSER);
             if ( loginUser == null ) {
                 // 로그인 사용자가 아니면 리턴
                 return "redirect:/";
             }
-            if ( !loginUser.getRole().equals(MemberRole.ADMIN.toString()) ) {
-                // 로그인 사용자의 role 이 ADMIN 이 아니면 리턴
-                return "redirect:/";
-            }
             SearchAjaxDto searchAjaxDto = SearchAjaxDto.builder()
                     .page(page).searchName(searchName).build();
-            // searchAjaxDto 는 select Sql 쿼리문장을 만들때 where, order by, 페이지 문장을 만들때 사용한다.
+            // SearchAjaxDto 는 select Sql 쿼리문장을 만들때 where, order by, 페이지 문장을 만들때 사용한다.
             int total = this.categoryService.countAllByNameContains(searchAjaxDto);
             // 최종 목적지인 Mybatis 쿼리를 DB 에 countAllByNameContains 실행하고 결과를 리턴 받는다.
             // 검색식의 searchName 으로 찾은 데이터 행수를 리턴받는다. 화면의 페이지 계산에 사용된다.
@@ -124,7 +118,7 @@ public class CatWebController {
         // @ModelAttribute CategoryDto dto : POST 방식의 요청은 값이 숨겨져 있다. HTTP Request web form
         //  :  주소에서 ?searchName=&page=값 변수의 값을 받는다. "application/x-www-form-?????"
         try {
-            this.categoryService.update(dto.getId(), dto);
+            this.categoryService.update(dto);
             // categoryService Ipml 의 update 를 실행한다.
         } catch (Exception ex) {
             log.error(ex.toString()); // error 응답
@@ -140,7 +134,7 @@ public class CatWebController {
         // @RequestParam Long id : HTTP Request Query Parameter String
         //  : url 주소에서 ?id=값 변수의 값을 받는다.
         try {
-            this.categoryService.delete(id);
+            this.categoryService.deleteById(id);
             // categoryService Ipml 의 delete 를 실행한다.
         } catch (Exception ex) {
             log.error(ex.toString()); // error 응답
