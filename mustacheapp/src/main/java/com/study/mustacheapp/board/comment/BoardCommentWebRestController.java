@@ -231,7 +231,7 @@ public class BoardCommentWebRestController implements ICommonRestController<Boar
         }
         CommentLikeDto boardLikeDto = CommentLikeDto.builder()
                 .commentTbl(new BoardCommentDto().getTbl())
-                .nickname(loginUser.getNickname())
+                .createId(loginUser.getId())
                 .commentId(id)
                 .build();
         Integer likeCount = this.commentLikeService.countByCommentTableUserBoard(boardLikeDto);

@@ -1,6 +1,5 @@
 package com.study.mustacheapp.sbfile;
 
-import com.study.mustacheapp.board.BoardDto;
 import com.study.mustacheapp.board.IBoard;
 import com.study.mustacheapp.commons.dto.CUDInfoDto;
 import com.study.mustacheapp.commons.dto.SearchAjaxDto;

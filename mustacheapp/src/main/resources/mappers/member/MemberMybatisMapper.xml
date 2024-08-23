@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.study.mustacheapp.member.MemberMybatisMapper">
+<mapper namespace="com.study.mustacheapp.member.IMemberMybatisMapper">
     <!-- mapper namespace="@Mapper 로 선언된 클래스의 풀패키지.클래스 이름"-->
 
     <insert id="insert" parameterType="MemberDto" useGeneratedKeys="true" keyProperty="id">

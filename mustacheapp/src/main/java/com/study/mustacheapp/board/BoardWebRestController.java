@@ -281,7 +281,7 @@ public class BoardWebRestController implements ICommonRestController<BoardDto> {
         }
         SbLikeDto boardLikeDto = SbLikeDto.builder()
                 .tbl(new BoardDto().getTbl())
-                .nickname(loginUser.getNickname())
+                .createId(loginUser.getId())
                 .boardId(id)
                 .build();
         Integer likeCount = this.sbLikeService.countByTableUserBoard(boardLikeDto);

@@ -24,7 +24,7 @@ public class BoardCommentServiceImpl implements IBoardCommentService {
         }
         CommentLikeDto commentLikeDto = CommentLikeDto.builder()
                 .commentTbl(new BoardCommentDto().getTbl())
-                .nickname(cudInfoDto.getLoginUser().getNickname())
+                .createId(cudInfoDto.getLoginUser().getId())
                 .commentId(id)
                 .build();
 
@@ -43,7 +43,7 @@ public class BoardCommentServiceImpl implements IBoardCommentService {
         }
         CommentLikeDto commentLikeDto = CommentLikeDto.builder()
                 .commentTbl(new BoardCommentDto().getTbl())
-                .nickname(cudInfoDto.getLoginUser().getNickname())
+                .createId(cudInfoDto.getLoginUser().getId())
                 .commentId(id)
                 .build();
 
@@ -78,7 +78,7 @@ public class BoardCommentServiceImpl implements IBoardCommentService {
             dto.setPage(1);
         }
         dto.setCommentTbl(new BoardCommentDto().getTbl());
-        dto.setNickname(loginUser.getNickname());
+        dto.setCreateId(loginUser.getId());
         List<BoardCommentDto> list = this.boardCommentMybatisMapper.findAllByBoardId(dto);
 //        List<IBoardComment> result = this.getInterfaceList(list);
         return list;
