@@ -266,12 +266,12 @@
                 let name = itemList[i].name;
                 let content = itemList[i].content;
                 let createDt = itemList[i].createDt;
-                let createId = itemList[i].createId;
+                let createName = itemList[i].createName;
                 let viewQty = itemList[i].viewQty;
                 let strLi = "<li><div onClick='$.viewItem(" + id + ");' class='row'>"
                     + "<span class='col-md-8 d-flex justify-content-start'>" + name + "</span>"
                     + "<span class='col-md-2 d-flex justify-content-center'>" + createDt + "</span>"
-                    + "<span class='col-md-1 d-flex justify-content-start'>" + createId + "</span>"
+                    + "<span class='col-md-1 d-flex justify-content-start'>" + createName + "</span>"
                     + "<span class='col-md-1 d-flex justify-content-end'>" + viewQty + "</span>"
                     + "</div></li>";
                 list.append(strLi);
@@ -294,6 +294,7 @@
                 console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
                 if (status === "success") {
                     $.viewBoardFiles(id);
+                    $.getBoardCommentList(id, true);
                     $.showItemInfo(data.responseData);
                 }
             }).fail(function (jqXHR, status, errorThrown) {
@@ -358,11 +359,11 @@
                 let uniqName = file.uniqName;
                 let fileType = file.fileType;
                 let size = file.length;
-                html += "<div id='fileView_" + id + "'>";
-                html += "<div class='filename' onclick=\"$.downloadFile('" + tbl + "', '" + name + "'" +
+                html += "<div id='fileView_" + id + "' class='row'>";
+                html += "<div class='filename col-md-6' onclick=\"$.downloadFile('" + tbl + "', '" + name + "'" +
                     ", '" + uniqName + "', '" + fileType + "')\">" + name + ", " + size + "</div>";
-                html += "<div onclick='$.downloadFileId(" + id + ")'>※</div>";
-                html += "<div onclick='$.deleteFileId(" + id + ")'>Ｘ</div>";
+                html += "<div class='col-md-3' onclick='$.downloadFileId(" + id + ")'>※</div>";
+                html += "<div class='col-md-3' onclick='$.deleteFileId(" + id + ")'>Ｘ</div>";
                 html += "</div>";
             }
             $("#fileListView").append(html);
@@ -440,6 +441,161 @@
                 return ~~(tPage);
             }
             return ~~(totPage);
+        }
+
+        // 댓글 추가
+        $.addComment = function() {
+            let id = $("#id2").val();
+            let comment = $("#comment").val();
+            if (!confirm("댓글을 추가 하시겠습니까 ?")) {
+                return;
+            }
+            $.ajax({
+                url: "/api/v1/boardcomment",
+                type: "POST",
+                datatype: "JSON",
+                data: JSON.stringify({"comment": comment, "boardId": id}),
+                contentType: "application/json; charset=UTF-8",
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                $("#comment").val("");
+                $.getBoardCommentList(id, true);
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                let message = getErrorMessage(jqXHR.responseJSON);
+                alert("댓글 추가를 실패했습니다. " + message);
+            });
+        }
+
+        // 댓글 조회
+        $.getBoardCommentList = function (id, clear) {
+            if (id <= 0) {
+                return;
+            }
+            $.ajax({
+                url: "/api/v1/boardcomment/findbyboardid",
+                type: "POST",
+                datatype: "JSON",
+                data: JSON.stringify({"boardId": id}),
+                contentType: "application/json; charset=UTF-8",
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                if (status === "success") {
+                    $.showBoardCommentList(clear, data.responseData);
+                }
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("댓글 보기 실패했습니다. " + jqXHR.responseJSON.message);
+            });
+        }
+
+        // 댓글 표시
+        $.showBoardCommentList = function (clear, commentList) {
+            if (commentList == null) {
+                return;
+            }
+            if (clear) {
+                $("#commentList").children().remove();
+            }
+            let html = "";
+            for (const commentItem of commentList) {
+                let id = commentItem.id;
+                let comment = commentItem.comment;
+                let commentId = commentItem.commentId;
+                let likeQty = commentItem.likeQty;
+                let createDt = commentItem.createDt;
+                let createName = commentItem.createName;
+                html += "<div id='likeList_" + id + "' class='row'>";
+                html += "<div class='commentListDiv col-md-6'>" + comment + "</div>";
+                html += "<div class='commentListDiv col-md-2'>" + createDt + "</div>";
+                html += "<div class='commentListDiv col-md-1'>" + createName + "</div>";
+                if ( commentId === undefined || commentId === null ) {
+                    html += "<div class='col-md-1'><img id='heartIcon' src='/svg/heartOff.svg' width='20px' alt='Like' onClick='$.likeComment(" + id + ", this);'/></div>";
+                } else {
+                    html += "<div class='col-md-1'><img id='heartIcon' src='/svg/heartOn.svg' width='20px' alt='Like' onClick='$.likeComment(" + id + ", this);'/></div>";
+                }
+                html += "<div class='col-md-1' onclick='$.deleteComment(" + id + ")'> Ｘ </div>";
+                html += "<div class='col-md-1' id='likeListQty_" + id + "'> " + likeQty + " </div>";
+                html += "</div>";
+            }
+            $("#commentList").append(html);
+        }
+
+        // 댓글 좋아요
+        $.likeComment = (id, heartIcon) => {
+            if (id <= 0) {
+                return;
+            }
+            let src = $(heartIcon).attr("src");
+            let bOff = src.includes("Off");
+            if (bOff) {
+                $.ajax({
+                    url: "/api/v1/boardcomment/like/" + id,
+                    type: "GET",
+                    datatype: "JSON",
+                    contentType: "application/json; charset=UTF-8",
+                }).done(function (data, status, xhr) {
+                    console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                    if (status === "success") {
+                        $(heartIcon).attr("src", "/svg/heartOn.svg");
+                        $.showCommentLikeItem(id, data.responseData.likeQty);
+                    }
+                }).fail(function (jqXHR, status, errorThrown) {
+                    console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                    alert("Like 실패 했습니다. " + jqXHR.responseJSON.message);
+                });
+            } else {
+                $.ajax({
+                    url: "/api/v1/boardcomment/unlike/" + id,
+                    type: "GET",
+                    datatype: "JSON",
+                    contentType: "application/json; charset=UTF-8",
+                }).done(function (data, status, xhr) {
+                    console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                    if (status === "success") {
+                        $(heartIcon).attr("src", "/svg/heartOff.svg");
+                        $.showCommentLikeItem(id, data.responseData.likeQty);
+                    }
+                }).fail(function (jqXHR, status, errorThrown) {
+                    console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                    alert("UnLike 실패 했습니다. " + jqXHR.responseJSON.message);
+                });
+            }
+        }
+
+        // 댓글 좋아요 갯수 출력
+        $.showCommentLikeItem = (id, count) => {
+            $("#likeListQty_" + id).text(count);
+        }
+
+        // 댓글 삭제
+        $.deleteComment = (id) => {
+            if (id <= 0) {
+                return;
+            }
+            if (!confirm("댓글을 삭제 하시겠습니까 ?")) {
+                return;
+            }
+            $.ajax({
+                url: "/api/v1/boardcomment/deleteFlag/" + id,
+                type: "DELETE",
+                datatype: "JSON",
+                data: JSON.stringify({"id": id, "deleteFlag": true}),
+                contentType: "application/json; charset=UTF-8",
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                if (status === "success") {
+                    $.deleteCommentLikeItem(id);
+                }
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("댓글 삭제 실패 했습니다. " + jqXHR.responseJSON.message);
+            });
+        }
+
+        // 댓글 삭제 표시
+        $.deleteCommentLikeItem = (id) => {
+            $("#likeList_" + id).remove();
         }
 
         $.addInsert = function () {
@@ -806,6 +962,11 @@
                     <button class="modalCloseButton">Close</button>
                 </div>
             </div>
+            <fieldset>
+                <label for="comment"></label> <input type="text" id="comment" name="comment" maxlength="100"/>
+                <button id="addComment" onclick="$.addComment();">댓글추가</button>
+            </fieldset>
+            <div id="commentList"></div>
         </div>
         <div class="modal_bg" style="display: none"></div>
     </div>

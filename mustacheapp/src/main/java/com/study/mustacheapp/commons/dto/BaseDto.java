@@ -13,16 +13,13 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class BaseDto implements IBase {
     private String createDt;
-    private String createName;
     private Long createId;
-
+    private String createName;
     private String updateDt;
-    private String updateName;
     private Long updateId;
-
+    private String updateName;
     private String deleteDt;
-    private String deleteName;
     private Long deleteId;
-
+    private String deleteName;
     private Boolean deleteFlag;
 }

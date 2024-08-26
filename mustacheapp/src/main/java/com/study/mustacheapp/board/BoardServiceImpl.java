@@ -41,7 +41,7 @@ public class BoardServiceImpl implements IBoardService {
         }
         SbLikeDto boardLikeDto = SbLikeDto.builder()
                 .tbl(new BoardDto().getTbl())
-                .createId(cudInfoDto.getLoginUser().getCreateId())
+                .createId(cudInfoDto.getLoginUser().getId())
                 .boardId(id)
                 .build();
 
@@ -60,7 +60,7 @@ public class BoardServiceImpl implements IBoardService {
         }
         SbLikeDto boardLikeDto = SbLikeDto.builder()
                 .tbl(new BoardDto().getTbl())
-                .createId(cudInfoDto.getLoginUser().getCreateId())
+                .createId(cudInfoDto.getLoginUser().getId())
                 .boardId(id)
                 .build();
 

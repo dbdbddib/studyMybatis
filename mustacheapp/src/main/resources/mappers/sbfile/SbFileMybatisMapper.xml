@@ -4,24 +4,27 @@
 <mapper namespace="com.study.mustacheapp.sbfile.ISbFileMybatisMapper">
 
     <insert id="insert" parameterType="SbFileDto" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sbfile_tbl ( name
-                              , ord
-                              , fileType
-                              , uniqName
-                              , length
-                              , description
-                              , tbl
-                              , boardId
-                              , deleteFlag)
-        VALUES ( #{name}
-               , #{ord}
-               , #{fileType}
-               , #{uniqName}
-               , #{length}
-               , #{description}
-               , #{tbl}
-               , #{boardId}
-               , 0)
+        INSERT INTO sbfile_tbl
+            ( name
+            , ord
+            , fileType
+            , uniqName
+            , length
+            , description
+            , tbl
+            , boardId
+            , deleteFlag
+            )
+        VALUES
+            ( #{name}
+            , #{ord}
+            , #{fileType}
+            , #{uniqName}
+            , #{length}
+            , #{description}
+            , #{tbl}
+            , #{boardId}
+	    , 0)
     </insert>
 
     <update id="updateDeleteFlag" parameterType="SbFileDto">
@@ -48,7 +51,13 @@
         FROM sbfile_tbl
         WHERE id = #{id}
             AND deleteFlag = false
-        ORDER BY ord
+    </select>
+
+    <select id="countAllByTblBoardId" parameterType="SbFileDto" resultType="int">
+        SELECT count(*)
+        FROM sbfile_tbl
+        WHERE tbl = #{tbl}
+          AND boardId = #{boardId}
     </select>
 
     <select id="findAllByTblBoardId" parameterType="SbFileDto" resultType="SbFileDto">

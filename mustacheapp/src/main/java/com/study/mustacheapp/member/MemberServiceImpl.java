@@ -40,7 +40,7 @@ public class MemberServiceImpl implements IMemberService {
             return false;
         } else if ( dto.getName() == null || dto.getName().isEmpty() ) {
             return false;
-        } else if ( dto.getCreateId() == null ) {
+        } else if ( dto.getNickname() == null || dto.getNickname().isEmpty() ) {
             return false;
         } else if ( dto.getLoginId() == null || dto.getLoginId().isEmpty() ) {
             return false;

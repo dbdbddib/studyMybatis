@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 public class MemberDto extends BaseDto implements IMember {
     private Long id;
     private String name;
-    private Long userId;
+    private String nickname;
     private String loginId;
     private String password;
     private String email;

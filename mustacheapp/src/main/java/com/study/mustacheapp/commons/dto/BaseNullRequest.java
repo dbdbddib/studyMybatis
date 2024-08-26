@@ -18,13 +18,19 @@ public class BaseNullRequest implements IBase {
     @Null
     private Long createId;
     @Null
+    private String createName;
+    @Null
     private String updateDt;
     @Null
     private Long updateId;
     @Null
+    private String updateName;
+    @Null
     private String deleteDt;
     @Null
     private Long deleteId;
+    @Null
+    private String deleteName;
     @Null
     private Boolean deleteFlag;
 }
