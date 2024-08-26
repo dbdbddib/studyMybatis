@@ -58,7 +58,7 @@ public class LoginWebRestController implements ICommonRestController {
                 return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R000075, "회원계정이 비활성 상태입니다, 관리자에게 문의 하세요", null);
             }
             HttpSession session = request.getSession();
-            session.setAttribute(SecurityConfig.LOGINUSER, loginUser.getCreateId());
+            session.setAttribute(SecurityConfig.LOGINUSER, loginUser.getNickname());
             session.setMaxInactiveInterval(60 * 60);
             return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", true);
         } catch (Exception ex) {

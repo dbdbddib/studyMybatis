@@ -81,7 +81,7 @@ public class LoginSessionController {
                 return "login/fail";
             }
             HttpSession session = request.getSession();
-            session.setAttribute(SecurityConfig.LOGINUSER, loginUser);
+            session.setAttribute(SecurityConfig.LOGINUSER, loginUser.getNickname());
             session.setMaxInactiveInterval(60 * 60);
         } catch (Exception ex) {
             log.error(ex.toString());

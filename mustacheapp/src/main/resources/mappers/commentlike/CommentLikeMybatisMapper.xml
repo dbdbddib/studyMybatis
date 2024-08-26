@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.mustacheapp.commentlike.ICommentLikeMybatisMapper">
 
-    <insert id="insert" parameterType="SbLikeDto" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="CommentLikeDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO comment_like_tbl ( commentTbl
                                      , createId
                                      , commentId)
@@ -12,14 +12,14 @@
                , #{commentId})
     </insert>
 
-    <delete id="deleteByCommentTableUserBoard" parameterType="SbLikeDto">
+    <delete id="deleteByCommentTableUserBoard" parameterType="CommentLikeDto">
         DELETE FROM comment_like_tbl
         WHERE commentTbl = #{commentTbl}
           AND createId = #{createId}
           AND commentId = #{commentId}
     </delete>
 
-    <select id="countByCommentTableUserBoard" resultType="Integer" parameterType="SbLikeDto">
+    <select id="countByCommentTableUserBoard" resultType="Integer" parameterType="CommentLikeDto">
         SELECT count(*)
         FROM comment_like_tbl
         WHERE commentTbl = #{commentTbl}
