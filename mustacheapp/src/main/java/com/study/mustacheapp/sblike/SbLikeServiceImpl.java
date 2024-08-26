@@ -43,7 +43,7 @@ public class SbLikeServiceImpl implements ISbLikeService {
     @Override
     public Boolean deleteByTableUserBoard(SbLikeDto dto) {
         if ( dto == null || dto.getTbl() == null || dto.getTbl().isEmpty()
-                || dto.getNickname() == null || dto.getNickname().isEmpty()
+                || dto.getCreateId() == null
                 || dto.getBoardId() == null || dto.getBoardId() <= 0 ) {
             return false;
         }
@@ -54,7 +54,7 @@ public class SbLikeServiceImpl implements ISbLikeService {
     @Override
     public Integer countByTableUserBoard(ISbLike searchDto) {
         if ( searchDto == null || searchDto.getTbl() == null || searchDto.getTbl().isEmpty()
-                || searchDto.getNickname() == null || searchDto.getNickname().isEmpty()
+                || searchDto.getCreateId() == null
                 || searchDto.getBoardId() == null || searchDto.getBoardId() <= 0 ) {
             return 0;
         }

@@ -2,19 +2,16 @@ package com.study.mustacheapp.security.controller;
 
 import com.study.mustacheapp.commons.dto.CUDInfoDto;
 import com.study.mustacheapp.member.IMember;
-import com.study.mustacheapp.member.IMemberService;
 import com.study.mustacheapp.member.MemberServiceImpl;
 import com.study.mustacheapp.security.config.SecurityConfig;
 import com.study.mustacheapp.security.dto.LoginRequest;
 import com.study.mustacheapp.security.dto.SignUpRequest;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -84,7 +81,7 @@ public class LoginSessionController {
                 return "login/fail";
             }
             HttpSession session = request.getSession();
-            session.setAttribute(SecurityConfig.LOGINUSER, loginUser.getNickname());
+            session.setAttribute(SecurityConfig.LOGINUSER, loginUser.getCreateId());
             session.setMaxInactiveInterval(60 * 60);
         } catch (Exception ex) {
             log.error(ex.toString());

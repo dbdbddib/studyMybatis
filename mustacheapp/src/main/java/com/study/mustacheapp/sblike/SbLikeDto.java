@@ -14,6 +14,6 @@ import lombok.experimental.SuperBuilder;
 public class SbLikeDto implements ISbLike {
     private Long id;
     private String tbl;
-    private String nickname;
+    private Long createId;
     private Long boardId;
 }

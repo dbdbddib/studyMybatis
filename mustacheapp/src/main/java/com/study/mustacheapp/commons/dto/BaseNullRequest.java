@@ -16,15 +16,15 @@ public class BaseNullRequest implements IBase {
     @Null
     private String createDt;
     @Null
-    private String createId;
+    private Long createId;
     @Null
     private String updateDt;
     @Null
-    private String updateId;
+    private Long updateId;
     @Null
     private String deleteDt;
     @Null
-    private String deleteId;
+    private Long deleteId;
     @Null
     private Boolean deleteFlag;
 }

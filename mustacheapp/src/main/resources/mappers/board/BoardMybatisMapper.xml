@@ -55,7 +55,10 @@
              , deleteDt
              , deleteId
              , deleteFlag
-        FROM board_tbl
+        FROM board_tbl AS bt
+        LEFT JOIN member_tbl AS ct ON bt.createId = ct.id
+        LEFT JOIN member_tbl AS ut ON bt.updateId = ut.id
+        LEFT JOIN member_tbl AS dt ON bt.deleteId = dt.id
         WHERE id = #{id}
             AND deleteFlag = false
     </select>
@@ -89,21 +92,25 @@
     </select>
 
     <select id="findAllByNameContains" parameterType="SearchAjaxDto" resultType="BoardDto">
-        SELECT id
-             , name
-             , content
-             , viewQty
-             , likeQty
-             , createDt
-             , createId
-             , updateDt
-             , updateId
-             , deleteDt
-             , deleteId
-             , deleteFlag
-        FROM board_tbl
-        WHERE name like CONCAT('%',#{searchName},'%')
-          AND deleteFlag = false
+        SELECT bt.id
+             , bt.name
+             , bt.content
+             , bt.viewQty
+             , bt.likeQty
+             , bt.createDt
+             , bt.createId
+             , ct.nuckname AS creatName
+             , bt.updateDt
+             , bt.updateId
+             , '' AS updateName
+             , bt.deleteDt
+             , bt.deleteId
+             , '' AS deleteName
+             , bt.deleteFlag
+        FROM board_tbl AS bt
+        LEFT JOIN member_tbl AS ct ON bt.createId = ct.id
+        WHERE bt.name like CONCAT('%',#{searchName},'%')
+          AND bt.deleteFlag = false
         ORDER BY ${orderByWord}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>

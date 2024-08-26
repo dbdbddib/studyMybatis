@@ -2,7 +2,6 @@ package com.study.mustacheapp.security.controller;
 
 import com.study.mustacheapp.commons.dto.CUDInfoDto;
 import com.study.mustacheapp.member.IMember;
-import com.study.mustacheapp.member.IMemberService;
 import com.study.mustacheapp.member.MemberServiceImpl;
 import com.study.mustacheapp.security.config.SecurityConfig;
 import com.study.mustacheapp.security.dto.LoginRequest;
@@ -12,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -81,7 +79,7 @@ public class LoginCookieController {
                 model.addAttribute("message", "회원계정이 비활성 상태입니다, 관리자에게 문의 하세요");
                 return "login/fail";
             }
-            Cookie cookie = new Cookie(SecurityConfig.LOGINUSER, loginUser.getNickname());
+            Cookie cookie = new Cookie(SecurityConfig.LOGINUSER, loginUser.getCreateId().toString());
             cookie.setMaxAge(60 * 30);
             cookie.setPath("/");    // 쿠키 사용 가능한 url 주소를 root 로 설정
             cookie.setHttpOnly(true);   // 쿠키를 client 에서 수정 못하도록 설정

@@ -7,8 +7,8 @@ public interface ICommentLike {
     String getCommentTbl();
     void setCommentTbl(String commentTbl);
 
-    String getNickname();
-    void setNickname(String nickname);
+    Long getCreateId();
+    void setCreateId(Long createId);
 
     Long getCommentId();
     void setCommentId(Long commentId);
@@ -23,8 +23,8 @@ public interface ICommentLike {
         if (from.getCommentTbl() != null && !from.getCommentTbl().isEmpty()) {
             this.setCommentTbl(from.getCommentTbl());
         }
-        if (from.getNickname() != null && !from.getNickname().isEmpty()) {
-            this.setNickname(from.getNickname());
+        if (from.getCreateId() != null) {
+            this.setCreateId(from.getCreateId());
         }
         if (from.getCommentId() != null) {
             this.setCommentId(from.getCommentId());

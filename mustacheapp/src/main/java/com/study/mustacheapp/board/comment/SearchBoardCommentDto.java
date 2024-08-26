@@ -15,6 +15,6 @@ import lombok.experimental.SuperBuilder;
 public class SearchBoardCommentDto extends SearchAjaxDto {
     private String boardId;
     private String commentTbl;
-    private String nickname;
+    private Long createId;
     private Long commentId;
 }

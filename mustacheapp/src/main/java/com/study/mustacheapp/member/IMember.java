@@ -10,8 +10,8 @@ public interface IMember extends IBase {
     String getName();
     void setName(String name);
 
-    String getNickname();
-    void setNickname(String nickname);
+    Long getCreateId();
+    void setCreateId(Long createId);
 
     String getLoginId();
     void setLoginId(String loginId);
@@ -38,8 +38,8 @@ public interface IMember extends IBase {
         if (from.getName() != null && !from.getName().isEmpty()) {
             this.setName(from.getName());
         }
-        if (from.getNickname() != null && !from.getNickname().isEmpty()) {
-            this.setNickname(from.getNickname());
+        if (from.getCreateId() != null) {
+            this.setCreateId(from.getCreateId());
         }
         if (from.getLoginId() != null && !from.getLoginId().isEmpty()) {
             this.setLoginId(from.getLoginId());

@@ -7,8 +7,8 @@ public interface ISbLike {
     String getTbl();
     void setTbl(String tbl);
 
-    String getNickname();
-    void setNickname(String nickname);
+    Long getCreateId();
+    void setCreateId(Long createId);
 
     Long getBoardId();
     void setBoardId(Long boardId);
@@ -23,8 +23,8 @@ public interface ISbLike {
         if (from.getTbl() != null && !from.getTbl().isEmpty()) {
             this.setTbl(from.getTbl());
         }
-        if (from.getNickname() != null && !from.getNickname().isEmpty()) {
-            this.setNickname(from.getNickname());
+        if (from.getCreateId() != null) {
+            this.setCreateId(from.getCreateId());
         }
         if (from.getBoardId() != null) {
             this.setBoardId(from.getBoardId());

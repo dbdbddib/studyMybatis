@@ -14,6 +14,6 @@ import lombok.experimental.SuperBuilder;
 public class CommentLikeDto implements ICommentLike {
     private Long id;
     private String commentTbl;
-    private String nickname;
+    private Long createId;
     private Long commentId;
 }
