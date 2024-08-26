@@ -355,13 +355,19 @@ Impl은 "Implementation"의 약어로, 인터페이스를 실제로 구현한 �
     - 5. Model (데이터 객체, 자바빈)
     - 6. ORACLE, MSSQL, DB2, MySQL, NoSQL, JSON, Excel, File, ...
     
-
-
++ Local 현 컴퓨터
+    + commit local에 저장
++ Remote 원격 ( 서버 )
+    + push 원격 저장
+      
 # 단축키
 
 + Replace
-  - Ctrl + r
+    - Ctrl + r
 + Replace in Files
-  - Ctrl + Shift + r
+    - Ctrl + Shift + r
 + Find in Files
-  - Ctrl + Shift + f
+    - Ctrl + Shift + f
++ 오류 찾을 시
+    + rebuild 가 아닌 Gradle -> Tasks -> build -> classes
+      
