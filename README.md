@@ -111,6 +111,41 @@ DELETE    DELETE
         + 뷰(View): 사용자 인터페이스를 담당하며, 모델에서 전달받은 데이터를 화면에 표시합니다. 뷰는 사용자의 입력을 받아 컨트롤러에 전달하고, 데이터 표시에만 집중합니다.
         + 컨트롤러(Controller): 사용자 입력을 받아 모델과 뷰 사이에서 통신을 관리합니다. 사용자의 요청을 해석하고, 적절한 모델 함수를 호출하여 데이터를 처리한 후 결과를 뷰에 전달합니다.
 
+## MemberServiceImpl.java -> cudInfoDto.setCreateInfo() 알고리즘
+```
+MemberServiceImpl.java
+
+@Override
+    public IMember insert(CUDInfoDto cudInfoDto, IMember member) {
+        if ( !this.isValidInsert(member) ) {
+            return null;
+        }
+        MemberDto dto = MemberDto.builder().build();
+        dto.copyFields(member);
+        dto.setPassword(encoder.encode(dto.getPassword()));
+        cudInfoDto.setCreateInfo(dto);
+        this.memberMybatisMapper.insert(dto);
+        return dto;
+    }
+```
+
+  ```
+  CUDInfoDto.java
+  
+  public void setCreateInfo(IBase iBase) {    // 자식타입은 부모타입의 기능을 사용할 수 있다
+        if (iBase == null) {
+            return;
+        }
+        iBase.setCreateDt(this.getSystemDt());
+        iBase.setCreateId(loginUser.getPosition());
+    }
+  ```
+
++ cudInfoDto.setCreateInfo(dto); 메소드 호출
++ IBase 형으로 매개변수 받을 수 있는 이유는 MemberDto 가 IBase 를 implements 받았기 때문 ( 자식타입은 부모타입의 기능을 사용할 수 있다 )
++ 실직적 받은 값은 객체 dto 이다. 그러므로 iBase.setCreateDt(this.getSystemDt()); 는 현객체의 필드값을 설정 해주는 메소드이다.
+
+
 # 필요 애노테이션
 
 * @Slf4j
@@ -378,6 +413,9 @@ Impl은 "Implementation"의 약어로, 인터페이스를 실제로 구현한 �
     + f7 : 메소드 안으로 들어가기
     + f8 : 다음 라인으로 이동
     + Shift + F8 : 현재 메소드에서 빠져나와 호출한 코드로 돌아가는 기능
+
++ db
+    cascade : 외래키 참조키 자동 변환
 
 # 단축키
 
