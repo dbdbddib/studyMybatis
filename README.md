@@ -337,31 +337,56 @@ Impl은 "Implementation"의 약어로, 인터페이스를 실제로 구현한 �
 
 
 + Spring framework 또는 전자정부 프레임워크
-    - 0. WEB 화면, Mobile (HTML, CSS, JavaScript, Vue.js, React.js, Angular.js, TypeScript, BootStrap, Flutter, ...)
-    - 1. Controller : HTTP POST, GET, PATCH, DELETE 이러한 사용자가 행동하는 기능을 구현합니다.
-    - 2. Service : Service Implement 의 interface 를 구현합니다. (개발회사 마다 약간씩 다름)
-    - 3. Service Implement : 데이터 객체를 DAO 에서 저장하거나 읽을수 있도록 하는 기능을 구현합니다.
-    - 4. Data Access Object (DAO) : Database 에 접속하여서 데이터를 저장하거나 읽습니다. MyBatis 안에 SQL 언어
-    - 5. Model (데이터 객체, 자바빈)
-    - 6. ORACLE, MSSQL, DB2, MySQL, ... : DBMS 
+    - WEB 화면, Mobile (HTML, CSS, JavaScript, Vue.js, React.js, Angular.js, TypeScript, BootStrap, Flutter, ...)
+    - Controller : HTTP POST, GET, PATCH, DELETE 이러한 사용자가 행동하는 기능을 구현합니다.
+    - Service : Service Implement 의 interface 를 구현합니다. (개발회사 마다 약간씩 다름)
+    - Service Implement : 데이터 객체를 DAO 에서 저장하거나 읽을수 있도록 하는 기능을 구현합니다.
+    - Data Access Object (DAO) : Database 에 접속하여서 데이터를 저장하거나 읽습니다. MyBatis 안에 SQL 언어
+    - Model (데이터 객체, 자바빈)
+    - ORACLE, MSSQL, DB2, MySQL, ... : DBMS 
 
 
 + Spring Boot 프레임워크 에서는 (Python Django 프레임워크)
-    - 0. WEB 화면, Mobile (HTML, CSS, JavaScript, Vue.js, React.js, Angular.js, TypeScript, BootStrap, Flutter, ...)
-    - 1. Controller : HTTP POST, GET, PATCH, DELETE 이러한 사용자가 행동하는 기능을 구현합니다.
-    - 2. Service : Service Implement 의 interface 를 구현합니다. (개발회사 마다 약간씩 다름)
-    - 3. Service Implement : 데이터 객체를 Repository 에서 저장하거나 읽을수 있도록 하는 기능을 구현합니다.
-    - 4. Repository : 실제 저장공간(Database, 파일, 액셀, NOSQL 등) 에 접속하여서 데이터를 저장하거나 읽습니다.
-    - 5. Model (데이터 객체, 자바빈)
-    - 6. ORACLE, MSSQL, DB2, MySQL, NoSQL, JSON, Excel, File, ...
+    - WEB 화면, Mobile (HTML, CSS, JavaScript, Vue.js, React.js, Angular.js, TypeScript, BootStrap, Flutter, ...)
+    - Controller : HTTP POST, GET, PATCH, DELETE 이러한 사용자가 행동하는 기능을 구현합니다.
+    - Service : Service Implement 의 interface 를 구현합니다. (개발회사 마다 약간씩 다름)
+    - Service Implement : 데이터 객체를 Repository 에서 저장하거나 읽을수 있도록 하는 기능을 구현합니다.
+    - Repository : 실제 저장공간(Database, 파일, 액셀, NOSQL 등) 에 접속하여서 데이터를 저장하거나 읽습니다.
+    - Model (데이터 객체, 자바빈)
+    - ORACLE, MSSQL, DB2, MySQL, NoSQL, JSON, Excel, File, ...
     
++ Local 현 컴퓨터
+    + commit -> local 저장소에 저장
+    + 로컬 저장소는 사용자의 컴퓨터에 있는 .git 디렉터리 내에 있음
+      
++ Remote 원격 ( 깃 서버 )
+    + push 원격 저장
+      
++ Recent (최근)
 
++ Git branches
+    + git Sync : push, pull....
+    + show log -> Create Branch ( 새로운 브랜치에 해당 히스토리로 롤백 )
+
++ GitHub Desktop
+    + 로컬에서의 변경 사항을 "시각적" 으로 관리하고, 원격 저장소로 푸시하는 작업을 돕는 도구
+    
++ Merge
+    + 목적지 브랜치로 바꾼 뒤 바꿀 브랜치 머지
+
++ Debug
+    + f7 : 메소드 안으로 들어가기
+    + f8 : 다음 라인으로 이동
+    + Shift + F8 : 현재 메소드에서 빠져나와 호출한 코드로 돌아가는 기능
 
 # 단축키
 
 + Replace
-  - Ctrl + r
+    - Ctrl + r
 + Replace in Files
-  - Ctrl + Shift + r
+    - Ctrl + Shift + r
 + Find in Files
-  - Ctrl + Shift + f
+    - Ctrl + Shift + f
++ 오류 찾을 시
+    + rebuild 가 아닌 Gradle -> Tasks -> build -> classes
+      
