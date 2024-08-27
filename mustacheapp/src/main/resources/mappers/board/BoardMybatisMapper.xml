@@ -43,21 +43,27 @@
     </delete>
 
     <select id="findById" resultType="BoardDto">
-        SELECT id
-             , name
-             , content
-             , viewQty
-             , likeQty
-             , createDt
-             , createId
-             , updateDt
-             , updateId
-             , deleteDt
-             , deleteId
-             , deleteFlag
-        FROM board_tbl
-        WHERE id = #{id}
-            AND deleteFlag = false
+        SELECT bt.id
+             , bt.name
+             , bt.content
+             , bt.viewQty
+             , bt.likeQty
+             , bt.createDt
+             , bt.createId
+             , ct.nickname AS createName
+             , bt.updateDt
+             , bt.updateId
+             , ut.nickname AS updateName
+             , bt.deleteDt
+             , bt.deleteId
+             , dt.nickname AS deleteName
+             , bt.deleteFlag
+        FROM board_tbl AS bt
+        LEFT OUTER JOIN member_tbl AS ct ON bt.createId = ct.id
+        LEFT OUTER JOIN member_tbl AS ut ON bt.updateId = ut.id
+        LEFT OUTER JOIN member_tbl AS dt ON bt.deleteId = dt.id
+        WHERE bt.id = #{id}
+          AND bt.deleteFlag = false
     </select>
 
     <update id="addViewQty">
@@ -81,7 +87,7 @@
           AND deleteFlag = false
     </update>
 
-    <select id="countAllByNameContains" parameterType="SearchAjaxDto" resultType="int">
+    <select id="countAllByNameContains" parameterType="SearchAjaxDto" resultType="Integer">
         SELECT count(*)
         FROM board_tbl
         WHERE name like CONCAT('%',#{searchName},'%')
@@ -89,21 +95,27 @@
     </select>
 
     <select id="findAllByNameContains" parameterType="SearchAjaxDto" resultType="BoardDto">
-        SELECT id
-             , name
-             , content
-             , viewQty
-             , likeQty
-             , createDt
-             , createId
-             , updateDt
-             , updateId
-             , deleteDt
-             , deleteId
-             , deleteFlag
-        FROM board_tbl
-        WHERE name like CONCAT('%',#{searchName},'%')
-          AND deleteFlag = false
+        SELECT bt.id
+             , bt.name
+             , bt.content
+             , bt.viewQty
+             , bt.likeQty
+             , bt.createDt
+             , bt.createId
+             , ct.nickname AS createName
+             , bt.updateDt
+             , bt.updateId
+             , ut.nickname AS updateName
+             , bt.deleteDt
+             , bt.deleteId
+             , dt.nickname AS deleteName
+             , bt.deleteFlag
+        FROM board_tbl AS bt
+        LEFT OUTER JOIN member_tbl AS ct ON bt.createId = ct.id
+        LEFT OUTER JOIN member_tbl AS ut ON bt.updateId = ut.id
+        LEFT OUTER JOIN member_tbl AS dt ON bt.deleteId = dt.id
+        WHERE bt.name like CONCAT('%',#{searchName},'%')
+          AND bt.deleteFlag = false
         ORDER BY ${orderByWord}
         LIMIT #{rowsOnePage} OFFSET #{firstIndex}
     </select>

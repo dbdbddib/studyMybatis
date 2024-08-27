@@ -64,7 +64,7 @@ public class BoardCommentWebRestController implements ICommonRestController<Boar
             IMember loginUser = (IMember)model.getAttribute(SecurityConfig.LOGINUSER);
             if ( loginUser == null ) {
                 return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888881, "로그인 필요", null);
-            } else if ( !loginUser.getRole().equals(MemberRole.ADMIN.toString()) && !loginUser.getNickname().equals(find.getCreateId()) ) {
+            } else if ( !loginUser.getRole().equals(MemberRole.ADMIN.toString()) && !loginUser.getId().equals(find.getCreateId()) ) {
                 return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888889, "관리자와 본인만 수정 가능", null);
             }
             CUDInfoDto cudInfoDto = new CUDInfoDto(loginUser);
@@ -92,7 +92,7 @@ public class BoardCommentWebRestController implements ICommonRestController<Boar
             IMember loginUser = (IMember) model.getAttribute(SecurityConfig.LOGINUSER);
             if (loginUser == null) {
                 return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888881, "로그인 필요", null);
-            } else if (!loginUser.getRole().equals(MemberRole.ADMIN.toString()) && !loginUser.getNickname().equals(find.getCreateId())) {
+            } else if (!loginUser.getRole().equals(MemberRole.ADMIN.toString()) && !loginUser.getId().equals(find.getCreateId())) {
                 return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888889, "관리자와 본인만 삭제 가능", null);
             }
             CUDInfoDto cudInfoDto = new CUDInfoDto(loginUser);

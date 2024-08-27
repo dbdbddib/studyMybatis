@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.study.mustacheapp.category.CategoryMybatisMapper">
+<mapper namespace="com.study.mustacheapp.category.ICategoryMybatisMapper">
 <!-- mapper namespace="풀패키지명"  @Mapper 선언된 클래스의 풀 패키지 명  -->
 
 <!--  id는  CategoryMybatisMapper 클래스의 메소드 이름,  parameterType은 메소드의 매개변수 ( 한개만 가능 )

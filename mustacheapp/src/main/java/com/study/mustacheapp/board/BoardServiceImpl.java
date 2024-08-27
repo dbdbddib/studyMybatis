@@ -2,7 +2,6 @@ package com.study.mustacheapp.board;
 
 import com.study.mustacheapp.filecntl.FileCtrlService;
 import com.study.mustacheapp.sbfile.ISbFileMybatisMapper;
-import com.study.mustacheapp.sbfile.ISbFileService;
 import com.study.mustacheapp.sbfile.SbFileDto;
 import com.study.mustacheapp.sblike.SbLikeDto;
 import com.study.mustacheapp.sblike.ISbLikeMybatisMapper;
