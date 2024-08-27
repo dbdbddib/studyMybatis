@@ -311,6 +311,8 @@
             // id="id" 요소의 value 속성의 값을 item.id 로 설정한다.
             $("#name2").val(item.name);
             $("#content2").val(item.content);
+            $("#createName").text(item.createName);
+            $("#createDt").text(item.createDt);
             $("#viewQty2").val(item.viewQty);
             $("#likeQty2").text(item.likeQty);
             let count = item.deleteDt;
@@ -319,6 +321,9 @@
             } else {
                 $("#heartIcon").attr("src", "/svg/heartOn.svg");
             }
+            $("#showViewModalButton").text(item.createName);
+
+
             $("#showViewModalButton").trigger("click");
         }
 
@@ -929,16 +934,23 @@
                     <label for="id2">ID</label> <input id="id2" name="id2" readonly type="text" value=""/>
                 </div>
                 <div>
-                    <label for="name2">Name</label> <input id="name2" name="name2" type="text" value=""/>
+                    <label for="name2">제목</label> <input id="name2" name="name2" type="text" value=""/>
                 </div>
                 <div>
-                    <label for="content2">Name</label> <textarea id="content2" name="content2"></textarea>
+                    <label for="content2">본문</label> <textarea id="content2" name="content2"></textarea>
+                </div>
+                <div>
+                    <div>작성자</div>
+                    <div id="createName"></div>
+                    <div>작성일</div>
+                    <div id="createDt"></div>
                 </div>
                 <div>
                     <div id="fileListView" class="file-list"></div>
                 </div>
                 <div>
                     <label for="file">첨부파일</label>
+
                     <input type="file" id="fileModity" name="file" onchange="$.addFileModity(this);" multiple />
                 </div>
                 <div class="row">
