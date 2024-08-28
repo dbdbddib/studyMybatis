@@ -152,6 +152,13 @@ MemberServiceImpl.java
 + 컨트룰러 작성
 + html 에 {{}} 로 값을 받는다
 
+
+
+
+
+
+
+
 # 필요 애노테이션
 
 * @Slf4j
@@ -206,6 +213,16 @@ MemberServiceImpl.java
 
 * @Null
     + 없어도 되는 필드값
+     
++ @Transectional
+    + service 에 사용
+    + 메소드가 끝날 때까지 실행 보류
+    + 메소드가 끝나야 결과 반영
+    + 애노테이션 사용안 할시 문장 끝날 떄마다 결과 반영
+
+
+
+
 
 # 메소드
 
