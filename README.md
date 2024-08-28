@@ -146,6 +146,12 @@ MemberServiceImpl.java
 + 실직적 받은 값은 객체 dto 이다. 그러므로 iBase.setCreateDt(this.getSystemDt()); 는 현객체의 필드값을 설정 해주는 메소드이다.
 
 
+## 서버에서 클라이언트 값 전송
++ 서버에 객체 필드 생성
++ sql 쿼리 select 작성
++ 컨트룰러 작성
++ html 에 {{}} 로 값을 받는다
+
 # 필요 애노테이션
 
 * @Slf4j
