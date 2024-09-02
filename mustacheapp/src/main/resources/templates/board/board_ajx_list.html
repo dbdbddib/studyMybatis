@@ -111,6 +111,8 @@
         //$(document).ready(function(){ // jQuery 1.xx
         //    // Jquery 는 html 문서가 로딩이 완료 되면 이 부분을 자동 최초 한번 실행한다.
         //});
+        // $(function () { ... }); 부분은 jQuery의 "document ready" 함수입니다. 이 함수 내부에 작성된 코드는 HTML 문서가 완전히 로드되고 DOM이 준비된 후에 실행
+        // $.searchItemList(1);는 페이지가 열리면 즉시 호출되어 1페이지에 대한 데이터를 검색하는 기능을 수행
         $(function () {
             // jQuery 3.0 버전부터 실행할 기능을 정의해주세요.
             // HTML 문서 로딩이 완료되면 자동적으로 최초 한번 실행되는 jQuery 부분
@@ -210,6 +212,7 @@
             $.searchItemList(page);
         }
 
+        // 리스트 검색
         $.searchItemList = function (pPage) {
             page = pPage;
             $("#id").val("");   // id="id" 요소의 value 속성의 값을 "" 설정한다.
@@ -218,11 +221,11 @@
             let searchName = $("#searchName").val();
             // id="searchName" 요소의 value 속성의 값을 가져온다.
             $.ajax({    // jQuery Ajax 비동기 서버와 통신
-                url: "/api/v1/board/searchName",  // 서버 주소
+                url: "/api/v1/board/searchName",  // 이 주소를 통해 리스트 가져오는 것
                 type: "POST",   // method 방식
                 datatype: "JSON",   // 전송하는 데이터 방식
-                data: JSON.stringify({
-                    "page": page,
+                data: JSON.stringify({      // 이 JSON 데이터를 @RequestBody 로 받는거임
+                    "page": page,           // 보라색은 전역변수, 흰색은 지역변수 ~
                     "searchName": searchName,
                     "sortColumn": sortColumn,
                     "sortAscDsc": sortAscDesc,
@@ -239,7 +242,7 @@
                 // javascript 기본 객체 console 에 프린트한다.
                 if (status === "success") {
                     $("#total").html(data.responseData.total);   // id="total" 요소의 <요소>문자</요소> html 의 문자를 설정한다.
-                    $.showItemList(data.responseData.dataList);
+                    $.showItemList(data.responseData.dataList); // $.showItemList = function (itemList) itemList에 data.responseData.dataList 이 리스트가 삽입
                     $.makePageUI(data.responseData.total, page);
                 }
             }).fail(function (jqXHR, status, errorThrown) {
@@ -252,6 +255,7 @@
             });
         }
 
+        // searchItemList 에서 검색한 리스트 화면에 출력
         $.showItemList = function (itemList) {
             // itemList 매개변수는 배열이다.
             if (itemList == null) {
@@ -891,9 +895,11 @@
                         </select>
                     </span>
                 </li>
+            <!-- 본문 -->
             </ul>
             <ul id="itemList">
             </ul>
+
             <div>total : <span id="total"></span></div>
             <button id="showAddModalButton">추가</button>
             <button id="showViewModalButton">보기</button>

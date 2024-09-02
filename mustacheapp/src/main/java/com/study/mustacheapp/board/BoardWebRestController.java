@@ -196,6 +196,7 @@ public class BoardWebRestController implements ICommonRestController<BoardDto> {
         }
     }
 
+    // 리스트 출력 부분 ( 이 메소드 먼저 실행 후 boardService.findAllByNameContains(searchAjaxDto) 이 문장에서 service 실행  )
     @PostMapping("/searchName")
     public ResponseEntity<ResponseDto> findAllByNameContains(Model model, @RequestBody SearchAjaxDto searchAjaxDto) {
         try {
@@ -206,13 +207,17 @@ public class BoardWebRestController implements ICommonRestController<BoardDto> {
             if (loginUser == null) {
                 return makeResponseEntity(HttpStatus.FORBIDDEN, ResponseCode.R888881, "로그인 필요", null);
             }
+
             int total = this.boardService.countAllByNameContains(searchAjaxDto);
             List<BoardDto> list = this.boardService.findAllByNameContains(searchAjaxDto);
+
             if (list == null) {
                 return makeResponseEntity(HttpStatus.NOT_FOUND, ResponseCode.R000041, "서버 검색 에러", null);
             }
+
             searchAjaxDto.setTotal(total);
             searchAjaxDto.setDataList(list);
+
             return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", searchAjaxDto);
         } catch (Exception ex) {
             log.error(ex.toString());

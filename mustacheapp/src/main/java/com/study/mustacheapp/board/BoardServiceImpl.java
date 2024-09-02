@@ -81,6 +81,7 @@ public class BoardServiceImpl implements IBoardService {
         return count;
     }
 
+    // 리스트 출력 부분
     @Override
     public List<BoardDto> findAllByNameContains(SearchAjaxDto searchAjaxDto) {
         if ( searchAjaxDto == null ) {
