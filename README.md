@@ -393,6 +393,27 @@ Impl은 "Implementation"의 약어로, 인터페이스를 실제로 구현한 �
     * data :	URL 파라미터를 통해 보낼 데이터. 종류 : Object or String or Array
         - Object는 key:value set 객체여야 하며 value 영역이 array일 경우 jQuery가 serialize를 해줌. value 영역이 String이 아닌 경우 String으로 변환한 뒤 전송됨
 
+```
+$.ajax({
+                    url: "/api/v1/organization/findAll",
+                    type: "POST",
+                    datatype: "json",
+                    data: JSON.stringify({                              // 이런 형태로 서버에 데이터 전송  서버는 @RequestBody 로 값을 받음
+                        "organization": organization,                   // 보라색은 전역변수, 흰색은 지역변수 ~
+                    }),
+                    contentType: "application/json; charset=UTF-8"
+                }).done(function (data, status, xhr) {
+                    if (status === "success") {
+                        $.showItemList(data.responseData.dataList);
+                    }
+                }).fail(function (jqXHR, status, errorThrown) {
+                    alert("검색을 실패했습니다. " + jqXHR.responseJSON.message);
+                });
+            };
+```
+
+        
+
 
 + Spring framework 또는 전자정부 프레임워크
     - WEB 화면, Mobile (HTML, CSS, JavaScript, Vue.js, React.js, Angular.js, TypeScript, BootStrap, Flutter, ...)
