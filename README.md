@@ -146,6 +146,32 @@ MemberServiceImpl.java
 + 실직적 받은 값은 객체 dto 이다. 그러므로 iBase.setCreateDt(this.getSystemDt()); 는 현객체의 필드값을 설정 해주는 메소드이다.
 
 
+## MVC 패턴의 CRUD 프로젝트 만드는 순서
+[화면(Mustache/Thymeleaf/React) -> Controller -> ServierImpl -> IService -> Mybatis/JPA -> RDBMS]
+[RDBMS -> Mybatis/JPA -> IService -> ServierImpl -> Controller -> 화면(Mustache/Thymeleaf/React)]
+0. 화면에 기능을 서술한다.
+1. 화면에서 사용하는 데이터들을 필요한것들 열거하고 논리모델링, 정규화한다 (id 를 키로 다른 테이블에서는 id 를 외래키)
+2. 물리모델링을 한다.
+3. create table 한다.
+4. SpringBoot, create table 한 테이블의 interface 를 java 로 생성한다. getId, setId, getName, setName
+5. 4번에서 만든 interface 를 상속하여 Dto 를 java 로 생성한다.
+6. resources/mapper/**/쿼리.xml 파일에 쿼리 insert, update, delete, select 만든다. (interface) MybatisMapper Java 에 메소드를 생성한다.
+7. (interface) MybatisMapper Java 에 있는 메소드를 (interface) IService java 에 생성한다.
+8. IService 를 상속받아서 ServiceImpl java 를 생성하고 메소드를 구현한다. MybatisMapper 를 실행한다.
+   - ServiceImpl 의 insert 메소드는 MybatisMapper 의 insert 메소드를 실행한다.
+   - ServiceImpl 의 update 메소드는 MybatisMapper 의 update 메소드를 실행한다.
+   - ServiceImpl 의 deleteById 메소드는 MybatisMapper 의 deleteById 메소드를 실행한다.
+   - ServiceImpl 의 updateDeleteFlag 메소드는 MybatisMapper 의 updateDeleteFlag 메소드를 실행한다.
+   - ServiceImpl 의 findById 메소드는 MybatisMapper 의 findById 메소드를 실행한다.
+   - ServiceImpl 의 findAllByNameContains 메소드는 MybatisMapper 의 findAllByNameContains 메소드를 실행한다.
+9. Controller 화면템플릿용도 (WEB 화면용 템플릿으로 화면을 그린다. return 이 String "디렉토리명/html 파일명" )
+10. 화면템플릿용도 Controller 는 GET @RequestParam, POST @ModelAttribute 로 받아서 데이터 처리하고 화면에 Model 출력한다.
+11. RestController ajax 또는 axios 또는 api 용도 (JSON 으로 처리된다.)
+12. JSON 용도 RestController 는 GET @PathVariable, POST @RequestBody, DELETE @PathVariable, PATCH @PathVariable 로 받아서 데이터 처리하고 ResponseEntity 로 리턴한다.
+
+
+
+
 ## 서버에서 클라이언트 값 전송
 + 서버에 객체 필드 생성
 + sql 쿼리 select 작성
