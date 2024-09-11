@@ -27,4 +27,17 @@ public class SearchAjaxDto {
     private Integer page;
     private Integer total;
     private List<?> dataList;
+
+    public void settingValues() {
+        this.setOrderByWord( (this.getSortColumn() != null ? this.getSortColumn() : "id")
+                + " " + (this.getSortAscDsc() != null ? this.getSortAscDsc() : "DESC") );
+        // SQL select 문장의 ORDER BY 구문을 만들어 주는 역할
+        if ( this.getRowsOnePage() == null ) {
+            // 한 페이지당 보여주는 행의 갯수
+            this.setRowsOnePage(10);
+        }
+        if ( this.getPage() == null || this.getPage() <= 0 ) {
+            this.setPage(1);
+        }
+    }
 }

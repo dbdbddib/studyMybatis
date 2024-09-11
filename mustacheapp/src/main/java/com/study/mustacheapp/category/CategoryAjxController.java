@@ -20,7 +20,7 @@ public class CategoryAjxController {
     @GetMapping("/category_ajx_list")
     // GET method로 /catajx/~~~~~~~~~ url 주소로 접속하도록 한다.
     public String category_ajx_list(Model model) {
-//        IMember loginUser = (IMember)model.getAttribute("loginUser");
+//        IMember loginUser = (IMember)model.getAttribute(SecurityConfig.LOGINUSER);
 //        if ( loginUser == null ) {
 //            // 로그인 사용자가 아니면 리턴
 //            return "redirect:/";

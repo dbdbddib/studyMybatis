@@ -2,6 +2,7 @@ package com.study.mustacheapp.member;
 
 import com.study.mustacheapp.commons.dto.CUDInfoDto;
 import com.study.mustacheapp.commons.dto.SearchAjaxDto;
+import com.study.mustacheapp.commons.exeption.IdNotFoundException;
 import com.study.mustacheapp.security.dto.LoginRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,13 +71,16 @@ public class MemberServiceImpl implements IMemberService {
 
     @Override
     public Boolean updateDeleteFlag(CUDInfoDto cudInfoDto, IMember member) {
-        if ( member == null ) {
+        if ( member == null || member.getId() == null || member.getId() <= 0 ) {
             return false;
         }
-        MemberDto dto = MemberDto.builder().build();
-        dto.copyFields(member);
-        cudInfoDto.setDeleteInfo(dto);
-        this.memberMybatisMapper.updateDeleteFlag(dto);
+        MemberDto find = this.memberMybatisMapper.findById(member.getId());
+        if (find == null) {
+            throw new IdNotFoundException(String.format("Error : not found id = %d !", member.getId()));
+        }
+        find.copyFields(member);
+        cudInfoDto.setDeleteInfo(find);
+        this.memberMybatisMapper.updateDeleteFlag(find);
         return true;
     }
 
@@ -85,10 +89,10 @@ public class MemberServiceImpl implements IMemberService {
         if ( id == null || id <= 0 ) {
             return null;
         }
-//        IMember find = this.findById(id);
-//        if ( find == null ) {
-//            return false;
-//        }
+        MemberDto find = this.memberMybatisMapper.findById(id);
+        if (find == null) {
+            throw new IdNotFoundException(String.format("Error : not found id = %d !", id));
+        }
         this.memberMybatisMapper.deleteById(id);
         return true;
     }
@@ -99,6 +103,9 @@ public class MemberServiceImpl implements IMemberService {
             return null;
         }
         MemberDto find = this.memberMybatisMapper.findById(id);
+        if (find == null) {
+            throw new IdNotFoundException(String.format("Error : not found id = %d !", id));
+        }
         return find;
     }
 
@@ -173,14 +180,7 @@ public class MemberServiceImpl implements IMemberService {
         if (dto == null) {
             return List.of();
         }
-        dto.setOrderByWord( (dto.getSortColumn() != null ? dto.getSortColumn() : "id")
-                + " " + (dto.getSortAscDsc() != null ? dto.getSortAscDsc() : "DESC") );
-        if ( dto.getRowsOnePage() == null ) {
-            dto.setRowsOnePage(10);
-        }
-        if ( dto.getPage() == null || dto.getPage() <= 0 ) {
-            dto.setPage(1);
-        }
+        dto.settingValues();
         List<IMember> result = this.getIMemberList(
                 this.memberMybatisMapper.findAllByNameContains(dto)
         );

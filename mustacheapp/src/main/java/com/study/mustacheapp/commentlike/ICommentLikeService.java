@@ -1,8 +1,6 @@
 package com.study.mustacheapp.commentlike;
 
-import com.study.mustacheapp.commons.inif.IServiceCRUD;
 
-public interface ICommentLikeService extends IServiceCRUD<ICommentLike> {
-    Boolean deleteByCommentTableUserBoard(CommentLikeDto dto);
+public interface ICommentLikeService {
     Integer countByCommentTableUserBoard(ICommentLike searchDto);
 }

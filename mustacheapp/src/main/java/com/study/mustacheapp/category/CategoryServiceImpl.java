@@ -115,16 +115,7 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
             //return List.of();
             return new ArrayList<>();
         }
-        dto.setOrderByWord( (dto.getSortColumn() != null ? dto.getSortColumn() : "id")
-                + " " + (dto.getSortAscDsc() != null ? dto.getSortAscDsc() : "DESC") );
-        // SQL select 문장의 ORDER BY 구문을 만들어 주는 역할
-        if ( dto.getRowsOnePage() == null ) {
-            // 한 페이지당 보여주는 행의 갯수
-            dto.setRowsOnePage(10);
-        }
-        if ( dto.getPage() == null || dto.getPage() <= 0 ) {
-            dto.setPage(1);
-        }
+        dto.settingValues();
         List<ICategory> list = this.getICategoryList(
                 this.categoryMybatisMapper.findAllByNameContains(dto)
                 // CategoryMybatisMapper 의 쿼리 XML 파일의 <select id="findAllByNameContains" 문장을 실행한 결과를 리턴한다.

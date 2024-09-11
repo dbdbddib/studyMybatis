@@ -36,10 +36,10 @@ public class CategoryWebRestController implements IResponseController {
             if ( result == null ) {
                 return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R000011, "서버 입력 에러", null);
             }
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", result);
+            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "OK", result);
         } catch ( Exception ex ) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
         }
     }
 
@@ -58,11 +58,11 @@ public class CategoryWebRestController implements IResponseController {
             if ( result == null ) {
                 return ResponseEntity.notFound().build(); // error 응답
             }
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", result);
+            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "OK", result);
             // 200 OK 와 result 데이터를 응답한다.
         } catch ( Exception ex ) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
         }
     }
 
@@ -76,11 +76,11 @@ public class CategoryWebRestController implements IResponseController {
             }
             Boolean result = this.categoryService.deleteById(id);
             // 최종 목적지인 Mybatis 쿼리를 DB 에 실행하고 결과를 리턴 받는다.
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", result);
+            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "OK", result);
             // 200 OK 와 result 데이터를 응답한다.
         } catch ( Exception ex ) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
         }
     }
 
@@ -95,11 +95,11 @@ public class CategoryWebRestController implements IResponseController {
             if ( find == null ) {
                 return makeResponseEntity(HttpStatus.NOT_FOUND, ResponseCode.R000041, "데이터 검색 에러", null);
             }
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", find);
+            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "OK", find);
             // 200 OK 와 result 데이터를 응답한다.
         } catch ( Exception ex ) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
         }
     }
 
@@ -111,11 +111,11 @@ public class CategoryWebRestController implements IResponseController {
         try {
             List<ICategory> result = this.categoryService.getAllList();
             // 최종 목적지인 Mybatis 쿼리를 DB 에 실행하고 결과를 리턴 받는다.
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", result);
+            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "OK", result);
             // 200 OK 와 result 데이터를 응답한다.
         } catch ( Exception ex ) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
         }
     }
 
@@ -138,11 +138,11 @@ public class CategoryWebRestController implements IResponseController {
             // 최종 목적지인 Mybatis 쿼리를 DB 에 실행하고 결과를 리턴 받는다.
             // countAllByNameContains 쿼리 문장을 만들때 searchName 값을 활용하여 쿼리 문장을 만들고 실행한다.
             // 데이터 행수를 리턴한다.
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", total);
+            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "OK", total);
             // 200 OK 와 result 데이터를 응답한다.
         } catch ( Exception ex ) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
         }
     }
 
@@ -176,11 +176,11 @@ public class CategoryWebRestController implements IResponseController {
             // SearchAjaxDto 응답결과에 total 을 추가한다.
             searchAjaxDto.setDataList(list);
             // SearchAjaxDto 응답결과에 List<ICategory> 을 추가한다.
-            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "성공", searchAjaxDto);
+            return makeResponseEntity(HttpStatus.OK, ResponseCode.R000000, "OK", searchAjaxDto);
             // 200 OK 와 result 데이터를 응답한다.
         } catch ( Exception ex ) {
             log.error(ex.toString());
-            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.toString(), null);
+            return makeResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.R999999, ex.getMessage(), null);
         }
     }
 }

@@ -1,0 +1,27 @@
+server:
+  port: 8089
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: mustacheapp
+  profiles:
+    active: local
+
+# mustache
+  mustache:
+    enabled: true
+    charset: UTF-8
+    suffix": .html
+    check-template-location: true
+
+# mybatis (MyBatisConfig.java same functions)
+mybatis:
+  mapper-locations: classpath:mappers/**/*.xml
+  type-aliases-package: com.study.mustacheapp
+  configuration:
+    map-underscore-to-camel-case: true

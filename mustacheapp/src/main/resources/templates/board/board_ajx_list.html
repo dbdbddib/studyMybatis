@@ -164,6 +164,10 @@
             });
         });
 
+
+
+
+
         $.idAsc = function () {  // jQuery 함수 선언
             sortColumn = "id";
             sortAscDesc = "ASC";
@@ -221,7 +225,7 @@
             let searchName = $("#searchName").val();
             // id="searchName" 요소의 value 속성의 값을 가져온다.
             $.ajax({    // jQuery Ajax 비동기 서버와 통신
-                url: "/api/v1/board/searchName",  // 이 주소를 통해 리스트 가져오는 것
+                url: "/api/v1/board/searchName",  // controller 에 data JSON 보내는거임
                 type: "POST",   // method 방식
                 datatype: "JSON",   // 전송하는 데이터 방식
                 data: JSON.stringify({      // 이 JSON 데이터를 @RequestBody 로 받는거임
@@ -242,7 +246,7 @@
                 // javascript 기본 객체 console 에 프린트한다.
                 if (status === "success") {
                     $("#total").html(data.responseData.total);   // id="total" 요소의 <요소>문자</요소> html 의 문자를 설정한다.
-                    $.showItemList(data.responseData.dataList); // $.showItemList = function (itemList) itemList에 data.responseData.dataList 이 리스트가 삽입
+                    $.showItemList(data.responseData.dataList); // json 객체 안 responseData -> dataList 안에 값들을 보낸다.
                     $.makePageUI(data.responseData.total, page);
                 }
             }).fail(function (jqXHR, status, errorThrown) {
@@ -285,27 +289,7 @@
             }
         }
 
-        $.viewItem = function (id) {
-            if (id <= 0) {
-                return;
-            }
-            $.ajax({
-                url: "/api/v1/board/" + id,
-                type: "GET",
-                datatype: "JSON",
-                contentType: "application/json; charset=UTF-8", // 응답받는 데이터 형식
-            }).done(function (data, status, xhr) {
-                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
-                if (status === "success") {
-                    $.viewBoardFiles(id);
-                    $.getBoardCommentList(id, true);
-                    $.showItemInfo(data.responseData);
-                }
-            }).fail(function (jqXHR, status, errorThrown) {
-                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
-                alert("보기 실패했습니다. " + jqXHR.responseJSON.message);
-            });
-        }
+
 
         $.showItemInfo = function (item) {
             if (item == null) {
@@ -331,6 +315,31 @@
             $("#showViewModalButton").trigger("click");
         }
 
+        // modal 부분 (1)
+        // viewItem -> viewBoardFiles
+        $.viewItem = function (id) {
+            if (id <= 0) {
+                return;
+            }
+            $.ajax({
+                url: "/api/v1/board/" + id,
+                type: "GET",
+                datatype: "JSON",
+                contentType: "application/json; charset=UTF-8", // 응답받는 데이터 형식
+            }).done(function (data, status, xhr) {
+                console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+                if (status === "success") {
+                    $.viewBoardFiles(id);
+                    $.getBoardCommentList(id, true);
+                    $.showItemInfo(data.responseData);
+                }
+            }).fail(function (jqXHR, status, errorThrown) {
+                console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+                alert("보기 실패했습니다. " + jqXHR.responseJSON.message);
+            });
+        }
+
+        // modal 부분 (2)
         $.viewBoardFiles = function (id) {
             if (id <= 0) {
                 return;
@@ -352,8 +361,12 @@
             });
         }
 
+
+
+
         let fileArrayView = new Array();
         let fileArrayModity = new Array();
+
         $.showBoardFiles = function (fileList) {
             if (fileList == null) {
                 return;
@@ -895,10 +908,13 @@
                         </select>
                     </span>
                 </li>
+
+
             <!-- 본문 -->
             </ul>
             <ul id="itemList">
             </ul>
+
 
             <div>total : <span id="total"></span></div>
             <button id="showAddModalButton">추가</button>
@@ -933,6 +949,8 @@
                     </div>
                 </fieldset>
         </div>
+
+
         <div id="modal_box_view" style="display: none">
             <h2>Board Info</h2>
             <fieldset>
