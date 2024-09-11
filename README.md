@@ -147,8 +147,8 @@ MemberServiceImpl.java
 
 
 ## MVC 패턴의 CRUD 프로젝트 만드는 순서
-[화면(Mustache/Thymeleaf/React) -> Controller -> ServierImpl -> IService -> Mybatis/JPA -> RDBMS]
-[RDBMS -> Mybatis/JPA -> IService -> ServierImpl -> Controller -> 화면(Mustache/Thymeleaf/React)]
++ [화면(Mustache/Thymeleaf/React) -> Controller -> ServierImpl -> IService -> Mybatis/JPA -> RDBMS]
++ [RDBMS -> Mybatis/JPA -> IService -> ServierImpl -> Controller -> 화면(Mustache/Thymeleaf/React)]
 0. 화면에 기능을 서술한다.
 1. 화면에서 사용하는 데이터들을 필요한것들 열거하고 논리모델링, 정규화한다 (id 를 키로 다른 테이블에서는 id 를 외래키)
 2. 물리모델링을 한다.
