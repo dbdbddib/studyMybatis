@@ -106,7 +106,9 @@ DELETE    DELETE
     + if.. 서로다른 로그인 화면 두개가 있는데 인터페이스로 선언된 하나의 메소드로 구현 가능하다..
       
 
-+ CONTROLLER 
++ CONTROLLER
+ 
+    + 리턴형은 String 만  ->  화면 템플릿만 리턴한다는 뜻
 
     + controller -> ServiceImpl -> mapper -> xml -> 자바 인터페이스를 통해 db에서 SQL 쿼리를 실행 -> 결과 객체로 반환
 
