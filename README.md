@@ -55,7 +55,7 @@ DELETE    DELETE
 * Update (갱신):
   + HTTP 메서드: PUT 또는 PATCH
   + 예시: 특정 사용자의 정보를 업데이트하는 경우
-  + 요청: PUT /users/{id} 또는 PATCH /users/{id}
+  + 요청: PUT /users/{id} 또는 PATCH /users/{id}  {put: 전체 업데이트 (모든 데이터 전송), patch: 부분 업데이트 (변경할 데이터만 전송)}
   + 요청 본문: 업데이트할 사용자의 정보를 포함하는 JSON 또는 XML 데이터
   + 응답: 적절한 상태 코드와 함께 성공 메시지 또는 업데이트된 사용자의 정보
 
