@@ -95,7 +95,7 @@ DELETE    DELETE
 
 # CODE
 
-+ DAO, DTO 등..  데이터베이스와 상호작용하는 코드 ( 객체 생성 후 객체에 대한 필드 정보 값을 db와 상호작용 ) 
++ DAO, DTO (Data Transfer Object: 데이터 전송 객체) 등..  데이터베이스와 상호작용하는 코드 ( 객체 생성 후 객체에 대한 필드 정보 값을 db와 상호작용 ) 
 
 + ICategory..
     + 화면출력 경우 ICategory 를 사용
