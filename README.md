@@ -95,7 +95,17 @@ DELETE    DELETE
 
 # CODE
 
-+ DAO, DTO (Data Transfer Object: 데이터 전송 객체) 등..  데이터베이스와 상호작용하는 코드 ( 객체 생성 후 객체에 대한 필드 정보 값을 db와 상호작용 ) 
++ DAO (Data Access Object)
+    + 데이터베이스와의 상호작용을 캡슐화한 객체
+    + DAO는 데이터베이스의 CRUD (Create, Read, Update, Delete) 작업 수행
+    + 데이터베이스와의 연결 및 쿼리 실행 등의 작업을 처리
+
++ DTO (Data Transfer Object)
+    + 데이터 전송 객체
+    + DTO는 데이터베이스나 다른 시스템과 데이터를 주고받기 위한 객체
+    + 주로 데이터의 상태를 캡슐화하고 전달하는 역할
+    + DTO는 데이터베이스와의 상호작용을 직접적으로 하지 않음
+    + DAO가 DTO 객체를 사용하여 데이터를 전송
 
 + ICategory..
     + 화면출력 경우 ICategory 를 사용
