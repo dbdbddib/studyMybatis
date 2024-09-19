@@ -516,4 +516,6 @@ $.ajax({
     - Ctrl + Shift + f
 + 오류 찾을 시
     + rebuild 가 아닌 Gradle -> Tasks -> build -> classes
-      
+
++ 코드 포맷팅
+    + ctrl + alt + L
