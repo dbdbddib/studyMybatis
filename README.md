@@ -187,6 +187,8 @@ MemberServiceImpl.java
 + 실직적 받은 값은 객체 dto 이다. 그러므로 iBase.setCreateDt(this.getSystemDt()); 는 현객체의 필드값을 설정 해주는 메소드이다.
 
 
++ HttpSession 은 자바 서블릿 API 에서 제공하는 인터페이스로, 클라이언트와 서버 간의 세션을 관리하는 데 사용
++ HttpServletRequest 는 자바 서블릿 API 에서 제공되는 인터페이스로, HTTP 요청과(POST, GET, session 등..) 관련된 정보를 서블릿에 전달하는 데 사용
 
 
 
