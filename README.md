@@ -182,9 +182,9 @@ MemberServiceImpl.java
     }
   ```
 
-+ cudInfoDto.setCreateInfo(dto); 메소드 호출
-+ IBase 형으로 매개변수 받을 수 있는 이유는 MemberDto 가 IBase 를 implements 받았기 때문 ( 자식타입은 부모타입의 기능을 사용할 수 있다 )
-+ 실직적 받은 값은 객체 dto 이다. 그러므로 iBase.setCreateDt(this.getSystemDt()); 는 현객체의 필드값을 설정 해주는 메소드이다.
+    cudInfoDto.setCreateInfo(dto); 메소드 호출
+    IBase 형으로 매개변수 받을 수 있는 이유는 MemberDto 가 IBase 를 implements 받았기 때문 ( 자식타입은 부모타입의 기능을 사용할 수 있다 )
+    실직적 받은 값은 객체 dto 이다. 그러므로 iBase.setCreateDt(this.getSystemDt()); 는 현객체의 필드값을 설정 해주는 메소드이다.
 
 
 + HttpSession 은 자바 서블릿 API 에서 제공하는 인터페이스로, 클라이언트와 서버 간의 세션을 관리하는 데 사용
