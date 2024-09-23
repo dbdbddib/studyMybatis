@@ -254,9 +254,35 @@ MemberServiceImpl.java
   + 상속 관계가 있는 클래스에서 빌더 패턴을 사용할 수 있게 합니다.
   + 상속이 되는 순간 @SuperBuilder 사용 해야됨
     
-  ```
-  SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
-                    .name(name).page(page).build();
+```
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Employee {
+    private String name;
+    private String position;
+    private String department;
+    private String email;
+    private String phoneNumber;
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // 5개의 필드 중 4개만 설정
+        Employee employee = Employee.builder()
+            .name("John")
+            .position("Manager")
+            .department("HR")
+            .email("john@example.com")
+            .build(); // phoneNumber는 설정하지 않음
+    }
+}
+```
+```
+@AllArgsConstructor는 모든 필드를 받는 생성자를 생성하지만,
+특정 필드만 선택적으로 설정하고 싶다면
+@Builder 패턴을 활용하는 것이 가장 유연하고 편리한 방법입니다.
+```
 
 * @Null
     + 없어도 되는 필드값
@@ -516,8 +542,8 @@ $.ajax({
     - Ctrl + Shift + r
 + Find in Files
     - Ctrl + Shift + f
-+ 오류 찾을 시
-    + rebuild 가 아닌 Gradle -> Tasks -> build -> classes
-
 + 코드 포맷팅
     + ctrl + alt + L
++ 오류 발생 시:
+    + IntelliJ 에서 Gradle 탭을 열고, Tasks > build > classes 를 선택하여 실행
+    + Rebuild 는 프로젝트의 모든 파일을 다시 컴파일, classes는 변경된 파일만 빌드
