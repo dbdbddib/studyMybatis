@@ -8,8 +8,18 @@ public String {
   + mybatisapp  ( Thymeleaf )
   + mustacheapp ( mustache )
 
++ added dependencies
+  + Spring Boot DevTools
+  + Lombok
+  + Spring Configuration Processor
+  + Spring Web
+  + Mustache
+  + MyBatis Framework
+  + MySQL Driver
+
+    
 # CRUD
-CRUD는 “Create, Read, Update, Delete”의 약어로 데이터베이스와 같은 시스템에서 기본적인 데이터 관리 기능을 의미
+CRUD는 “Create, Read, Update, Delete” 의 약어로 데이터베이스와 같은 시스템에서 기본적인 데이터 관리 기능을 의미
 CRUD는 거의 모든 시스템에 적용되는 가장 기본
 ```
  이름     SQL문
