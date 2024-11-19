@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.softagape.mustacheajax.board.IBoardMybatisMapper">
+
+    <insert id="insert" parameterType="BoardDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO board_tbl ( name
+                              , content
+                              , viewQty
+                              , likeQty
+                              , createDt
+                              , createId
+                              , deleteFlag)
+        VALUES ( #{name}
+               , #{content}
+               , 0
+               , 0
+               , #{createDt}
+               , #{createId}
+               , false)
+    </insert>
+
+    <update id="update" parameterType="BoardDto">
+        UPDATE board_tbl
+        SET name = #{name}
+          , content = #{content}
+          , updateDt = #{updateDt}
+          , updateId = #{updateId}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateDeleteFlag" parameterType="BoardDto">
+        UPDATE board_tbl
+        SET deleteFlag = #{deleteFlag}
+          , deleteDt = #{deleteDt}
+          , deleteId = #{deleteId}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM board_tbl
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findById" resultType="BoardDto">
+        SELECT bt.id
+             , bt.name
+             , bt.content
+             , bt.viewQty
+             , bt.likeQty
+             , bt.createDt
+             , bt.createId
+             , ct.nickname AS createName
+             , bt.updateDt
+             , bt.updateId
+             , ut.nickname AS updateName
+             , bt.deleteDt
+             , bt.deleteId
+             , dt.nickname AS deleteName
+             , bt.deleteFlag
+        FROM board_tbl AS bt
+        LEFT OUTER JOIN member_tbl AS ct ON bt.createId = ct.id
+        LEFT OUTER JOIN member_tbl AS ut ON bt.updateId = ut.id
+        LEFT OUTER JOIN member_tbl AS dt ON bt.deleteId = dt.id
+        WHERE bt.id = #{id}
+          AND bt.deleteFlag = false
+    </select>
+
+    <update id="addViewQty">
+        UPDATE board_tbl
+        SET viewQty = viewQty + 1
+        WHERE id = #{id}
+          AND deleteFlag = false
+    </update>
+
+    <update id="addLikeQty">
+        UPDATE board_tbl
+        SET likeQty = likeQty + 1
+        WHERE id = #{id}
+          AND deleteFlag = false
+    </update>
+
+    <update id="subLikeQty">
+        UPDATE board_tbl
+        SET likeQty = likeQty - 1
+        WHERE id = #{id}
+          AND deleteFlag = false
+    </update>
+
+    <select id="countAllByNameContains" parameterType="SearchAjaxDto" resultType="Integer">
+        SELECT count(*)
+        FROM board_tbl
+        WHERE name like CONCAT('%',#{searchName},'%')
+          AND deleteFlag = false
+    </select>
+
+    <select id="findAllByNameContains" parameterType="SearchAjaxDto" resultType="BoardDto">
+        SELECT bt.id
+             , bt.name
+             , bt.content
+             , bt.viewQty
+             , bt.likeQty
+             , bt.createDt
+             , bt.createId
+             , ct.nickname AS createName
+             , bt.updateDt
+             , bt.updateId
+             , ut.nickname AS updateName
+             , bt.deleteDt
+             , bt.deleteId
+             , dt.nickname AS deleteName
+             , bt.deleteFlag
+        FROM board_tbl AS bt
+        LEFT OUTER JOIN member_tbl AS ct ON bt.createId = ct.id
+        LEFT OUTER JOIN member_tbl AS ut ON bt.updateId = ut.id
+        LEFT OUTER JOIN member_tbl AS dt ON bt.deleteId = dt.id
+        WHERE bt.name like CONCAT('%',#{searchName},'%')
+          AND bt.deleteFlag = false
+        ORDER BY ${orderByWord}
+        LIMIT #{rowsOnePage} OFFSET #{firstIndex}
+    </select>
+</mapper>

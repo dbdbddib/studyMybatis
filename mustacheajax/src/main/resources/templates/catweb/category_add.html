@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    <script>
+        const goBack = () => {
+            history.back();
+        }
+        function categoryInsert() {
+            let name = $("#name").val();
+            let ret = confirm(name + " 추가 하시겠습니까 ?");
+            return ret;
+        }
+    </script>
+</head>
+<body>
+<form id="form" name="form" method="post" action="category_insert" onsubmit="return categoryInsert();">
+    <label for="name">이름</label><input type="text" id="name" name="name" />
+    <br />
+    <a onclick="goBack();"><span>뒤로</span></a>
+    <input type="submit" value="추가"/>
+</form>
+</body>
+</html>

@@ -5,7 +5,6 @@ import com.study.mustacheapp.member.IMemberService;
 import com.study.mustacheapp.security.config.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    @Qualifier("memberServiceImpl")
     @Autowired
     private IMemberService memberService;
 

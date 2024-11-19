@@ -5,7 +5,6 @@ import com.study.mustacheapp.member.IMemberService;
 import com.study.mustacheapp.security.config.SecurityConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,7 +14,6 @@ import java.util.Arrays;
 
 @ControllerAdvice   // 모든 URL 요청을 가로채서 처리한다.
 public class AllControllerAdvice {
-    @Qualifier("memberServiceImpl")
     @Autowired
     private IMemberService memberService;
 

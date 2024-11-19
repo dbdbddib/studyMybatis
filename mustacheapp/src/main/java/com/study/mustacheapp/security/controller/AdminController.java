@@ -6,7 +6,6 @@ import com.study.mustacheapp.member.MemberRole;
 import com.study.mustacheapp.security.config.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    @Qualifier("memberServiceImpl")
     @Autowired
     private IMemberService memberService;
 

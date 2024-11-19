@@ -2,6 +2,7 @@ package com.study.mustacheapp.security.controller;
 
 import com.study.mustacheapp.commons.dto.CUDInfoDto;
 import com.study.mustacheapp.member.IMember;
+import com.study.mustacheapp.member.IMemberService;
 import com.study.mustacheapp.member.MemberServiceImpl;
 import com.study.mustacheapp.security.config.SecurityConfig;
 import com.study.mustacheapp.security.dto.LoginRequest;
@@ -25,9 +26,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/selogin")
 public class LoginSessionController {
-
     @Autowired
-    private MemberServiceImpl memberService;
+    private IMemberService memberService;
 
     @GetMapping("/signup")
     private String viewSignUp() {

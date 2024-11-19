@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/app-dark.css">
+    <link rel="stylesheet" href="/mazer/assets/compiled/css/iconly.css">
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+    <script>
+        const goBack = () => {
+            history.back();
+        }
+
+        function categoryUpdate() {
+            let name = $("#name").val();
+            if (confirm(name + " 수정 하시겠습니까 ?")) {
+                document.form.method = "post";
+                document.form.action = "category_update";
+                document.form.submit();
+            }
+        }
+        function categoryDelete() {
+            let id = $("#id").val();
+            let name = $("#name").val();
+            if (confirm(name + " 삭제 하시겠습니까 ?")) {
+                $("#form").attr("method","get");
+                $("#form").attr("action","category_delete?id=" + id).submit();
+            }
+        }
+    </script>
+</head>
+<body>
+<form id="form" name="form">
+    <label for="id"></label><input type="hidden" id="id" name="id" value="{{categoryDto.id}}"/>
+    <label for="name">이름</label><input type="text" id="name" name="name" value="{{categoryDto.name}}"/>
+</form>
+    <button onclick="goBack();">뒤로</button>
+    <button onclick="categoryDelete();">삭제</button>
+    <button onclick="categoryUpdate();">수정</button>
+</body>
+</html>

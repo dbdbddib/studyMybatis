@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.softagape.mustacheajax.stompevery.IStompEveryRoomMybatisMapper">
+
+    <insert id="insert" parameterType="StompEveryRoomDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO stompevery_room ( roomName, deleteFlag, count )
+        VALUES ( #{roomName}, 0, 0 )
+    </insert>
+
+    <update id="update" parameterType="StompEveryRoomDto">
+        UPDATE stompevery_room SET count = #{count}
+        WHERE id = #{id}
+    </update>
+
+    <update id="deleteFlagById">
+        UPDATE stompevery_room SET deleteFlag = true
+        WHERE id = #{id}
+    </update>
+
+    <select id="findById" resultType="StompEveryRoomDto">
+        SELECT id
+        , roomName
+        , deleteFlag
+        , count
+        FROM stompevery_room
+        WHERE id = #{id}
+            AND deleteFlag = false
+    </select>
+
+    <select id="findAll" resultType="StompEveryRoomDto">
+        SELECT id
+        , roomName
+        , deleteFlag
+        , count
+        FROM stompevery_room
+        WHERE 1=1
+            AND deleteFlag = false
+        ORDER BY id ASC
+    </select>
+</mapper>

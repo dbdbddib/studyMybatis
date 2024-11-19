@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>작동 실패</title>
+</head>
+<body>
+    <div>
+        <h3>실패 했습니다.</h3>
+        {{#message}}<div>{{.}}</div>{{/message}}
+        {{#errorList}}
+        <div>{{.}}</div>
+        {{/errorList}}
+        <button onclick="history.back();">뒤로가기</button>
+    </div>
+</body>
+</html>

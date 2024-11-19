@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.softagape.mustacheajax.stompevery.IStompEveryChatMybatisMapper">
+
+    <insert id="insert" parameterType="StompEveryChatDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO stompevery_chat ( roomId, writer, msgTime, message )
+        VALUES ( #{roomId}, #{writer}, #{msgTime}, #{message} )
+    </insert>
+
+    <select id="findAllByRoomId" resultType="StompEveryChatDto">
+        SELECT sec.id
+            , sec.roomId
+            , ser.roomName AS roomName
+            , sec.writer
+            , sec.msgTime
+            , sec.message
+        FROM stompevery_chat AS sec
+        LEFT JOIN stompevery_room AS ser ON sec.roomId = ser.id
+        WHERE 1=1
+            AND sec.roomId = #{roomId}
+        ORDER BY sec.id ASC
+    </select>
+</mapper>

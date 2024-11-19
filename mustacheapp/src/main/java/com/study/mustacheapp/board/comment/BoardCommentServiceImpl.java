@@ -4,9 +4,11 @@ import com.study.mustacheapp.commentlike.CommentLikeDto;
 import com.study.mustacheapp.commentlike.ICommentLikeMybatisMapper;
 import com.study.mustacheapp.commons.dto.CUDInfoDto;
 import com.study.mustacheapp.commons.dto.SearchAjaxDto;
+import com.study.mustacheapp.commons.exeption.IdNotFoundException;
 import com.study.mustacheapp.member.IMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class BoardCommentServiceImpl implements IBoardCommentService {
     private ICommentLikeMybatisMapper commentLikeMybatisMapper;
 
     @Override
+    @Transactional
     public void addLikeQty(CUDInfoDto cudInfoDto, Long id) {
         if ( cudInfoDto == null || cudInfoDto.getLoginUser() == null || id == null || id <= 0 ) {
             return;
@@ -37,6 +40,7 @@ public class BoardCommentServiceImpl implements IBoardCommentService {
     }
 
     @Override
+    @Transactional
     public void subLikeQty(CUDInfoDto cudInfoDto, Long id) {
         if ( cudInfoDto == null || cudInfoDto.getLoginUser() == null || id == null || id <= 0 ) {
             return;
@@ -69,14 +73,7 @@ public class BoardCommentServiceImpl implements IBoardCommentService {
         if ( dto == null ) {
             return List.of();
         }
-        dto.setOrderByWord( (dto.getSortColumn() != null ? dto.getSortColumn() : "id")
-                + " " + (dto.getSortAscDsc() != null ? dto.getSortAscDsc() : "DESC") );
-        if ( dto.getRowsOnePage() == null ) {
-            dto.setRowsOnePage(10);
-        }
-        if ( dto.getPage() == null || dto.getPage() <= 0 ) {
-            dto.setPage(1);
-        }
+        dto.settingValues();
         dto.setCommentTbl(new BoardCommentDto().getTbl());
         dto.setCreateId(loginUser.getId());
         List<BoardCommentDto> list = this.boardCommentMybatisMapper.findAllByBoardId(dto);
@@ -144,6 +141,11 @@ public class BoardCommentServiceImpl implements IBoardCommentService {
             return null;
         }
         BoardCommentDto find = this.boardCommentMybatisMapper.findById(id);
+        if ( find == null ) {
+            throw new IdNotFoundException(String.format("Error : not found id = %d !", id));
+        }
+
+
         return find;
     }
 }

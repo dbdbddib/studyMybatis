@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.softagape.mustacheajax.board.comment.IBoardCommentMybatisMapper">
+
+    <insert id="insert" parameterType="BoardCommentDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO board_comment_tbl ( comment
+                              , likeQty
+                              , boardId
+                              , createDt
+                              , createId
+                              , deleteFlag)
+        VALUES ( #{comment}
+               , 0
+               , #{boardId}
+               , #{createDt}
+               , #{createId}
+               , false)
+    </insert>
+
+    <update id="update" parameterType="BoardCommentDto">
+        UPDATE board_comment_tbl
+        SET comment = #{comment}
+          , boardId = #{boardId}
+          , updateDt = #{updateDt}
+          , updateId = #{updateId}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateDeleteFlag" parameterType="BoardCommentDto">
+        UPDATE board_comment_tbl
+        SET deleteFlag = #{deleteFlag}
+          , deleteDt = #{deleteDt}
+          , deleteId = #{deleteId}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM board_comment_tbl
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findById" resultType="BoardCommentDto">
+        SELECT id
+             , comment
+             , likeQty
+             , boardId
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
+        FROM board_comment_tbl
+        WHERE id = #{id}
+          AND deleteFlag = false
+    </select>
+
+    <update id="addLikeQty">
+        UPDATE board_comment_tbl
+        SET likeQty = likeQty + 1
+        WHERE id = #{id}
+          AND deleteFlag = false
+    </update>
+
+    <update id="subLikeQty">
+        UPDATE board_comment_tbl
+        SET likeQty = likeQty - 1
+        WHERE id = #{id}
+          AND deleteFlag = false
+    </update>
+
+    <select id="countAllByBoardId" parameterType="SearchAjaxDto" resultType="Integer">
+        SELECT count(*)
+        FROM board_comment_tbl
+        WHERE boardId = #{searchName}
+          AND deleteFlag = false
+    </select>
+
+    <select id="findAllByBoardId" parameterType="SearchBoardCommentDto" resultType="BoardCommentDto">
+        SELECT bc.id
+             , bc.comment
+             , bc.likeQty
+             , bc.boardId
+             , bc.createDt
+             , bc.createId
+             , ct.nickname AS createName
+             , bc.updateDt
+             , bc.updateId
+             , ut.nickname AS updateName
+             , bc.deleteDt
+             , bc.deleteId
+             , dt.nickname AS deleteName
+             , bc.deleteFlag
+             , cl.commentId
+        FROM board_comment_tbl AS bc
+        LEFT JOIN comment_like_tbl AS cl
+            ON cl.commentTbl = #{commentTbl} AND cl.createId = #{createId} AND bc.id = cl.commentId
+        LEFT OUTER JOIN member_tbl AS ct ON bc.createId = ct.id
+        LEFT OUTER JOIN member_tbl AS ut ON bc.updateId = ut.id
+        LEFT OUTER JOIN member_tbl AS dt ON bc.deleteId = dt.id
+        WHERE bc.boardId = #{boardId}
+          AND bc.deleteFlag = false
+        ORDER BY ${orderByWord}
+        LIMIT #{rowsOnePage} OFFSET #{firstIndex}
+    </select>
+</mapper>

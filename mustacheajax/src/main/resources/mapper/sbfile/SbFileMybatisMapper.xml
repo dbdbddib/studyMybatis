@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.softagape.mustacheajax.sbfile.ISbFileMybatisMapper">
+
+    <insert id="insert" parameterType="SbFileDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sbfile_tbl
+            ( name
+            , ord
+            , fileType
+            , uniqName
+            , length
+            , description
+            , tbl
+            , boardId
+            , deleteFlag
+            )
+        VALUES
+            ( #{name}
+            , #{ord}
+            , #{fileType}
+            , #{uniqName}
+            , #{length}
+            , #{description}
+            , #{tbl}
+            , #{boardId}
+	    , 0)
+    </insert>
+
+    <update id="updateDeleteFlag" parameterType="SbFileDto">
+        UPDATE sbfile_tbl set deleteFlag = #{deleteFlag}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM sbfile_tbl
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findById" resultType="SbFileDto">
+        SELECT id
+             , name
+             , ord
+             , fileType
+             , uniqName
+             , length
+             , description
+             , tbl
+             , boardId
+             , deleteFlag
+        FROM sbfile_tbl
+        WHERE id = #{id}
+            AND deleteFlag = false
+    </select>
+
+    <select id="countAllByTblBoardId" parameterType="SbFileDto" resultType="int">
+        SELECT count(*)
+        FROM sbfile_tbl
+        WHERE tbl = #{tbl}
+          AND boardId = #{boardId}
+    </select>
+
+    <select id="findAllByTblBoardId" parameterType="SbFileDto" resultType="SbFileDto">
+        SELECT id
+             , name
+             , ord
+             , fileType
+             , uniqName
+             , length
+             , description
+             , tbl
+             , boardId
+             , deleteFlag
+        FROM sbfile_tbl
+        WHERE tbl = #{tbl}
+          AND boardId = #{boardId}
+          AND deleteFlag = false
+        ORDER BY ord
+    </select>
+</mapper>

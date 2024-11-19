@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>채팅방 {{stompRoomDto.roomName}}</title>
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+<h1>{{stompRoomDto.roomName}}</h1>
+<fieldset>
+<label for="writer">대화명</label><input type="text" minlength="1" id="writer" name="writer" value="{{writer}}" readonly />
+        <label for="message">메세지</label><input type="text" minlength="1" id="message" name="message" />
+        <button onclick="$.sendMessage();">대화 전송</button>
+        <button onclick="$.outRoom();">대화방 나가기</button>
+    </fieldset>
+    <h3>채팅 내용</h3>
+    <ul id="msgUl">
+    </ul>
+</body>
+</html>
+
+<script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
+<script>
+    let sockJS = new SockJS("/stompend")
+    let socket = Stomp.over(sockJS);
+    let messages = [];
+
+    socket.connect({}, function(data) {
+        console.log(data);
+        socket.subscribe("/sub/stomp/room/" + "{{stompRoomDto.roomId}}", function(message) {
+            let msgObj = JSON.parse(message.body);
+            let msgUl = $("#msgUl");
+            let liHtml = `<li><span>${msgObj.writer}</span> &nbsp; : &nbsp; <span>${msgObj.message}</span></li>`;
+            msgUl.append(liHtml);
+        });
+        socket.send("/pub/stomp/message", {}, JSON.stringify(
+            {
+                "msgType": "ENTER"
+                , "roomId": "{{stompRoomDto.roomId}}"
+                , "writer": "{{writer}}"
+                , "message": "입장"
+            }
+        ));
+        console.log('socket.send 완료');
+    }, function(error){
+        console.log(error);
+    });
+
+    $.sendMessage = () => {
+        let message = $("#message").val();
+        if (message == null || message === '') {
+            return;
+        }
+        socket.send("/pub/stomp/message", {}, JSON.stringify(
+            {
+                "msgType": "MESSAGE"
+                , "roomId": "{{stompRoomDto.roomId}}"
+                , "writer": "{{writer}}"
+                , "message": message
+            }
+        ));
+        $("#message").val("");
+    }
+
+    $.outRoom = () => {
+        socket.send("/pub/stomp/message", {}, JSON.stringify(
+            {
+                "msgType": "OUT"
+                , "roomId": "{{stompRoomDto.roomId}}"
+                , "writer": "{{writer}}"
+                , "message": "퇴장"
+            }
+        ));
+        socket.disconnect();
+        document.location.href = "/stomp/list";
+    }
+
+    // 브라우저 창 닫을때 자동 실행하는 이벤트
+    window.addEventListener("beforeunload", function(e) {
+        $.outRoom();
+    });
+</script>

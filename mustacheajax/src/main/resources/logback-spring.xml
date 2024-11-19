@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProfile name="dev">
+        <property resource="logback-dev.properties"/>
+    </springProfile>
+    <springProfile name="local">
+        <property resource="logback-local.properties"/>
+    </springProfile>
+    <springProfile name="prod">
+        <property resource="logback-prod.properties"/>
+    </springProfile>
+    <springProfile name="test">
+        <property resource="logback-test.properties"/>
+    </springProfile>
+
+    <!-- log file path -->
+    <property name="LOG_PATH" value="${log.config.path}"/>
+    <!-- log file name -->
+    <property name="LOG_FILE_NAME" value="${log.config.filename}"/>
+    <!-- err log file name -->
+    <property name="ERR_LOG_FILE_NAME" value="${log.config.error.filename}"/>
+    <!-- ROOT log LEVEL -->
+    <property name="ROOT_LEVEL" value="${log.config.root.level}"/>
+    <!-- mybatis log LEVEL -->
+    <property name="MYBATIS_LEVEL" value="${log.config.mybatis.level}"/>
+    <!-- springweb log LEVEL -->
+    <property name="SPRINGWEB_LEVEL" value="${log.config.springweb.level}"/>
+
+    <appender name="StandardConsole" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyyMMdd HH:mm:ss.SSS} [%thread] %-3level %logger{5} - %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
+
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>31</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 에러의 경우 파일에 로그 처리 -->
+    <appender name="ErrorRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_PATH}/${ERR_LOG_FILE_NAME}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${ERR_LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>31</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="jdbc" level="OFF" additive="false" />
+    <logger name="jdbc.sqlonly" level="OFF" additive="false" />
+    <logger name="jdbc.sqltiming" level="${MYBATIS_LEVEL}" additive="false" />
+    <logger name="jdbc.audit" level="OFF" additive="false" />
+    <logger name="jdbc.resultset" level="OFF" additive="false" />
+    <logger name="jdbc.resultsettable" level="${MYBATIS_LEVEL}" additive="false" />
+    <logger name="jdbc.connection" level="OFF" additive="false" />
+
+    <root level="${ROOT_LEVEL}" additive="true">
+        <appender-ref ref="StandardConsole" />
+        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="ErrorRollingFile"/>
+    </root>
+</configuration>

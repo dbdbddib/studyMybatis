@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>채팅방 리스트</title>
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+</head>
+
+<script>
+    $(function(){
+
+    });
+
+    function checkValid() {
+        let roomName = $("#roomName").val();
+        if (roomName === '' || roomName.length < 6) {
+            alert("대화방 이름을 6자 이상 입력하세요")
+            return false;
+        }
+        return true;
+    }
+
+    $.createStompRoom = () => {
+        let roomName = $("#roomName").val();
+        if( !checkValid() ) {
+            return;
+        }
+
+        $.ajax({
+            url: "/stompevery/create",
+            type: "POST",
+            datatype: "JSON",
+            data: JSON.stringify({"roomName": roomName}),
+            contentType: "application/json; charset=UTF-8",
+        }).done(function (data, status, xhr) {
+            console.log("done:data=" + data + ", status=", status, ", xhr=", xhr);
+            // insert 완료시
+            $.enterStompRoom(data.id)
+        }).fail(function (jqXHR, status, errorThrown) {
+            console.log("done:jqXHR=" + jqXHR + ", status=", status, ", errorThrown=", errorThrown);
+            alert("추가를 실패했습니다. " + jqXHR.responseJSON.message);
+        });
+    }
+
+    $.enterStompRoom = (id) => {
+        let writer = prompt('대화명을 입력하세요');
+        if (writer == null || writer == undefined || writer === '' || writer.length < 6) {
+            return;
+        }
+        let enterform = $("<form>", {
+            method: "post",
+            action: "/stompevery/enter",
+            target: "_self",
+            html: `<input type="hidden" name="id" value="${id}"><input type="hidden" name="writer" value="${writer}">`
+        }).appendTo("body");
+
+        enterform.submit();
+    }
+</script>
+<body>
+    <fieldset>
+        <label for="roomName">대화방 이름</label><input type="text" minlength="6" id="roomName" name="roomName" />
+        <button onclick="$.createStompRoom();">채팅방 생성</button>
+    </fieldset>
+    <ul>
+        <li>채팅방 제목</li>
+        {{#stompRoomList}}
+        <li onclick="$.enterStompRoom('{{id}}');">{{id}} : {{roomName}} ({{count}})</li>
+        {{/stompRoomList}}
+    </ul>
+</body>
+</html>

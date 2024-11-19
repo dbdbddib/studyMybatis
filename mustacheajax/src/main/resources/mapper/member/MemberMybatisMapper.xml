@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.softagape.mustacheajax.member.IMemberMybatisMapper">
+    <!-- mapper namespace="@Mapper 로 선언된 클래스의 풀패키지.클래스 이름"-->
+
+    <insert id="insert" parameterType="MemberDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO member_tbl
+            (name
+            , nickname
+            , loginId
+            , password
+            , email
+            , role
+            , active
+            , createDt
+            , createId)
+        VALUES
+            (#{name}
+            , #{nickname}
+            , #{loginId}
+            , #{password}
+            , #{email}
+            , #{role}
+            , #{active}
+            , #{createDt}
+            , #{createId})
+    </insert>
+
+    <update id="update" parameterType="MemberDto">
+        UPDATE member_tbl
+            SET name = #{name}
+            , nickname = #{nickname}
+            , email = #{email}
+            , role = #{role}
+            , active = #{active}
+            , updateDt = #{updateDt}
+            , updateId = #{updateId}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateDeleteFlag" parameterType="MemberDto">
+        UPDATE member_tbl
+        SET deleteFlag = #{deleteFlag}
+          , deleteDt = #{deleteDt}
+          , deleteId = #{deleteId}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM member_tbl
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findById" resultType="MemberDto">
+        SELECT id
+             , name
+             , nickname
+             , loginId
+             , email
+             , role
+             , active
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
+        FROM member_tbl
+        WHERE id = #{id}
+          AND deleteFlag = false
+    </select>
+
+    <select id="findByLoginId" resultType="MemberDto">
+        SELECT id
+             , name
+             , nickname
+             , loginId
+             , password
+             , email
+             , role
+             , active
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
+        FROM member_tbl
+        WHERE loginId = #{loginId}
+          AND deleteFlag = false
+    </select>
+
+    <select id="findByNickname" resultType="MemberDto">
+        SELECT id
+             , name
+             , nickname
+             , loginId
+             , password
+             , email
+             , role
+             , active
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
+        FROM member_tbl
+        WHERE nickname = #{nickname}
+          AND deleteFlag = false
+    </select>
+
+    <update id="changePassword" parameterType="MemberDto">
+        UPDATE member_tbl
+        SET password = #{password}
+        WHERE id = #{id}
+    </update>
+
+    <select id="countAllByLoginIdContains" parameterType="SearchAjaxDto" resultType="Integer">
+        SELECT count(*)
+        FROM member_tbl
+        WHERE loginId like CONCAT('%',#{searchName},'%')
+          AND deleteFlag = false
+    </select>
+
+    <select id="findAllByLoginIdContains" parameterType="SearchAjaxDto" resultType="MemberDto">
+        SELECT id
+             , name
+             , nickname
+             , loginId
+             , email
+             , role
+             , active
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
+        FROM member_tbl
+        WHERE loginId like CONCAT('%',#{searchName},'%')
+          AND deleteFlag = false
+        ORDER BY ${orderByWord}
+        LIMIT #{rowsOnePage} OFFSET #{firstIndex}
+    </select>
+
+    <select id="findAll" resultType="MemberDto">
+        SELECT id
+             , name
+             , nickname
+             , loginId
+             , email
+             , role
+             , active
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
+        FROM member_tbl
+            AND deleteFlag = false
+    </select>
+
+    <select id="countAllByNameContains" parameterType="SearchAjaxDto" resultType="Integer">
+        SELECT count(*)
+        FROM member_tbl
+        WHERE name like CONCAT('%',#{searchName},'%')
+          AND deleteFlag = false
+    </select>
+
+    <select id="findAllByNameContains" parameterType="SearchAjaxDto" resultType="MemberDto">
+        SELECT id
+             , name
+             , nickname
+             , loginId
+             , email
+             , role
+             , active
+             , createDt
+             , createId
+             , updateDt
+             , updateId
+             , deleteDt
+             , deleteId
+             , deleteFlag
+        FROM member_tbl
+        WHERE name like CONCAT('%',#{searchName},'%')
+            AND deleteFlag = false
+        ORDER BY ${orderByWord}
+            LIMIT #{rowsOnePage} OFFSET #{firstIndex}
+    </select>
+</mapper>
