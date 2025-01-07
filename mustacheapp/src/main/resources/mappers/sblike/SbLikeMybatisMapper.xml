@@ -23,7 +23,6 @@
         SELECT count(*)
         FROM sblike_tbl
         WHERE tbl = #{tbl}
-          AND createId = #{createId}
           AND boardId = #{boardId}
     </select>
 </mapper>
