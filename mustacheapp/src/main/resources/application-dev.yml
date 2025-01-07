@@ -11,9 +11,9 @@ spring:
 
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:mysql://192.168.0.2:3306/phonebook_db?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: phonebook_user
-    password: sangbong3!
+    url: jdbc:log4jdbc:mysql://localhost:3306/phonebook_db?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: tjournal_user
+    password: tjournal1234!
 
   # attachfile
   servlet:

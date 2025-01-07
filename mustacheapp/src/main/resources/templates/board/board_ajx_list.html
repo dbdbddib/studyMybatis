@@ -620,6 +620,9 @@
             $("#likeList_" + id).remove();
         }
 
+
+
+        // 모달에서 게시판 추가 부분
         $.addInsert = function () {
             let name = $("#name").val();
             let content = $("#content").val();
@@ -658,6 +661,10 @@
                 alert("추가를 실패했습니다. " + message);
             });
         }
+
+
+
+
 
         function getErrorMessage(resonseJSON) {
             if ( resonseJSON === undefined ) {
@@ -922,6 +929,7 @@
             <div id="pageDiv">
             </div>
         </div>
+
         <div id="modal_box_add" style="display: none">
             <h2>Board Add</h2>
                 <fieldset>

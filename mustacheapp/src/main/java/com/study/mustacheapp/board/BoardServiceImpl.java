@@ -105,6 +105,22 @@ public class BoardServiceImpl implements IBoardService {
         return result;
     }
 
+
+
+
+
+    @Override
+    public BoardDto insert(CUDInfoDto cudInfoDto, BoardDto dto) {
+        if ( cudInfoDto == null || dto == null ) {
+            return null;
+        }
+        BoardDto insert = BoardDto.builder().build();
+        insert.copyFields(dto);
+        cudInfoDto.setCreateInfo(insert);
+        this.boardMybatisMapper.insert(insert);
+        return insert;
+    }
+
     @Transactional
     public BoardDto insert(CUDInfoDto info, BoardDto dto, List<MultipartFile> files) throws RuntimeException {
         if ( info == null || dto == null ) {
@@ -117,6 +133,10 @@ public class BoardServiceImpl implements IBoardService {
         this.sbFileService.insertFiles(insert, files);
         return insert;
     }
+
+
+
+
 
     @Transactional
     public BoardDto update(CUDInfoDto info, BoardDto dto
@@ -173,10 +193,7 @@ public class BoardServiceImpl implements IBoardService {
         return find;
     }
 
-    @Override
-    public BoardDto insert(CUDInfoDto cudInfoDto, BoardDto dto) {
-        return null;
-    }
+
 
     @Override
     public BoardDto update(CUDInfoDto cudInfoDto, BoardDto dto) {
